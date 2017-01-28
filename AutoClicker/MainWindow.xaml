@@ -4,8 +4,41 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:AutoClicker"
+        xmlns:system="clr-namespace:System;assembly=mscorlib"
         mc:Ignorable="d"
-        Title="MainWindow" Height="300" Width="550" MouseDown="Window_MouseDown">
+        Title="MainWindow" Height="300" Width="550">
+
+    <Window.Resources>
+        <ObjectDataProvider x:Key="mouseButtonValues"
+                            MethodName="GetValues"
+                            ObjectType="{x:Type system:Enum}">
+            <ObjectDataProvider.MethodParameters>
+                <x:Type TypeName="local:MouseButton"/>
+            </ObjectDataProvider.MethodParameters>
+        </ObjectDataProvider>
+        <ObjectDataProvider x:Key="mouseActionValues"
+                            MethodName="GetValues"
+                            ObjectType="{x:Type system:Enum}">
+            <ObjectDataProvider.MethodParameters>
+                <x:Type TypeName="local:MouseAction"/>
+            </ObjectDataProvider.MethodParameters>
+        </ObjectDataProvider>
+        <ObjectDataProvider x:Key="repeatModeValues"
+                            MethodName="GetValues"
+                            ObjectType="{x:Type system:Enum}">
+            <ObjectDataProvider.MethodParameters>
+                <x:Type TypeName="local:RepeatMode"/>
+            </ObjectDataProvider.MethodParameters>
+        </ObjectDataProvider>
+        <ObjectDataProvider x:Key="LocationModeValues"
+                            MethodName="GetValues"
+                            ObjectType="{x:Type system:Enum}">
+            <ObjectDataProvider.MethodParameters>
+                <x:Type TypeName="local:LocationMode"/>
+            </ObjectDataProvider.MethodParameters>
+        </ObjectDataProvider>
+    </Window.Resources>
+
     <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -61,9 +94,9 @@
                 </Grid.ColumnDefinitions>
 
                 <TextBlock Grid.Row="0" Grid.Column="0" Text="Mouse Button"/>
-                <ComboBox Grid.Row="0" Grid.Column="1" Margin="5, 0, 0, 0"
-                          ItemsSource="{Binding MouseButtons, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
-                          SelectedIndex="0" SelectedItem="{Binding SelectedMouseButton}"/>
+                <ComboBox Grid.Row="1" Grid.Column="1" Margin="5, 0, 0, 5"
+                          ItemsSource="{Binding Source={StaticResource mouseActionValues}}"
+                          SelectedIndex="0" SelectedItem="{Binding SelectedMouseAction}"/>
             </Grid>
         </GroupBox>
 

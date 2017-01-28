@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Timers;
 using System.Windows;
-using System.Windows.Input;
 
 namespace AutoClicker
 {
@@ -83,6 +81,49 @@ namespace AutoClicker
 
         #endregion SelectedMouseButton
 
+        #region SelectedMouseAction
+
+        public MouseAction SelectedMouseAction
+        {
+            get { return (MouseAction)GetValue(SelectedMouseActionProperty); }
+            set { SetValue(SelectedMouseActionProperty, value); }
+        }
+
+        public static readonly DependencyProperty SelectedMouseActionProperty =
+            DependencyProperty.Register("SelectedMouseAction", typeof(MouseAction), typeof(MainWindow),
+                new PropertyMetadata(default(MouseAction)));
+
+
+        #endregion SelectedClickTypeSelectedMouseAction
+
+        #region SelectedRepeatMode
+
+        public RepeatMode SelectedRepeatMode
+        {
+            get { return (RepeatMode)GetValue(SelectedRepeatModeProperty); }
+            set { SetValue(SelectedRepeatModeProperty, value); }
+        }
+
+        public static readonly DependencyProperty SelectedRepeatModeProperty =
+            DependencyProperty.Register("SelectedRepeatMode", typeof(RepeatMode), typeof(MainWindow),
+                new PropertyMetadata(default(RepeatMode)));
+
+        #endregion SelectedRepeatMode
+
+        #region SelectedLocationMode
+
+        public LocationMode SelectedLocationMode
+        {
+            get { return (LocationMode)GetValue(SelectedLocationModeProperty); }
+            set { SetValue(SelectedLocationModeProperty, value); }
+        }
+
+        public static readonly DependencyProperty SelectedLocationModeProperty =
+            DependencyProperty.Register("SelectedLocationMode", typeof(LocationMode), typeof(MainWindow),
+                new PropertyMetadata(default(LocationMode)));
+
+        #endregion SelectedLocationMode
+
         #endregion Dependency Properties
 
         #region Fields
@@ -156,7 +197,7 @@ namespace AutoClicker
 
         //This simulates a left mouse click
         private static void LeftMouseClick(int xpos, int ypos)
-        {            
+        {
             SetCursorPos(xpos, ypos);
             mouse_event(MOUSEEVENTF_LEFTDOWN, xpos, ypos, 0, 0);
             //System.Threading.Thread.Sleep(5000);
@@ -174,18 +215,9 @@ namespace AutoClicker
 
         private int CalculateInterval()
         {
-            return Milliseconds + Seconds * 1000 + Minutes * 60 * 1000 + Hours * 3600 * 1000;
+            return Milliseconds + Seconds * 1000 + Minutes * 60 * 1000 + Hours * 60 * 60 * 1000;
         }
-
 
         #endregion Helper Methods
-
-        private void Window_MouseDown(object sender, MouseButtonEventArgs e)
-        {
-            if (e.ChangedButton == MouseButton.Right)
-                Console.WriteLine(e.RightButton);
-            else if (e.ChangedButton == MouseButton.Left)
-                Console.WriteLine(e.LeftButton);
-        }
     }
 }
