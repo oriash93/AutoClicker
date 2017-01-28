@@ -6,8 +6,9 @@
         xmlns:local="clr-namespace:AutoClicker"
         xmlns:bot="clr-namespace:PixelLab.Wpf;assembly=PixelLab.Wpf"
         xmlns:system="clr-namespace:System;assembly=mscorlib"
-        mc:Ignorable="d"
-        Title="MainWindow" Height="300" Width="550">
+        mc:Ignorable="d" Title="MainWindow"
+        ResizeMode="CanMinimize"
+        Height="375" Width="460" Background="WhiteSmoke">
 
     <Window.Resources>
         <ObjectDataProvider x:Key="mouseButtonValues"
@@ -52,8 +53,8 @@
             <ColumnDefinition Width="Auto"/>
         </Grid.ColumnDefinitions>
 
-        <GroupBox Header="Click Interval" Grid.Row="0" Grid.ColumnSpan="2">
-            <Grid HorizontalAlignment="Center" VerticalAlignment="Center" Margin="5">
+        <GroupBox Header="Click Interval" Grid.Row="0" Grid.ColumnSpan="2" Width="425" Height="50">
+            <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
@@ -70,21 +71,36 @@
 
                 <TextBox Grid.Column="0" Width="50"
                          Text="{Binding Hours, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
-                <TextBlock Grid.Column="1" Margin="5, 0, 0, 0" Text="Hours"/>
-                <TextBox Grid.Column="2" Width="50" Margin="5, 0, 0, 0"
+                <TextBlock Grid.Column="1" Margin="5, 0, 5, 5" Text="hours"/>
+                <TextBox Grid.Column="2" Width="50"
                          Text="{Binding Minutes, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
-                <TextBlock Grid.Column="3" Margin="5, 0, 0, 0" Text="Minutes"/>
-                <TextBox Grid.Column="4" Width="50" Margin="5, 0, 0, 0"
+                <TextBlock Grid.Column="3" Margin="5, 0, 5, 5" Text="minutes"/>
+                <TextBox Grid.Column="4" Width="50"
                          Text="{Binding Seconds, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
-                <TextBlock Grid.Column="5" Margin="5, 0, 0, 0" Text="Seconds"/>
-                <TextBox Grid.Column="6" Width="50" Margin="5, 0, 0, 0"
+                <TextBlock Grid.Column="5" Margin="5, 0, 5, 5" Text="seconds"/>
+                <TextBox Grid.Column="6" Width="50"
                          Text="{Binding Milliseconds, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
-                <TextBlock Grid.Column="7" Margin="5, 0, 0, 0" Text="Milliseconds"/>
+                <TextBlock Grid.Column="7" Margin="5, 0, 5, 5" Text="milliseconds"/>
             </Grid>
         </GroupBox>
 
-        <GroupBox Header="Click Options" Grid.Row="1" Grid.ColumnSpan="2">
-            <Grid HorizontalAlignment="Center" VerticalAlignment="Center" Margin="5">
+        <GroupBox Header="Click Options" Grid.Row="1" Grid.Column="0" Width="210" Height="80">
+            <UniformGrid HorizontalAlignment="Center" VerticalAlignment="Center"
+                         Rows="2" Columns="2">
+                <TextBlock Grid.Row="0" Grid.Column="0" Text="Mouse Button" Margin="0, 5, 5, 5"/>
+                <ComboBox Grid.Row="0" Grid.Column="1" Margin="5, 0, 0, 5"
+                          ItemsSource="{Binding Source={StaticResource mouseButtonValues}}"
+                          SelectedIndex="0" SelectedItem="{Binding SelectedMouseButton}"/>
+                <TextBlock Grid.Row="1" Grid.Column="0" Text="Click Type" Margin="0, 5, 5, 5"/>
+                <ComboBox Grid.Row="1" Grid.Column="1" Margin="5, 0, 0, 5"
+                          ItemsSource="{Binding Source={StaticResource mouseActionValues}}"
+                          SelectedIndex="0" SelectedItem="{Binding SelectedMouseAction}"/>
+            </UniformGrid>
+        </GroupBox>
+
+        <GroupBox Header="Cursor Position" Grid.Row="1" Grid.Column="1"
+                  Width="210" Height="80" Margin="5, 0, 0, 0">
+            <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
@@ -94,29 +110,21 @@
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
 
-                <TextBlock Grid.Row="0" Grid.Column="0" Text="Mouse Button"/>
-                <ComboBox Grid.Row="1" Grid.Column="1" Margin="5, 0, 0, 5"
-                          ItemsSource="{Binding Source={StaticResource mouseActionValues}}"
-                          SelectedIndex="0" SelectedItem="{Binding SelectedMouseAction}"/>
-            </Grid>
-        </GroupBox>
-
-        <GroupBox Header="Cursor Position" Grid.Row="2" Grid.ColumnSpan="2">
-            <UniformGrid Rows="1" Columns="2"
-                         HorizontalAlignment="Center" VerticalAlignment="Center" Margin="5">
-                <RadioButton Grid.Column="0" Content="Current Location" IsChecked="True"/>
-                <RadioButton Grid.Column="1">
+                <RadioButton Grid.Row="0" Grid.Column="0" Margin="0, 0, 0, 5"
+                             Content="Current Location" IsChecked="True"/>
+                <RadioButton Grid.Row="1" Grid.ColumnSpan="2" Margin="0, 0, 0, 5">
                     <StackPanel Orientation="Horizontal">
-                        <Button Content="Pick Location" Margin="5, 0, 0, 0"/>
                         <TextBlock Text="X" Margin="5, 0, 0, 0"/>
                         <TextBox Width="50" Margin="5, 0, 0, 0"/>
+                        <!--<Button Content="Pick Location" Margin="5, 0, 0, 0"/>-->
                         <TextBlock Text="Y" Margin="5, 0, 0, 0"/>
                         <TextBox Width="50" Margin="5, 0, 0, 0"/>
                     </StackPanel>
                 </RadioButton>
-            </UniformGrid>
+            </Grid>
         </GroupBox>
 
-        <Button Grid.Row="3" Grid.ColumnSpan="2" Content="click" Click="Button_Click"/>
+        <Button Grid.Row="3" Grid.ColumnSpan="2" Margin="0, 5, 0, 5"
+                Content="Start" Click="Button_Click"/>
     </Grid>
 </Window>
