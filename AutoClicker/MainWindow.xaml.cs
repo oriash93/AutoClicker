@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+﻿using System;
 using System.Timers;
 using System.Windows;
 
@@ -126,13 +126,15 @@ namespace AutoClicker
 
         #endregion Dependency Properties
 
-        #region Fields
-
-        public List<string> MouseButtons
+        public int Interval
         {
-            get { return new List<string> { "Left", "Right" }; }
-            set { }
+            get
+            {
+                return Milliseconds + Seconds * 1000 + Minutes * 60 * 1000 + Hours * 60 * 60 * 1000;
+            }
         }
+
+        #region Fields
 
         private Timer clickTimer;
 
@@ -149,8 +151,8 @@ namespace AutoClicker
 
         public MainWindow()
         {
-            clickTimer = new Timer(CalculateInterval());
-            clickTimer.Elapsed += ClickTimer_Elapsed;
+            clickTimer = new Timer();
+            clickTimer.Elapsed += OnClickTimerElapsed;
 
             DataContext = this;
             InitializeComponent();
@@ -169,17 +171,20 @@ namespace AutoClicker
 
         #region Events
 
-        private void ClickTimer_Elapsed(object sender, ElapsedEventArgs e)
+        private void OnClickTimerElapsed(object sender, ElapsedEventArgs e)
         {
             int xPosition = 300;
             int yPosition = 300;
             int duration = 0;
-
-            ClickMouse(SelectedMouseButton, xPosition, yPosition, duration);
+            Dispatcher.Invoke(() =>
+            {
+                PerformMouseClick(SelectedMouseButton, xPosition, yPosition, duration);
+            });
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private void OnStartButtonClicked(object sender, RoutedEventArgs e)
         {
+            clickTimer.Interval = Interval;
             clickTimer.Start();
         }
 
@@ -187,20 +192,23 @@ namespace AutoClicker
 
         #region Helper Methods
 
-        private void ClickMouse(MouseButton selectedMouseButton, int xPosition, int yPosition, int duration)
+        private void PerformMouseClick(MouseButton selectedMouseButton, int xPosition, int yPosition, int duration)
         {
-            if (selectedMouseButton == MouseButton.Left)
-                LeftMouseClick(xPosition, yPosition);
-            else
-                RightMouseClick(xPosition, yPosition);
+            Dispatcher.Invoke(() =>
+            {
+                if (selectedMouseButton == MouseButton.Left)
+                    LeftMouseClick(xPosition, yPosition);
+                else
+                    RightMouseClick(xPosition, yPosition);
+            });
         }
 
         //This simulates a left mouse click
         private static void LeftMouseClick(int xpos, int ypos)
         {
+            Console.Write(xpos + " " + ypos);
             SetCursorPos(xpos, ypos);
             mouse_event(MOUSEEVENTF_LEFTDOWN, xpos, ypos, 0, 0);
-            //System.Threading.Thread.Sleep(5000);
             mouse_event(MOUSEEVENTF_LEFTUP, xpos, ypos, 0, 0);
         }
 
@@ -209,13 +217,7 @@ namespace AutoClicker
         {
             SetCursorPos(xpos, ypos);
             mouse_event(MOUSEEVENTF_RIGHTDOWN, xpos, ypos, 0, 0);
-            //System.Threading.Thread.Sleep(5000);
             mouse_event(MOUSEEVENTF_RIGHTUP, xpos, ypos, 0, 0);
-        }
-
-        private int CalculateInterval()
-        {
-            return Milliseconds + Seconds * 1000 + Minutes * 60 * 1000 + Hours * 60 * 60 * 1000;
         }
 
         #endregion Helper Methods
