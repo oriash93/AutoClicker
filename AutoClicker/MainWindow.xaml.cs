@@ -1,5 +1,7 @@
 ﻿using System.Timers;
 using System.Windows;
+using MouseCursor = System.Windows.Forms.Cursor;
+using Point = System.Drawing.Point;
 
 namespace AutoClicker
 {
@@ -130,6 +132,7 @@ namespace AutoClicker
         private Timer clickTimer;
         private int Interval => Milliseconds + Seconds * 1000 + Minutes * 60 * 1000 + Hours * 60 * 60 * 1000;
         private int Times => SelectedMouseAction == MouseAction.Single ? 1 : 2;
+        private Point CurrentCursorPosition => MouseCursor.Position;
 
         #region Mouse Consts
 
@@ -168,11 +171,9 @@ namespace AutoClicker
 
         private void OnClickTimerElapsed(object sender, ElapsedEventArgs e)
         {
-            int xPosition = 300;
-            int yPosition = 300;
             Dispatcher.Invoke(() =>
             {
-                InitMouseClick(xPosition, yPosition);
+                InitMouseClick();
             });
         }
 
@@ -191,30 +192,29 @@ namespace AutoClicker
 
         #region Helper Methods
 
-        private void InitMouseClick(int xPosition, int yPosition)
+        private void InitMouseClick()
         {
             Dispatcher.Invoke(() =>
             {
                 switch (SelectedMouseButton)
                 {
                     case MouseButton.Left:
-                        PerformMouseClick(xPosition, yPosition, MOUSEEVENTF_LEFTDOWN, MOUSEEVENTF_LEFTUP);
+                        PerformMouseClick(MOUSEEVENTF_LEFTDOWN, MOUSEEVENTF_LEFTUP);
                         break;
                     case MouseButton.Right:
-                        PerformMouseClick(xPosition, yPosition, MOUSEEVENTF_RIGHTDOWN, MOUSEEVENTF_RIGHTUP);
+                        PerformMouseClick(MOUSEEVENTF_RIGHTDOWN, MOUSEEVENTF_RIGHTUP);
                         break;
                     case MouseButton.Middle:
-                        PerformMouseClick(xPosition, yPosition, MOUSEEVENTF_MIDDLEDOWN, MOUSEEVENTF_MIDDLEUP);
+                        PerformMouseClick(MOUSEEVENTF_MIDDLEDOWN, MOUSEEVENTF_MIDDLEUP);
                         break;
                 }
             });
         }
 
-        private void PerformMouseClick(int xpos, int ypos, int mouseDownAction, int mouseUpAction)
+        private void PerformMouseClick(int mouseDownAction, int mouseUpAction)
         {
-            SetCursorPos(xpos, ypos);
             for (int i = 0; i < Times; ++i)
-                mouse_event(mouseDownAction | mouseUpAction, xpos, ypos, 0, 0);
+                mouse_event(mouseDownAction | mouseUpAction, CurrentCursorPosition.X, CurrentCursorPosition.Y, 0, 0);
         }
 
         #endregion Helper Methods
