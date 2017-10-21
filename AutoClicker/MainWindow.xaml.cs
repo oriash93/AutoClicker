@@ -1,5 +1,4 @@
-﻿using System;
-using System.Timers;
+﻿using System.Timers;
 using System.Windows;
 
 namespace AutoClicker
@@ -144,6 +143,8 @@ namespace AutoClicker
         public const int MOUSEEVENTF_LEFTUP = 0x04;
         public const int MOUSEEVENTF_RIGHTDOWN = 0x08;
         public const int MOUSEEVENTF_RIGHTUP = 0x10;
+        public const int MOUSEEVENTF_MIDDLEUP = 0x0020;
+        public const int MOUSEEVENTF_MIDDLEDOWN = 0x0040;
 
         #endregion Mouse Consts
 
@@ -201,28 +202,40 @@ namespace AutoClicker
         {
             Dispatcher.Invoke(() =>
             {
-                if (selectedMouseButton == MouseButton.Left)
-                    LeftMouseClick(xPosition, yPosition);
-                else
-                    RightMouseClick(xPosition, yPosition);
+                switch (selectedMouseButton)
+                {
+                    case MouseButton.Left:
+                        LeftMouseClick(xPosition, yPosition);
+                        break;
+                    case MouseButton.Right:
+                        RightMouseClick(xPosition, yPosition);
+                        break;
+                    case MouseButton.Middle:
+                        MiddleMouseClick(xPosition, yPosition);
+                        break;
+                }
             });
         }
 
-        //This simulates a left mouse click
         private static void LeftMouseClick(int xpos, int ypos)
         {
-            Console.Write(xpos + " " + ypos);
             SetCursorPos(xpos, ypos);
             mouse_event(MOUSEEVENTF_LEFTDOWN, xpos, ypos, 0, 0);
             mouse_event(MOUSEEVENTF_LEFTUP, xpos, ypos, 0, 0);
         }
 
-        //This simulates a right mouse click
         private static void RightMouseClick(int xpos, int ypos)
         {
             SetCursorPos(xpos, ypos);
             mouse_event(MOUSEEVENTF_RIGHTDOWN, xpos, ypos, 0, 0);
             mouse_event(MOUSEEVENTF_RIGHTUP, xpos, ypos, 0, 0);
+        }
+
+        private static void MiddleMouseClick(int xpos, int ypos)
+        {
+            SetCursorPos(xpos, ypos);
+            mouse_event(MOUSEEVENTF_MIDDLEDOWN, xpos, ypos, 0, 0);
+            mouse_event(MOUSEEVENTF_MIDDLEUP, xpos, ypos, 0, 0);
         }
 
         #endregion Helper Methods
