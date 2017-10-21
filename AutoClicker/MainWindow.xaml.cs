@@ -125,26 +125,19 @@ namespace AutoClicker
 
         #endregion Dependency Properties
 
-        public int Interval
-        {
-            get
-            {
-                return Milliseconds + Seconds * 1000 + Minutes * 60 * 1000 + Hours * 60 * 60 * 1000;
-            }
-        }
-
         #region Fields
 
         private Timer clickTimer;
+        private int Interval => Milliseconds + Seconds * 1000 + Minutes * 60 * 1000 + Hours * 60 * 60 * 1000;
 
         #region Mouse Consts
 
-        public const int MOUSEEVENTF_LEFTDOWN = 0x02;
-        public const int MOUSEEVENTF_LEFTUP = 0x04;
-        public const int MOUSEEVENTF_RIGHTDOWN = 0x08;
-        public const int MOUSEEVENTF_RIGHTUP = 0x10;
-        public const int MOUSEEVENTF_MIDDLEUP = 0x0020;
-        public const int MOUSEEVENTF_MIDDLEDOWN = 0x0040;
+        private const int MOUSEEVENTF_LEFTDOWN = 0x02;
+        private const int MOUSEEVENTF_LEFTUP = 0x04;
+        private const int MOUSEEVENTF_RIGHTDOWN = 0x08;
+        private const int MOUSEEVENTF_RIGHTUP = 0x10;
+        private const int MOUSEEVENTF_MIDDLEDOWN = 0x0020;
+        private const int MOUSEEVENTF_MIDDLEUP = 0x0040;
 
         #endregion Mouse Consts
 
@@ -176,10 +169,9 @@ namespace AutoClicker
         {
             int xPosition = 300;
             int yPosition = 300;
-            int duration = 0;
             Dispatcher.Invoke(() =>
             {
-                PerformMouseClick(SelectedMouseButton, xPosition, yPosition, duration);
+                InitMouseClick(xPosition, yPosition);
             });
         }
 
@@ -198,44 +190,29 @@ namespace AutoClicker
 
         #region Helper Methods
 
-        private void PerformMouseClick(MouseButton selectedMouseButton, int xPosition, int yPosition, int duration)
+        private void InitMouseClick(int xPosition, int yPosition)
         {
             Dispatcher.Invoke(() =>
             {
-                switch (selectedMouseButton)
+                switch (SelectedMouseButton)
                 {
                     case MouseButton.Left:
-                        LeftMouseClick(xPosition, yPosition);
+                        PerformMouseClick(xPosition, yPosition, MOUSEEVENTF_LEFTDOWN, MOUSEEVENTF_LEFTUP);
                         break;
                     case MouseButton.Right:
-                        RightMouseClick(xPosition, yPosition);
+                        PerformMouseClick(xPosition, yPosition, MOUSEEVENTF_RIGHTDOWN, MOUSEEVENTF_RIGHTUP);
                         break;
                     case MouseButton.Middle:
-                        MiddleMouseClick(xPosition, yPosition);
+                        PerformMouseClick(xPosition, yPosition, MOUSEEVENTF_MIDDLEDOWN, MOUSEEVENTF_MIDDLEUP);
                         break;
                 }
             });
         }
 
-        private static void LeftMouseClick(int xpos, int ypos)
+        private void PerformMouseClick(int xpos, int ypos, int mouseDownAction, int mouseUpAction)
         {
             SetCursorPos(xpos, ypos);
-            mouse_event(MOUSEEVENTF_LEFTDOWN, xpos, ypos, 0, 0);
-            mouse_event(MOUSEEVENTF_LEFTUP, xpos, ypos, 0, 0);
-        }
-
-        private static void RightMouseClick(int xpos, int ypos)
-        {
-            SetCursorPos(xpos, ypos);
-            mouse_event(MOUSEEVENTF_RIGHTDOWN, xpos, ypos, 0, 0);
-            mouse_event(MOUSEEVENTF_RIGHTUP, xpos, ypos, 0, 0);
-        }
-
-        private static void MiddleMouseClick(int xpos, int ypos)
-        {
-            SetCursorPos(xpos, ypos);
-            mouse_event(MOUSEEVENTF_MIDDLEDOWN, xpos, ypos, 0, 0);
-            mouse_event(MOUSEEVENTF_MIDDLEUP, xpos, ypos, 0, 0);
+            mouse_event(mouseDownAction | mouseUpAction, xpos, ypos, 0, 0);
         }
 
         #endregion Helper Methods
