@@ -129,6 +129,7 @@ namespace AutoClicker
 
         private Timer clickTimer;
         private int Interval => Milliseconds + Seconds * 1000 + Minutes * 60 * 1000 + Hours * 60 * 60 * 1000;
+        private int Times => SelectedMouseAction == MouseAction.Single ? 1 : 2;
 
         #region Mouse Consts
 
@@ -212,7 +213,8 @@ namespace AutoClicker
         private void PerformMouseClick(int xpos, int ypos, int mouseDownAction, int mouseUpAction)
         {
             SetCursorPos(xpos, ypos);
-            mouse_event(mouseDownAction | mouseUpAction, xpos, ypos, 0, 0);
+            for (int i = 0; i < Times; ++i)
+                mouse_event(mouseDownAction | mouseUpAction, xpos, ypos, 0, 0);
         }
 
         #endregion Helper Methods
