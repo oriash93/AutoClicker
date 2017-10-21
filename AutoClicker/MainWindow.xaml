@@ -123,7 +123,9 @@
             </Grid>
         </GroupBox>
 
-        <Button Grid.Row="3" Grid.ColumnSpan="2" Margin="0, 5, 0, 5"
+        <Button Grid.Row="3" Grid.Column="0"  Margin="0, 5, 0, 5"
                 Content="Start" Click="OnStartButtonClicked"/>
+        <Button Grid.Row="3" Grid.Column="1" Margin="5, 5, 0, 5"
+                Content="Stop" Click="OnStopButtonClicked"/>
     </Grid>
 </Window>

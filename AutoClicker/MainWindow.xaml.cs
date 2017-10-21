@@ -188,6 +188,11 @@ namespace AutoClicker
             clickTimer.Start();
         }
 
+        private void OnStopButtonClicked(object sender, RoutedEventArgs e)
+        {
+            clickTimer.Stop();
+        }
+
         #endregion Events
 
         #region Helper Methods
