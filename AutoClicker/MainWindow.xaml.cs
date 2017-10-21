@@ -125,6 +125,34 @@ namespace AutoClicker
 
         #endregion SelectedLocationMode
 
+        #region PickedXValue
+
+        public int PickedXValue
+        {
+            get { return (int)GetValue(PickedXValueProperty); }
+            set { SetValue(PickedXValueProperty, value); }
+        }
+
+        public static readonly DependencyProperty PickedXValueProperty =
+            DependencyProperty.Register("PickedXValue", typeof(int), typeof(MainWindow),
+                new PropertyMetadata(0));
+
+        #endregion PickedXValue
+
+        #region PickedYValue
+
+        public int PickedYValue
+        {
+            get { return (int)GetValue(PickedYValueProperty); }
+            set { SetValue(PickedYValueProperty, value); }
+        }
+
+        public static readonly DependencyProperty PickedYValueProperty =
+            DependencyProperty.Register("PickedYValue", typeof(int), typeof(MainWindow),
+                new PropertyMetadata(0));
+
+        #endregion PickedYValue
+
         #endregion Dependency Properties
 
         #region Fields
@@ -133,6 +161,9 @@ namespace AutoClicker
         private int Interval => Milliseconds + Seconds * 1000 + Minutes * 60 * 1000 + Hours * 60 * 60 * 1000;
         private int Times => SelectedMouseAction == MouseAction.Single ? 1 : 2;
         private Point CurrentCursorPosition => MouseCursor.Position;
+        private Point SelectedPosition => SelectedLocationMode == LocationMode.CurrentLocation ?
+                            CurrentCursorPosition :
+                            new Point(PickedXValue, PickedYValue);
 
         #region Mouse Consts
 
@@ -199,22 +230,25 @@ namespace AutoClicker
                 switch (SelectedMouseButton)
                 {
                     case MouseButton.Left:
-                        PerformMouseClick(MOUSEEVENTF_LEFTDOWN, MOUSEEVENTF_LEFTUP);
+                        PerformMouseClick(MOUSEEVENTF_LEFTDOWN, MOUSEEVENTF_LEFTUP, SelectedPosition.X, SelectedPosition.Y);
                         break;
                     case MouseButton.Right:
-                        PerformMouseClick(MOUSEEVENTF_RIGHTDOWN, MOUSEEVENTF_RIGHTUP);
+                        PerformMouseClick(MOUSEEVENTF_RIGHTDOWN, MOUSEEVENTF_RIGHTUP, SelectedPosition.X, SelectedPosition.Y);
                         break;
                     case MouseButton.Middle:
-                        PerformMouseClick(MOUSEEVENTF_MIDDLEDOWN, MOUSEEVENTF_MIDDLEUP);
+                        PerformMouseClick(MOUSEEVENTF_MIDDLEDOWN, MOUSEEVENTF_MIDDLEUP, SelectedPosition.X, SelectedPosition.Y);
                         break;
                 }
             });
         }
 
-        private void PerformMouseClick(int mouseDownAction, int mouseUpAction)
+        private void PerformMouseClick(int mouseDownAction, int mouseUpAction, int xPos, int yPos)
         {
             for (int i = 0; i < Times; ++i)
-                mouse_event(mouseDownAction | mouseUpAction, CurrentCursorPosition.X, CurrentCursorPosition.Y, 0, 0);
+            {
+                SetCursorPos(xPos, yPos);
+                mouse_event(mouseDownAction | mouseUpAction, xPos, yPos, 0, 0);
+            }
         }
 
         #endregion Helper Methods
