@@ -7,7 +7,7 @@
         xmlns:system="clr-namespace:System;assembly=mscorlib"
         mc:Ignorable="d" Title="MainWindow"
         ResizeMode="CanMinimize"
-        Height="375" Width="460" Background="WhiteSmoke">
+        Height="250" Width="460" Background="WhiteSmoke">
 
     <Window.Resources>
         <ObjectDataProvider x:Key="mouseButtonValues"
@@ -48,17 +48,16 @@
 
     <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="2*"/>
+            <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="Auto"/>
-            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
-        <GroupBox Header="Click Interval" Grid.Row="0" Grid.ColumnSpan="2" Width="425" Height="50">
+        <GroupBox Header="Click Interval" Grid.Row="0" Grid.ColumnSpan="2">
             <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
@@ -89,7 +88,7 @@
             </Grid>
         </GroupBox>
 
-        <GroupBox Header="Click Options" Grid.Row="1" Grid.Column="0" Width="210" Height="80">
+        <GroupBox Header="Click Options" Grid.Row="1" Grid.Column="0">
             <UniformGrid HorizontalAlignment="Center" VerticalAlignment="Center"
                          Rows="2" Columns="2">
                 <TextBlock Grid.Row="0" Grid.Column="0" Text="Mouse Button" Margin="0, 5, 5, 5"/>
@@ -103,8 +102,7 @@
             </UniformGrid>
         </GroupBox>
 
-        <GroupBox Header="Click Position" Grid.Row="1" Grid.Column="1"
-                  Width="210" Height="80" Margin="5, 0, 0, 0">
+        <GroupBox Header="Click Position" Grid.Row="1" Grid.Column="1">
             <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
@@ -135,9 +133,9 @@
             </Grid>
         </GroupBox>
 
-        <Button Grid.Row="3" Grid.Column="0"  Margin="0, 5, 0, 5"
+        <Button Grid.Row="2" Grid.Column="0"  Margin="5"
                 Content="Start (F6)" Command="local:CustomCommands.Start"/>
-        <Button Grid.Row="3" Grid.Column="1" Margin="5, 5, 0, 5"
+        <Button Grid.Row="2" Grid.Column="1" Margin="5"
                 Content="Stop (F7)" Command="local:CustomCommands.Stop"/>
     </Grid>
 </Window>
