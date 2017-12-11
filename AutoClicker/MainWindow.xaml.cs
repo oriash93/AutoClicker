@@ -219,6 +219,29 @@ namespace AutoClicker
 
         #endregion Stop Command
 
+        #region Exit Command
+
+        private void ExitCommand_Execute(object sender, ExecutedRoutedEventArgs e)
+        {
+            Application.Current.Shutdown();
+        }
+
+        #endregion Exit Command
+
+        #region About Command
+
+        private void AboutCommand_Execute(object sender, ExecutedRoutedEventArgs e)
+        {
+            MessageBox.Show(
+                "Created by Ori Ashual\n" +
+                "github.com/oriash93",
+                "About",
+                MessageBoxButton.OK,
+                MessageBoxImage.Information);
+        }
+
+        #endregion About Command
+
         #endregion Commands
 
         #region External Methods

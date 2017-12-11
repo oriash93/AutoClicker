@@ -7,7 +7,7 @@
         xmlns:system="clr-namespace:System;assembly=mscorlib"
         mc:Ignorable="d" Title="MainWindow"
         ResizeMode="CanMinimize"
-        Height="250" Width="460" Background="WhiteSmoke">
+        Height="250" Width="450">
 
     <Window.Resources>
         <ObjectDataProvider x:Key="mouseButtonValues"
@@ -39,103 +39,127 @@
             </ObjectDataProvider.MethodParameters>
         </ObjectDataProvider>
         <local:EnumToBooleanConverter x:Key="EnumToBooleanConverter" />
+        <BitmapImage x:Key="MyImageSource" UriSource="Resources/question.png" />
     </Window.Resources>
 
     <Window.CommandBindings>
         <CommandBinding Command="local:CustomCommands.Start" Executed="StartCommand_Execute" CanExecute="StartCommand_CanExecute"/>
         <CommandBinding Command="local:CustomCommands.Stop" Executed="StopCommand_Execute" CanExecute="StopCommand_CanExecute"/>
+        <CommandBinding Command="local:CustomCommands.Exit" Executed="ExitCommand_Execute"/>
+        <CommandBinding Command="local:CustomCommands.About" Executed="AboutCommand_Execute"/>
     </Window.CommandBindings>
 
-    <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
+    <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="2*"/>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="*"/>
-        </Grid.ColumnDefinitions>
 
-        <GroupBox Header="Click Interval" Grid.Row="0" Grid.ColumnSpan="2">
-            <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"/>
-                </Grid.RowDefinitions>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="Auto"/>
-                </Grid.ColumnDefinitions>
+        <DockPanel Grid.Row="0">
+            <Menu DockPanel.Dock="Top">
+                <MenuItem Header="_File">
+                    <MenuItem Header="_Help">
+                        <MenuItem.Icon>
+                            <Image Source="{StaticResource MyImageSource}" />
+                        </MenuItem.Icon>
+                        <MenuItem Header="_About" Command="local:CustomCommands.About"/>
+                    </MenuItem>
+                    <MenuItem Header="_Exit" Command="local:CustomCommands.Exit"/>
+                </MenuItem>
+            </Menu>
+        </DockPanel>
 
-                <TextBox Grid.Column="0" Width="45"
+        <Grid Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="2*"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <GroupBox Header="Click Interval" Grid.Row="0" Grid.ColumnSpan="2">
+                <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+
+                    <TextBox Grid.Column="0" Width="45"
                          Text="{Binding Hours, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
-                <TextBlock Grid.Column="1" Margin="5, 0, 5, 5" Text="hours"/>
-                <TextBox Grid.Column="2" Width="45"
+                    <TextBlock Grid.Column="1" Margin="5, 0, 5, 5" Text="hours"/>
+                    <TextBox Grid.Column="2" Width="45"
                          Text="{Binding Minutes, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
-                <TextBlock Grid.Column="3" Margin="5, 0, 5, 5" Text="minutes"/>
-                <TextBox Grid.Column="4" Width="45"
+                    <TextBlock Grid.Column="3" Margin="5, 0, 5, 5" Text="minutes"/>
+                    <TextBox Grid.Column="4" Width="45"
                          Text="{Binding Seconds, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
-                <TextBlock Grid.Column="5" Margin="5, 0, 5, 5" Text="seconds"/>
-                <TextBox Grid.Column="6" Width="45"
+                    <TextBlock Grid.Column="5" Margin="5, 0, 5, 5" Text="seconds"/>
+                    <TextBox Grid.Column="6" Width="45"
                          Text="{Binding Milliseconds, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
-                <TextBlock Grid.Column="7" Margin="5, 0, 5, 5" Text="milliseconds"/>
-            </Grid>
-        </GroupBox>
+                    <TextBlock Grid.Column="7" Margin="5, 0, 5, 5" Text="milliseconds"/>
+                </Grid>
+            </GroupBox>
 
-        <GroupBox Header="Click Options" Grid.Row="1" Grid.Column="0">
-            <UniformGrid HorizontalAlignment="Center" VerticalAlignment="Center"
+            <GroupBox Header="Click Options" Grid.Row="1" Grid.Column="0">
+                <UniformGrid HorizontalAlignment="Center" VerticalAlignment="Center"
                          Rows="2" Columns="2">
-                <TextBlock Grid.Row="0" Grid.Column="0" Text="Mouse Button" Margin="0, 5, 5, 5"/>
-                <ComboBox Grid.Row="0" Grid.Column="1" Margin="5, 0, 0, 5"
+                    <TextBlock Grid.Row="0" Grid.Column="0" Text="Mouse Button" Margin="0, 5, 5, 5"/>
+                    <ComboBox Grid.Row="0" Grid.Column="1" Margin="5, 0, 0, 5"
                           ItemsSource="{Binding Source={StaticResource mouseButtonValues}}"
                           SelectedIndex="0" SelectedItem="{Binding SelectedMouseButton}"/>
-                <TextBlock Grid.Row="1" Grid.Column="0" Text="Click Type" Margin="0, 5, 5, 5"/>
-                <ComboBox Grid.Row="1" Grid.Column="1" Margin="5, 0, 0, 5"
+                    <TextBlock Grid.Row="1" Grid.Column="0" Text="Click Type" Margin="0, 5, 5, 5"/>
+                    <ComboBox Grid.Row="1" Grid.Column="1" Margin="5, 0, 0, 5"
                           ItemsSource="{Binding Source={StaticResource mouseActionValues}}"
                           SelectedIndex="0" SelectedItem="{Binding SelectedMouseAction}"/>
-            </UniformGrid>
-        </GroupBox>
+                </UniformGrid>
+            </GroupBox>
 
-        <GroupBox Header="Click Position" Grid.Row="1" Grid.Column="1">
-            <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                </Grid.RowDefinitions>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="Auto"/>
-                </Grid.ColumnDefinitions>
+            <GroupBox Header="Click Position" Grid.Row="1" Grid.Column="1">
+                <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
 
-                <RadioButton Grid.Row="0" Grid.Column="0" Margin="0, 0, 0, 5"
+                    <RadioButton Grid.Row="0" Grid.Column="0" Margin="0, 0, 0, 5"
                              Content="Current Cursor Position"
                              IsChecked="{Binding Path=SelectedLocationMode, Converter={StaticResource EnumToBooleanConverter},
                                         ConverterParameter={x:Static local:LocationMode.CurrentLocation}}"/>
-                <RadioButton Grid.Row="1" Grid.ColumnSpan="2" Margin="0, 0, 0, 5"
+                    <RadioButton Grid.Row="1" Grid.ColumnSpan="2" Margin="0, 0, 0, 5"
                              IsChecked="{Binding Path=SelectedLocationMode, Converter={StaticResource EnumToBooleanConverter},
                                         ConverterParameter={x:Static local:LocationMode.PickedLocation}}">
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="X" Margin="5, 0, 0, 0"/>
-                        <TextBox Width="50" Margin="5, 0, 0, 0"
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="X" Margin="5, 0, 0, 0"/>
+                            <TextBox Width="50" Margin="5, 0, 0, 0"
                                  Text="{Binding PickedXValue, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
-                        <!--<Button Content="Pick Location" Margin="5, 0, 0, 0"/>-->
-                        <TextBlock Text="Y" Margin="5, 0, 0, 0"/>
-                        <TextBox Width="50" Margin="5, 0, 0, 0"
+                            <!--<Button Content="Pick Location" Margin="5, 0, 0, 0"/>-->
+                            <TextBlock Text="Y" Margin="5, 0, 0, 0"/>
+                            <TextBox Width="50" Margin="5, 0, 0, 0"
                                  Text="{Binding PickedYValue, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
-                    </StackPanel>
-                </RadioButton>
-            </Grid>
-        </GroupBox>
+                        </StackPanel>
+                    </RadioButton>
+                </Grid>
+            </GroupBox>
 
-        <Button Grid.Row="2" Grid.Column="0"  Margin="5"
+            <Button Grid.Row="2" Grid.Column="0"  Margin="5"
                 Content="Start (F6)" Command="local:CustomCommands.Start"/>
-        <Button Grid.Row="2" Grid.Column="1" Margin="5"
+            <Button Grid.Row="2" Grid.Column="1" Margin="5"
                 Content="Stop (F7)" Command="local:CustomCommands.Stop"/>
+        </Grid>
     </Grid>
 </Window>
