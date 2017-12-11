@@ -31,7 +31,7 @@
                 <x:Type TypeName="local:RepeatMode"/>
             </ObjectDataProvider.MethodParameters>
         </ObjectDataProvider>
-        <ObjectDataProvider x:Key="LocationModeValues"
+        <ObjectDataProvider x:Key="locationModeValues"
                             MethodName="GetValues"
                             ObjectType="{x:Type system:Enum}">
             <ObjectDataProvider.MethodParameters>
@@ -40,6 +40,11 @@
         </ObjectDataProvider>
         <local:EnumToBooleanConverter x:Key="EnumToBooleanConverter" />
     </Window.Resources>
+
+    <Window.CommandBindings>
+        <CommandBinding Command="local:CustomCommands.Start" Executed="StartCommand_Execute" CanExecute="StartCommand_CanExecute"/>
+        <CommandBinding Command="local:CustomCommands.Stop" Executed="StopCommand_Execute" CanExecute="StopCommand_CanExecute"/>
+    </Window.CommandBindings>
 
     <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
         <Grid.RowDefinitions>
@@ -131,8 +136,8 @@
         </GroupBox>
 
         <Button Grid.Row="3" Grid.Column="0"  Margin="0, 5, 0, 5"
-                Content="Start" Click="OnStartButtonClicked"/>
+                Content="Start (F6)" Command="local:CustomCommands.Start"/>
         <Button Grid.Row="3" Grid.Column="1" Margin="5, 5, 0, 5"
-                Content="Stop" Click="OnStopButtonClicked"/>
+                Content="Stop (F7)" Command="local:CustomCommands.Stop"/>
     </Grid>
 </Window>

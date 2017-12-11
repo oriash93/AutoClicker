@@ -1,5 +1,6 @@
 ﻿using System.Timers;
 using System.Windows;
+using System.Windows.Input;
 using MouseCursor = System.Windows.Forms.Cursor;
 using Point = System.Drawing.Point;
 
@@ -187,6 +188,39 @@ namespace AutoClicker
             InitializeComponent();
         }
 
+        #region Commands
+
+        #region Start Command
+
+        private void StartCommand_Execute(object sender, ExecutedRoutedEventArgs e)
+        {
+            clickTimer.Interval = Interval;
+            clickTimer.Start();
+        }
+
+        private void StartCommand_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = !clickTimer.Enabled;
+        }
+
+        #endregion Start Command
+
+        #region Stop Command
+
+        private void StopCommand_Execute(object sender, ExecutedRoutedEventArgs e)
+        {
+            clickTimer.Stop();
+        }
+
+        private void StopCommand_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = clickTimer.Enabled;
+        }
+
+        #endregion Stop Command
+
+        #endregion Commands
+
         #region External Methods
 
         //This is a replacement for Cursor.Position in WinForms
@@ -198,7 +232,7 @@ namespace AutoClicker
 
         #endregion External Methods
 
-        #region Events
+        #region Helper Methods
 
         private void OnClickTimerElapsed(object sender, ElapsedEventArgs e)
         {
@@ -207,21 +241,6 @@ namespace AutoClicker
                 InitMouseClick();
             });
         }
-
-        private void OnStartButtonClicked(object sender, RoutedEventArgs e)
-        {
-            clickTimer.Interval = Interval;
-            clickTimer.Start();
-        }
-
-        private void OnStopButtonClicked(object sender, RoutedEventArgs e)
-        {
-            clickTimer.Stop();
-        }
-
-        #endregion Events
-
-        #region Helper Methods
 
         private void InitMouseClick()
         {
