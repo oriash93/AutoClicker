@@ -15,7 +15,7 @@ Tired of clicking relentlessly? Need to perform a task that involves consuming m
 * Click at the current cursor position, or choose a custom position.
 
 ## Download ##
-You can download the files and run the solution in Visual Studiom or download the latest version from the [releases](https://github.com/oriash93/AutoClicker/releases) page.
+You can download the files and run the solution in Visual Studio, or download the latest version from the [releases](https://github.com/oriash93/AutoClicker/releases) page.
 
 <!---
 Add how to download and use?
