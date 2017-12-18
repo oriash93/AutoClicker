@@ -1,4 +1,5 @@
-﻿using System.Timers;
+﻿using System.Runtime.InteropServices;
+using System.Timers;
 using System.Windows;
 using System.Windows.Input;
 using MouseCursor = System.Windows.Forms.Cursor;
@@ -265,12 +266,11 @@ namespace AutoClicker
 
         #region External Methods
 
-        //This is a replacement for Cursor.Position in WinForms
-        [System.Runtime.InteropServices.DllImport("user32.dll")]
-        static extern bool SetCursorPos(int x, int y);
+        [DllImport("user32.dll", EntryPoint = "SetCursorPos")]
+        static extern bool SetCursorPosition(int x, int y);
 
-        [System.Runtime.InteropServices.DllImport("user32.dll")]
-        public static extern void mouse_event(int dwFlags, int dx, int dy, int cButtons, int dwExtraInfo);
+        [DllImport("user32.dll", EntryPoint = "mouse_event")]
+        static extern void ExecuteMouseEvent(int dwFlags, int dx, int dy, int cButtons, int dwExtraInfo);
 
         #endregion External Methods
 
@@ -313,8 +313,8 @@ namespace AutoClicker
         {
             for (int i = 0; i < MouseActions; ++i)
             {
-                SetCursorPos(xPos, yPos);
-                mouse_event(mouseDownAction | mouseUpAction, xPos, yPos, 0, 0);
+                SetCursorPosition(xPos, yPos);
+                ExecuteMouseEvent(mouseDownAction | mouseUpAction, xPos, yPos, 0, 0);
             }
         }
 
