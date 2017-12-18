@@ -154,13 +154,29 @@ namespace AutoClicker
 
         #endregion PickedYValue
 
+        #region SelectedTimesToRepeat
+
+        public int SelectedTimesToRepeat
+        {
+            get { return (int)GetValue(SelectedTimesToRepeatProperty); }
+            set { SetValue(SelectedTimesToRepeatProperty, value); }
+        }
+
+        public static readonly DependencyProperty SelectedTimesToRepeatProperty =
+            DependencyProperty.Register("SelectedTimesToRepeat", typeof(int), typeof(MainWindow),
+                new PropertyMetadata(0));
+
+        #endregion SelectedTimesToRepeat
+
         #endregion Dependency Properties
 
         #region Fields
 
         private Timer clickTimer;
         private int Interval => Milliseconds + Seconds * 1000 + Minutes * 60 * 1000 + Hours * 60 * 60 * 1000;
-        private int Times => SelectedMouseAction == MouseAction.Single ? 1 : 2;
+        private int MouseActions => SelectedMouseAction == MouseAction.Single ? 1 : 2;
+        private int TimesToRepeat => SelectedRepeatMode == RepeatMode.Count ? SelectedTimesToRepeat : -1;
+        private int timesRepeated = 0;
         private Point CurrentCursorPosition => MouseCursor.Position;
         private Point SelectedPosition => SelectedLocationMode == LocationMode.CurrentLocation ?
                             CurrentCursorPosition :
@@ -194,13 +210,16 @@ namespace AutoClicker
 
         private void StartCommand_Execute(object sender, ExecutedRoutedEventArgs e)
         {
+            timesRepeated = 0;
             clickTimer.Interval = Interval;
             clickTimer.Start();
         }
 
         private void StartCommand_CanExecute(object sender, CanExecuteRoutedEventArgs e)
         {
-            e.CanExecute = !clickTimer.Enabled;
+            e.CanExecute = !clickTimer.Enabled &&
+                (SelectedRepeatMode == RepeatMode.Infinite ||
+                (SelectedRepeatMode == RepeatMode.Count && SelectedTimesToRepeat > 0));
         }
 
         #endregion Start Command
@@ -261,7 +280,13 @@ namespace AutoClicker
         {
             Dispatcher.Invoke(() =>
             {
+                timesRepeated++;
                 InitMouseClick();
+
+                if (timesRepeated == TimesToRepeat)
+                {
+                    clickTimer.Stop();
+                }
             });
         }
 
@@ -286,7 +311,7 @@ namespace AutoClicker
 
         private void PerformMouseClick(int mouseDownAction, int mouseUpAction, int xPos, int yPos)
         {
-            for (int i = 0; i < Times; ++i)
+            for (int i = 0; i < MouseActions; ++i)
             {
                 SetCursorPos(xPos, yPos);
                 mouse_event(mouseDownAction | mouseUpAction, xPos, yPos, 0, 0);

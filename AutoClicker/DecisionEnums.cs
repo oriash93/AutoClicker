@@ -15,8 +15,8 @@
 
     public enum RepeatMode
     {
-        Single = 0,
-        Multiple = 1
+        Infinite = 0,
+        Count = 1
     }
 
     public enum LocationMode

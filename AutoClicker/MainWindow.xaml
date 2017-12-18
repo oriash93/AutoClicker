@@ -7,7 +7,7 @@
         xmlns:system="clr-namespace:System;assembly=mscorlib"
         mc:Ignorable="d" Title="MainWindow"
         ResizeMode="CanMinimize"
-        Height="250" Width="450">
+        Height="325" Width="450">
 
     <Window.Resources>
         <ObjectDataProvider x:Key="mouseButtonValues"
@@ -73,6 +73,7 @@
             <Grid.RowDefinitions>
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="2*"/>
+                <RowDefinition Height="2*"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
@@ -111,18 +112,31 @@
                 </Grid>
             </GroupBox>
 
-            <GroupBox Header="Click Options" Grid.Row="1" Grid.Column="0">
-                <UniformGrid HorizontalAlignment="Center" VerticalAlignment="Center"
-                         Rows="2" Columns="2">
-                    <TextBlock Grid.Row="0" Grid.Column="0" Text="Mouse Button" Margin="0, 5, 5, 5"/>
-                    <ComboBox Grid.Row="0" Grid.Column="1" Margin="5, 0, 0, 5"
-                          ItemsSource="{Binding Source={StaticResource mouseButtonValues}}"
-                          SelectedIndex="0" SelectedItem="{Binding SelectedMouseButton}"/>
-                    <TextBlock Grid.Row="1" Grid.Column="0" Text="Click Type" Margin="0, 5, 5, 5"/>
-                    <ComboBox Grid.Row="1" Grid.Column="1" Margin="5, 0, 0, 5"
-                          ItemsSource="{Binding Source={StaticResource mouseActionValues}}"
-                          SelectedIndex="0" SelectedItem="{Binding SelectedMouseAction}"/>
-                </UniformGrid>
+            <GroupBox Header="Click Repeat" Grid.Row="1" Grid.Column="0">
+                <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+
+                    <RadioButton Grid.Row="0" Grid.Column="0" Margin="0, 0, 0, 5"
+                             Content="Infinite (Until stopped)"
+                             IsChecked="{Binding Path=SelectedRepeatMode, Converter={StaticResource EnumToBooleanConverter},
+                                        ConverterParameter={x:Static local:RepeatMode.Infinite}}"/>
+                    <RadioButton Grid.Row="1" Grid.ColumnSpan="2" Margin="0, 0, 0, 5"
+                             IsChecked="{Binding Path=SelectedRepeatMode, Converter={StaticResource EnumToBooleanConverter},
+                                        ConverterParameter={x:Static local:RepeatMode.Count}}">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBox Width="50" Margin="5, 0, 0, 0"
+                                 Text="{Binding SelectedTimesToRepeat, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+                            <TextBlock Text="Times" Margin="5, 0, 0, 0"/>
+                        </StackPanel>
+                    </RadioButton>
+                </Grid>
             </GroupBox>
 
             <GroupBox Header="Click Position" Grid.Row="1" Grid.Column="1">
@@ -156,9 +170,23 @@
                 </Grid>
             </GroupBox>
 
-            <Button Grid.Row="2" Grid.Column="0"  Margin="5"
+            <GroupBox Header="Click Options" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3">
+                <UniformGrid HorizontalAlignment="Center" VerticalAlignment="Center"
+                         Rows="2" Columns="2">
+                    <TextBlock Grid.Row="0" Grid.Column="0" Text="Mouse Button" Margin="0, 5, 5, 5"/>
+                    <ComboBox Grid.Row="0" Grid.Column="1" Margin="5, 0, 0, 5"
+                          ItemsSource="{Binding Source={StaticResource mouseButtonValues}}"
+                          SelectedIndex="0" SelectedItem="{Binding SelectedMouseButton}"/>
+                    <TextBlock Grid.Row="1" Grid.Column="0" Text="Click Type" Margin="0, 5, 5, 5"/>
+                    <ComboBox Grid.Row="1" Grid.Column="1" Margin="5, 0, 0, 5"
+                          ItemsSource="{Binding Source={StaticResource mouseActionValues}}"
+                          SelectedIndex="0" SelectedItem="{Binding SelectedMouseAction}"/>
+                </UniformGrid>
+            </GroupBox>
+
+            <Button Grid.Row="3" Grid.Column="0"  Margin="5"
                 Content="Start (F6)" Command="local:CustomCommands.Start"/>
-            <Button Grid.Row="2" Grid.Column="1" Margin="5"
+            <Button Grid.Row="3" Grid.Column="1" Margin="5"
                 Content="Stop (F7)" Command="local:CustomCommands.Stop"/>
         </Grid>
     </Grid>
