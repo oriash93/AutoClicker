@@ -1,7 +1,9 @@
-﻿using System.Runtime.InteropServices;
+﻿using System;
+using System.Runtime.InteropServices;
 using System.Timers;
 using System.Windows;
 using System.Windows.Input;
+using System.Windows.Interop;
 using MouseCursor = System.Windows.Forms.Cursor;
 using Point = System.Drawing.Point;
 
@@ -194,7 +196,23 @@ namespace AutoClicker
 
         #endregion Mouse Consts
 
+        #region Keyboard Consts
+
+        private const int HOTKEY_ID = 9000;
+        private const int WM_HOTKEY = 0x0312;
+
+        private const uint MOD_NONE = 0x0000;
+        private const uint F6 = 0x75;
+        private const uint F7 = 0x76;
+
+        #endregion Keyboard Consts
+
+        private IntPtr _windowHandle;
+        private HwndSource _source;
+
         #endregion Fields
+
+        #region Lifetime
 
         public MainWindow()
         {
@@ -204,6 +222,27 @@ namespace AutoClicker
             DataContext = this;
             InitializeComponent();
         }
+
+        protected override void OnSourceInitialized(EventArgs e)
+        {
+            base.OnSourceInitialized(e);
+
+            _windowHandle = new WindowInteropHelper(this).Handle;
+            _source = HwndSource.FromHwnd(_windowHandle);
+            _source.AddHook(StartStopHooks);
+
+            RegisterHotKey(_windowHandle, HOTKEY_ID, MOD_NONE, F6);
+            RegisterHotKey(_windowHandle, HOTKEY_ID, MOD_NONE, F7);
+        }
+
+        protected override void OnClosed(EventArgs e)
+        {
+            _source.RemoveHook(StartStopHooks);
+            UnregisterHotKey(_windowHandle, HOTKEY_ID);
+            base.OnClosed(e);
+        }
+
+        #endregion Lifetime
 
         #region Commands
 
@@ -218,9 +257,13 @@ namespace AutoClicker
 
         private void StartCommand_CanExecute(object sender, CanExecuteRoutedEventArgs e)
         {
-            e.CanExecute = !clickTimer.Enabled &&
-                (SelectedRepeatMode == RepeatMode.Infinite ||
-                (SelectedRepeatMode == RepeatMode.Count && SelectedTimesToRepeat > 0));
+            e.CanExecute = !clickTimer.Enabled && IsRepeatModeValid();
+        }
+
+        private bool IsRepeatModeValid()
+        {
+            return SelectedRepeatMode == RepeatMode.Infinite ||
+                   (SelectedRepeatMode == RepeatMode.Count && SelectedTimesToRepeat > 0);
         }
 
         #endregion Start Command
@@ -272,6 +315,12 @@ namespace AutoClicker
         [DllImport("user32.dll", EntryPoint = "mouse_event")]
         static extern void ExecuteMouseEvent(int dwFlags, int dx, int dy, int cButtons, int dwExtraInfo);
 
+        [DllImport("user32.dll")]
+        private static extern bool RegisterHotKey(IntPtr hWnd, int id, uint fsModifiers, uint vk);
+
+        [DllImport("user32.dll")]
+        private static extern bool UnregisterHotKey(IntPtr hWnd, int id);
+
         #endregion External Methods
 
         #region Helper Methods
@@ -316,6 +365,24 @@ namespace AutoClicker
                 SetCursorPosition(xPos, yPos);
                 ExecuteMouseEvent(mouseDownAction | mouseUpAction, xPos, yPos, 0, 0);
             }
+        }
+
+        private IntPtr StartStopHooks(IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled)
+        {
+            if (msg == WM_HOTKEY && wParam.ToInt32() == HOTKEY_ID)
+            {
+                int vkey = ((int)lParam >> 16) & 0xFFFF;
+                if (vkey == F6 && !clickTimer.Enabled && IsRepeatModeValid())
+                {
+                    StartCommand_Execute(null, null);
+                }
+                if (vkey == F7 && clickTimer.Enabled)
+                {
+                    StopCommand_Execute(null, null);
+                }
+                handled = true;
+            }
+            return IntPtr.Zero;
         }
 
         #endregion Helper Methods
