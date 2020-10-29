@@ -175,6 +175,9 @@ namespace AutoClicker
 
         #region Fields
 
+        private const string defaultTitle = "AutoClicker";
+        private const string runningTitle = " - Running...";
+
         private readonly Timer clickTimer;
         private int timesRepeated = 0;
         private int TimesToRepeat => SelectedRepeatMode == RepeatMode.Count ? SelectedTimesToRepeat : -1;
@@ -220,6 +223,7 @@ namespace AutoClicker
             clickTimer.Elapsed += OnClickTimerElapsed;
 
             DataContext = this;
+            Title = defaultTitle;
             InitializeComponent();
         }
 
@@ -254,6 +258,7 @@ namespace AutoClicker
             timesRepeated = 0;
             clickTimer.Interval = Interval;
             clickTimer.Start();
+            Title += runningTitle;
         }
 
         private void StartCommand_CanExecute(object sender, CanExecuteRoutedEventArgs e)
@@ -268,7 +273,10 @@ namespace AutoClicker
         #region Stop Command
 
         private void StopCommand_Execute(object sender, ExecutedRoutedEventArgs e)
-            => clickTimer.Stop();
+        {
+            clickTimer.Stop();
+            Title = defaultTitle;
+        }
 
         private void StopCommand_CanExecute(object sender, CanExecuteRoutedEventArgs e)
             => e.CanExecute = clickTimer.Enabled;
@@ -326,6 +334,7 @@ namespace AutoClicker
                 if (timesRepeated == TimesToRepeat)
                 {
                     clickTimer.Stop();
+                    Title = defaultTitle;
                 }
             });
         }

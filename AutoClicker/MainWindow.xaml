@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:AutoClicker"
         xmlns:system="clr-namespace:System;assembly=mscorlib"
-        mc:Ignorable="d" Title="MainWindow"
+        mc:Ignorable="d"
         ResizeMode="CanMinimize"
         Height="325" Width="450">
 
