@@ -4,7 +4,7 @@
         xmlns:local="clr-namespace:AutoClicker"
         xmlns:system="clr-namespace:System;assembly=mscorlib"
         ResizeMode="CanMinimize"
-        Height="325" Width="450">
+        Height="320" Width="450">
 
     <Window.Resources>
         <ObjectDataProvider x:Key="mouseButtonValues"
