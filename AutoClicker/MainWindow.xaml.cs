@@ -177,6 +177,7 @@ namespace AutoClicker
 
         private const string defaultTitle = "AutoClicker";
         private const string runningTitle = " - Running...";
+        private const string aboutWindowContent = "AutoClicker v2.1 \n\nCreated by Ori Ashual \ngithub.com/oriash93"; // TODO: Current version
 
         private readonly Timer clickTimer;
         private int timesRepeated = 0;
@@ -295,12 +296,7 @@ namespace AutoClicker
         #region About Command
 
         private void AboutCommand_Execute(object sender, ExecutedRoutedEventArgs e)
-            => MessageBox.Show(
-                "Created by Ori Ashual\n" +
-                "github.com/oriash93",
-                "About",
-                MessageBoxButton.OK,
-                MessageBoxImage.Information);
+            => MessageBox.Show(aboutWindowContent, "About", MessageBoxButton.OK, MessageBoxImage.Information);
 
         #endregion About Command
 

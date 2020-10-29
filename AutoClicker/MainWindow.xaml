@@ -54,15 +54,14 @@
 
         <DockPanel Grid.Row="0">
             <Menu DockPanel.Dock="Top">
-                <MenuItem Header="_File">
-                    <MenuItem Header="_Help">
+                <MenuItem Header="_Help">
+                    <MenuItem Header="_About" Command="local:CustomCommands.About">
                         <MenuItem.Icon>
-                            <Image Source="{StaticResource MyImageSource}" />
+                            <Image Source="{StaticResource MyImageSource}"/>
                         </MenuItem.Icon>
-                        <MenuItem Header="_About" Command="local:CustomCommands.About"/>
                     </MenuItem>
-                    <MenuItem Header="_Exit" Command="local:CustomCommands.Exit"/>
                 </MenuItem>
+                <MenuItem Header="_Exit" Command="local:CustomCommands.Exit"/>
             </Menu>
         </DockPanel>
 
