@@ -324,8 +324,8 @@ namespace AutoClicker
         {
             Dispatcher.Invoke(() =>
             {
-                timesRepeated++;
                 InitMouseClick();
+                timesRepeated++;
 
                 if (timesRepeated == TimesToRepeat)
                 {
