@@ -175,8 +175,6 @@ namespace AutoClicker
 
         #region Fields
 
-        private const string defaultTitle = "AutoClicker";
-        private const string runningTitle = " - Running...";
         private const string aboutWindowContent = "AutoClicker v2.1 \n\nCreated by Ori Ashual \ngithub.com/oriash93"; // TODO: Current version
 
         private readonly Timer clickTimer;
@@ -188,28 +186,6 @@ namespace AutoClicker
         private Point SelectedPosition => SelectedLocationMode == LocationMode.CurrentLocation ?
                             CurrentCursorPosition :
                             new Point(PickedXValue, PickedYValue);
-
-        #region Mouse Consts
-
-        private const int MOUSEEVENTF_LEFTDOWN = 0x02;
-        private const int MOUSEEVENTF_LEFTUP = 0x04;
-        private const int MOUSEEVENTF_RIGHTDOWN = 0x08;
-        private const int MOUSEEVENTF_RIGHTUP = 0x10;
-        private const int MOUSEEVENTF_MIDDLEDOWN = 0x0020;
-        private const int MOUSEEVENTF_MIDDLEUP = 0x0040;
-
-        #endregion Mouse Consts
-
-        #region Keyboard Consts
-
-        private const int HOTKEY_ID = 9000;
-        private const int WM_HOTKEY = 0x0312;
-
-        private const uint MOD_NONE = 0x0000;
-        private const uint F6_KEY = 0x75;
-        private const uint F7_KEY = 0x76;
-
-        #endregion Keyboard Consts
 
         private IntPtr _windowHandle;
         private HwndSource _source;
@@ -224,7 +200,7 @@ namespace AutoClicker
             clickTimer.Elapsed += OnClickTimerElapsed;
 
             DataContext = this;
-            Title = defaultTitle;
+            Title = Constants.WINDOW_TITLE_DEFAULT;
             InitializeComponent();
         }
 
@@ -236,14 +212,14 @@ namespace AutoClicker
             _source = HwndSource.FromHwnd(_windowHandle);
             _source.AddHook(StartStopHooks);
 
-            RegisterHotKey(_windowHandle, HOTKEY_ID, MOD_NONE, F6_KEY);
-            RegisterHotKey(_windowHandle, HOTKEY_ID, MOD_NONE, F7_KEY);
+            RegisterHotKey(_windowHandle, Constants.HOTKEY_ID, Constants.MOD_NONE, Constants.F6_KEY);
+            RegisterHotKey(_windowHandle, Constants.HOTKEY_ID, Constants.MOD_NONE, Constants.F7_KEY);
         }
 
         protected override void OnClosed(EventArgs e)
         {
             _source.RemoveHook(StartStopHooks);
-            UnregisterHotKey(_windowHandle, HOTKEY_ID);
+            UnregisterHotKey(_windowHandle, Constants.HOTKEY_ID);
 
             base.OnClosed(e);
         }
@@ -259,7 +235,7 @@ namespace AutoClicker
             timesRepeated = 0;
             clickTimer.Interval = Interval;
             clickTimer.Start();
-            Title += runningTitle;
+            Title += Constants.WINDOW_TITLE_RUNNING;
         }
 
         private void StartCommand_CanExecute(object sender, CanExecuteRoutedEventArgs e)
@@ -276,7 +252,7 @@ namespace AutoClicker
         private void StopCommand_Execute(object sender, ExecutedRoutedEventArgs e)
         {
             clickTimer.Stop();
-            Title = defaultTitle;
+            Title = Constants.WINDOW_TITLE_DEFAULT;
         }
 
         private void StopCommand_CanExecute(object sender, CanExecuteRoutedEventArgs e)
@@ -330,7 +306,7 @@ namespace AutoClicker
                 if (timesRepeated == TimesToRepeat)
                 {
                     clickTimer.Stop();
-                    Title = defaultTitle;
+                    Title = Constants.WINDOW_TITLE_DEFAULT;
                 }
             });
         }
@@ -342,13 +318,13 @@ namespace AutoClicker
                 switch (SelectedMouseButton)
                 {
                     case MouseButton.Left:
-                        PerformMouseClick(MOUSEEVENTF_LEFTDOWN, MOUSEEVENTF_LEFTUP, SelectedPosition.X, SelectedPosition.Y);
+                        PerformMouseClick(Constants.MOUSEEVENTF_LEFTDOWN, Constants.MOUSEEVENTF_LEFTUP, SelectedPosition.X, SelectedPosition.Y);
                         break;
                     case MouseButton.Right:
-                        PerformMouseClick(MOUSEEVENTF_RIGHTDOWN, MOUSEEVENTF_RIGHTUP, SelectedPosition.X, SelectedPosition.Y);
+                        PerformMouseClick(Constants.MOUSEEVENTF_RIGHTDOWN, Constants.MOUSEEVENTF_RIGHTUP, SelectedPosition.X, SelectedPosition.Y);
                         break;
                     case MouseButton.Middle:
-                        PerformMouseClick(MOUSEEVENTF_MIDDLEDOWN, MOUSEEVENTF_MIDDLEUP, SelectedPosition.X, SelectedPosition.Y);
+                        PerformMouseClick(Constants.MOUSEEVENTF_MIDDLEDOWN, Constants.MOUSEEVENTF_MIDDLEUP, SelectedPosition.X, SelectedPosition.Y);
                         break;
                 }
             });
@@ -365,14 +341,14 @@ namespace AutoClicker
 
         private IntPtr StartStopHooks(IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled)
         {
-            if (msg == WM_HOTKEY && wParam.ToInt32() == HOTKEY_ID)
+            if (msg == Constants.WM_HOTKEY && wParam.ToInt32() == Constants.HOTKEY_ID)
             {
                 int vkey = ((int)lParam >> 16) & 0xFFFF;
-                if (vkey == F6_KEY && !clickTimer.Enabled && IsRepeatModeValid())
+                if (vkey == Constants.F6_KEY && !clickTimer.Enabled && IsRepeatModeValid())
                 {
                     StartCommand_Execute(null, null);
                 }
-                if (vkey == F7_KEY && clickTimer.Enabled)
+                if (vkey == Constants.F7_KEY && clickTimer.Enabled)
                 {
                     StopCommand_Execute(null, null);
                 }
