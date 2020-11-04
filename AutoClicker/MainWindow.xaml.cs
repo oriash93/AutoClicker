@@ -16,8 +16,6 @@ namespace AutoClicker
     {
         #region Dependency Properties
 
-        #region Hours
-
         public int Hours
         {
             get => (int)GetValue(HoursProperty);
@@ -27,10 +25,6 @@ namespace AutoClicker
         public static readonly DependencyProperty HoursProperty =
             DependencyProperty.Register(nameof(Hours), typeof(int), typeof(MainWindow),
                 new PropertyMetadata(0));
-
-        #endregion Hours
-
-        #region Minutes
 
         public int Minutes
         {
@@ -42,10 +36,6 @@ namespace AutoClicker
             DependencyProperty.Register(nameof(Minutes), typeof(int), typeof(MainWindow),
                 new PropertyMetadata(0));
 
-        #endregion Minutes
-
-        #region Seconds
-
         public int Seconds
         {
             get => (int)GetValue(SecondsProperty);
@@ -55,10 +45,6 @@ namespace AutoClicker
         public static readonly DependencyProperty SecondsProperty =
             DependencyProperty.Register(nameof(Seconds), typeof(int), typeof(MainWindow),
                 new PropertyMetadata(0));
-
-        #endregion Seconds
-
-        #region Milliseconds
 
         public int Milliseconds
         {
@@ -70,10 +56,6 @@ namespace AutoClicker
             DependencyProperty.Register(nameof(Milliseconds), typeof(int), typeof(MainWindow),
                 new PropertyMetadata(100));
 
-        #endregion Milliseconds
-
-        #region SelectedMouseButton
-
         public MouseButton SelectedMouseButton
         {
             get => (MouseButton)GetValue(SelectedMouseButtonProperty);
@@ -84,10 +66,6 @@ namespace AutoClicker
             DependencyProperty.Register(nameof(SelectedMouseButton), typeof(MouseButton), typeof(MainWindow),
                 new PropertyMetadata(default(MouseButton)));
 
-        #endregion SelectedMouseButton
-
-        #region SelectedMouseAction
-
         public MouseAction SelectedMouseAction
         {
             get => (MouseAction)GetValue(SelectedMouseActionProperty);
@@ -97,12 +75,6 @@ namespace AutoClicker
         public static readonly DependencyProperty SelectedMouseActionProperty =
             DependencyProperty.Register(nameof(SelectedMouseAction), typeof(MouseAction), typeof(MainWindow),
                 new PropertyMetadata(default(MouseAction)));
-
-
-        #endregion SelectedMouseAction
-
-        #region SelectedRepeatMode
-
         public RepeatMode SelectedRepeatMode
         {
             get => (RepeatMode)GetValue(SelectedRepeatModeProperty);
@@ -112,10 +84,6 @@ namespace AutoClicker
         public static readonly DependencyProperty SelectedRepeatModeProperty =
             DependencyProperty.Register(nameof(SelectedRepeatMode), typeof(RepeatMode), typeof(MainWindow),
                 new PropertyMetadata(default(RepeatMode)));
-
-        #endregion SelectedRepeatMode
-
-        #region SelectedLocationMode
 
         public LocationMode SelectedLocationMode
         {
@@ -127,10 +95,6 @@ namespace AutoClicker
             DependencyProperty.Register(nameof(SelectedLocationMode), typeof(LocationMode), typeof(MainWindow),
                 new PropertyMetadata(default(LocationMode)));
 
-        #endregion SelectedLocationMode
-
-        #region PickedXValue
-
         public int PickedXValue
         {
             get => (int)GetValue(PickedXValueProperty);
@@ -140,10 +104,6 @@ namespace AutoClicker
         public static readonly DependencyProperty PickedXValueProperty =
             DependencyProperty.Register(nameof(PickedXValue), typeof(int), typeof(MainWindow),
                 new PropertyMetadata(0));
-
-        #endregion PickedXValue
-
-        #region PickedYValue
 
         public int PickedYValue
         {
@@ -155,10 +115,6 @@ namespace AutoClicker
             DependencyProperty.Register(nameof(PickedYValue), typeof(int), typeof(MainWindow),
                 new PropertyMetadata(0));
 
-        #endregion PickedYValue
-
-        #region SelectedTimesToRepeat
-
         public int SelectedTimesToRepeat
         {
             get => (int)GetValue(SelectedTimesToRepeatProperty);
@@ -169,23 +125,26 @@ namespace AutoClicker
             DependencyProperty.Register(nameof(SelectedTimesToRepeat), typeof(int), typeof(MainWindow),
                 new PropertyMetadata(0));
 
-        #endregion SelectedTimesToRepeat
-
         #endregion Dependency Properties
+
+        #region Properties
+
+        private int TimesToRepeat => SelectedRepeatMode == RepeatMode.Count ? SelectedTimesToRepeat : -1;
+        private int Interval => Milliseconds + (Seconds * 1000) + (Minutes * 60 * 1000) + (Hours * 60 * 60 * 1000);
+        private int NumMouseActions => SelectedMouseAction == MouseAction.Single ? 1 : 2;
+
+        private Point SelectedPosition => SelectedLocationMode == LocationMode.CurrentLocation ?
+                            MouseCursor.Position :
+                            new Point(PickedXValue, PickedYValue);
+
+        #endregion Properties
 
         #region Fields
 
         private const string aboutWindowContent = "AutoClicker v2.1 \n\nCreated by Ori Ashual \ngithub.com/oriash93"; // TODO: Current version
 
-        private readonly Timer clickTimer;
         private int timesRepeated = 0;
-        private int TimesToRepeat => SelectedRepeatMode == RepeatMode.Count ? SelectedTimesToRepeat : -1;
-        private int Interval => Milliseconds + Seconds * 1000 + Minutes * 60 * 1000 + Hours * 60 * 60 * 1000;
-        private int NumMouseActions => SelectedMouseAction == MouseAction.Single ? 1 : 2;
-        private Point CurrentCursorPosition => MouseCursor.Position;
-        private Point SelectedPosition => SelectedLocationMode == LocationMode.CurrentLocation ?
-                            CurrentCursorPosition :
-                            new Point(PickedXValue, PickedYValue);
+        private readonly Timer clickTimer;
 
         private IntPtr _windowHandle;
         private HwndSource _source;
@@ -294,7 +253,7 @@ namespace AutoClicker
 
         #endregion External Methods
 
-        #region Helper Methods
+        #region Event Handlers
 
         private void OnClickTimerElapsed(object sender, ElapsedEventArgs e)
         {
@@ -357,6 +316,6 @@ namespace AutoClicker
             return IntPtr.Zero;
         }
 
-        #endregion Helper Methods
+        #endregion Event Handlers
     }
 }

@@ -36,7 +36,7 @@
             </ObjectDataProvider.MethodParameters>
         </ObjectDataProvider>
         <local:EnumToBooleanConverter x:Key="EnumToBooleanConverter" />
-        <BitmapImage x:Key="MyImageSource" UriSource="Resources/question.png" />
+        <BitmapImage x:Key="HelpIcon" UriSource="Resources/question.png" />
     </Window.Resources>
 
     <Window.CommandBindings>
@@ -57,7 +57,7 @@
                 <MenuItem Header="_Help">
                     <MenuItem Header="_About" Command="local:CustomCommands.About">
                         <MenuItem.Icon>
-                            <Image Source="{StaticResource MyImageSource}"/>
+                            <Image Source="{StaticResource HelpIcon}"/>
                         </MenuItem.Icon>
                     </MenuItem>
                 </MenuItem>
@@ -182,9 +182,9 @@
             </GroupBox>
 
             <Button Grid.Row="3" Grid.Column="0" Margin="5"
-                Content="Start (F6)" Command="local:CustomCommands.Start"/>
+                    Content="Start (F6)" Command="local:CustomCommands.Start"/>
             <Button Grid.Row="3" Grid.Column="1" Margin="5"
-                Content="Stop (F7)" Command="local:CustomCommands.Stop"/>
+                    Content="Stop (F7)" Command="local:CustomCommands.Stop"/>
         </Grid>
     </Grid>
 </Window>
