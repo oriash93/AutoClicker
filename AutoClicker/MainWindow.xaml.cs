@@ -2,8 +2,8 @@
 using System.Runtime.InteropServices;
 using System.Timers;
 using System.Windows;
-using System.Windows.Input;
 using System.Windows.Interop;
+using AutoClicker.Enums;
 using MouseCursor = System.Windows.Forms.Cursor;
 using Point = System.Drawing.Point;
 
@@ -189,7 +189,7 @@ namespace AutoClicker
 
         #region Start Command
 
-        private void StartCommand_Execute(object sender, ExecutedRoutedEventArgs e)
+        private void StartCommand_Execute(object sender, System.Windows.Input.ExecutedRoutedEventArgs e)
         {
             timesRepeated = 0;
             clickTimer.Interval = Interval;
@@ -197,7 +197,7 @@ namespace AutoClicker
             Title += Constants.WINDOW_TITLE_RUNNING;
         }
 
-        private void StartCommand_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+        private void StartCommand_CanExecute(object sender, System.Windows.Input.CanExecuteRoutedEventArgs e)
             => e.CanExecute = !clickTimer.Enabled && IsRepeatModeValid();
 
         private bool IsRepeatModeValid()
@@ -208,20 +208,20 @@ namespace AutoClicker
 
         #region Stop Command
 
-        private void StopCommand_Execute(object sender, ExecutedRoutedEventArgs e)
+        private void StopCommand_Execute(object sender, System.Windows.Input.ExecutedRoutedEventArgs e)
         {
             clickTimer.Stop();
             Title = Constants.WINDOW_TITLE_DEFAULT;
         }
 
-        private void StopCommand_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+        private void StopCommand_CanExecute(object sender, System.Windows.Input.CanExecuteRoutedEventArgs e)
             => e.CanExecute = clickTimer.Enabled;
 
         #endregion Stop Command
 
         #region Exit Command
 
-        private void ExitCommand_Execute(object sender, ExecutedRoutedEventArgs e)
+        private void ExitCommand_Execute(object sender, System.Windows.Input.ExecutedRoutedEventArgs e)
         {
             Application.Current.Shutdown();
         }
@@ -230,7 +230,7 @@ namespace AutoClicker
 
         #region About Command
 
-        private void AboutCommand_Execute(object sender, ExecutedRoutedEventArgs e)
+        private void AboutCommand_Execute(object sender, System.Windows.Input.ExecutedRoutedEventArgs e)
             => MessageBox.Show(aboutWindowContent, "About", MessageBoxButton.OK, MessageBoxImage.Information);
 
         #endregion About Command
