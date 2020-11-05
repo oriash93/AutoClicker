@@ -127,18 +127,6 @@ namespace AutoClicker
 
         #endregion Dependency Properties
 
-        #region Properties
-
-        private int TimesToRepeat => SelectedRepeatMode == RepeatMode.Count ? SelectedTimesToRepeat : -1;
-        private int Interval => Milliseconds + (Seconds * 1000) + (Minutes * 60 * 1000) + (Hours * 60 * 60 * 1000);
-        private int NumMouseActions => SelectedMouseAction == MouseAction.Single ? 1 : 2;
-
-        private Point SelectedPosition => SelectedLocationMode == LocationMode.CurrentLocation ?
-                            MouseCursor.Position :
-                            new Point(PickedXValue, PickedYValue);
-
-        #endregion Properties
-
         #region Fields
 
         private int timesRepeated = 0;
@@ -190,17 +178,15 @@ namespace AutoClicker
         private void StartCommand_Execute(object sender, System.Windows.Input.ExecutedRoutedEventArgs e)
         {
             timesRepeated = 0;
-            clickTimer.Interval = Interval;
+            clickTimer.Interval = CalculateInterval();
             clickTimer.Start();
             Title += Constants.MAIN_WINDOW_TITLE_RUNNING;
         }
 
         private void StartCommand_CanExecute(object sender, System.Windows.Input.CanExecuteRoutedEventArgs e)
-            => e.CanExecute = !clickTimer.Enabled && IsRepeatModeValid();
-
-        private bool IsRepeatModeValid()
-            => SelectedRepeatMode == RepeatMode.Infinite ||
-                (SelectedRepeatMode == RepeatMode.Count && SelectedTimesToRepeat > 0);
+        {
+            e.CanExecute = !clickTimer.Enabled && IsRepeatModeValid();
+        }
 
         #endregion Start Command
 
@@ -213,7 +199,9 @@ namespace AutoClicker
         }
 
         private void StopCommand_CanExecute(object sender, System.Windows.Input.CanExecuteRoutedEventArgs e)
-            => e.CanExecute = clickTimer.Enabled;
+        {
+            e.CanExecute = clickTimer.Enabled;
+        }
 
         #endregion Stop Command
 
@@ -253,6 +241,45 @@ namespace AutoClicker
 
         #endregion External Methods
 
+        #region Helper Methods
+
+        private int CalculateInterval()
+        {
+            return Milliseconds + (Seconds * 1000) + (Minutes * 60 * 1000) + (Hours * 60 * 60 * 1000);
+        }
+
+        private int GetTimesToRepeat()
+        {
+            return SelectedRepeatMode == RepeatMode.Count ? SelectedTimesToRepeat : -1;
+        }
+
+        private Point GetSelectedPosition()
+        {
+            return SelectedLocationMode == LocationMode.CurrentLocation ? MouseCursor.Position : new Point(PickedXValue, PickedYValue);
+        }
+
+        private int GetSelectedXPosition()
+        {
+            return GetSelectedPosition().X;
+        }
+
+        private int GetSelectedYPosition()
+        {
+            return GetSelectedPosition().Y;
+        }
+
+        private int GetNumberOfMouseActions()
+        {
+            return SelectedMouseAction == MouseAction.Single ? 1 : 2;
+        }
+
+        private bool IsRepeatModeValid()
+        {
+            return SelectedRepeatMode == RepeatMode.Infinite || (SelectedRepeatMode == RepeatMode.Count && SelectedTimesToRepeat > 0);
+        }
+
+        #endregion Helper Methods
+
         #region Event Handlers
 
         private void OnClickTimerElapsed(object sender, ElapsedEventArgs e)
@@ -262,7 +289,7 @@ namespace AutoClicker
                 InitMouseClick();
                 timesRepeated++;
 
-                if (timesRepeated == TimesToRepeat)
+                if (timesRepeated == GetTimesToRepeat())
                 {
                     clickTimer.Stop();
                     Title = Constants.MAIN_WINDOW_TITLE_DEFAULT;
@@ -277,13 +304,13 @@ namespace AutoClicker
                 switch (SelectedMouseButton)
                 {
                     case MouseButton.Left:
-                        PerformMouseClick(Constants.MOUSEEVENTF_LEFTDOWN, Constants.MOUSEEVENTF_LEFTUP, SelectedPosition.X, SelectedPosition.Y);
+                        PerformMouseClick(Constants.MOUSEEVENTF_LEFTDOWN, Constants.MOUSEEVENTF_LEFTUP, GetSelectedXPosition(), GetSelectedYPosition());
                         break;
                     case MouseButton.Right:
-                        PerformMouseClick(Constants.MOUSEEVENTF_RIGHTDOWN, Constants.MOUSEEVENTF_RIGHTUP, SelectedPosition.X, SelectedPosition.Y);
+                        PerformMouseClick(Constants.MOUSEEVENTF_RIGHTDOWN, Constants.MOUSEEVENTF_RIGHTUP, GetSelectedXPosition(), GetSelectedYPosition());
                         break;
                     case MouseButton.Middle:
-                        PerformMouseClick(Constants.MOUSEEVENTF_MIDDLEDOWN, Constants.MOUSEEVENTF_MIDDLEUP, SelectedPosition.X, SelectedPosition.Y);
+                        PerformMouseClick(Constants.MOUSEEVENTF_MIDDLEDOWN, Constants.MOUSEEVENTF_MIDDLEUP, GetSelectedXPosition(), GetSelectedYPosition());
                         break;
                 }
             });
@@ -291,7 +318,7 @@ namespace AutoClicker
 
         private void PerformMouseClick(int mouseDownAction, int mouseUpAction, int xPos, int yPos)
         {
-            for (int i = 0; i < NumMouseActions; ++i)
+            for (int i = 0; i < GetNumberOfMouseActions(); ++i)
             {
                 SetCursorPosition(xPos, yPos);
                 ExecuteMouseEvent(mouseDownAction | mouseUpAction, xPos, yPos, 0, 0);
