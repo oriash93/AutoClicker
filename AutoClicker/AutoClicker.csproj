@@ -74,7 +74,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Constants.cs" />
-    <Compile Include="CustomCommands.cs" />
+    <Compile Include="Commands\CustomCommands.cs" />
     <Compile Include="Enums\Enums.cs" />
     <Compile Include="Enums\EnumToBooleanConverter.cs" />
     <Compile Include="MainWindow.xaml.cs">
