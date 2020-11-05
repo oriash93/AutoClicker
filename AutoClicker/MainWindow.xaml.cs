@@ -141,8 +141,6 @@ namespace AutoClicker
 
         #region Fields
 
-        private const string aboutWindowContent = "AutoClicker v2.1 \n\nCreated by Ori Ashual \ngithub.com/oriash93"; // TODO: Current version
-
         private int timesRepeated = 0;
         private readonly Timer clickTimer;
 
@@ -159,7 +157,7 @@ namespace AutoClicker
             clickTimer.Elapsed += OnClickTimerElapsed;
 
             DataContext = this;
-            Title = Constants.WINDOW_TITLE_DEFAULT;
+            Title = Constants.MAIN_WINDOW_TITLE_DEFAULT;
             InitializeComponent();
         }
 
@@ -194,7 +192,7 @@ namespace AutoClicker
             timesRepeated = 0;
             clickTimer.Interval = Interval;
             clickTimer.Start();
-            Title += Constants.WINDOW_TITLE_RUNNING;
+            Title += Constants.MAIN_WINDOW_TITLE_RUNNING;
         }
 
         private void StartCommand_CanExecute(object sender, System.Windows.Input.CanExecuteRoutedEventArgs e)
@@ -211,7 +209,7 @@ namespace AutoClicker
         private void StopCommand_Execute(object sender, System.Windows.Input.ExecutedRoutedEventArgs e)
         {
             clickTimer.Stop();
-            Title = Constants.WINDOW_TITLE_DEFAULT;
+            Title = Constants.MAIN_WINDOW_TITLE_DEFAULT;
         }
 
         private void StopCommand_CanExecute(object sender, System.Windows.Input.CanExecuteRoutedEventArgs e)
@@ -231,7 +229,9 @@ namespace AutoClicker
         #region About Command
 
         private void AboutCommand_Execute(object sender, System.Windows.Input.ExecutedRoutedEventArgs e)
-            => MessageBox.Show(aboutWindowContent, "About", MessageBoxButton.OK, MessageBoxImage.Information);
+        {
+            MessageBox.Show(Constants.ABOUT_WINDOW_CONTENT, Constants.ABOUT_WINDOW_TITLE, MessageBoxButton.OK, MessageBoxImage.Information);
+        }
 
         #endregion About Command
 
@@ -265,7 +265,7 @@ namespace AutoClicker
                 if (timesRepeated == TimesToRepeat)
                 {
                     clickTimer.Stop();
-                    Title = Constants.WINDOW_TITLE_DEFAULT;
+                    Title = Constants.MAIN_WINDOW_TITLE_DEFAULT;
                 }
             });
         }

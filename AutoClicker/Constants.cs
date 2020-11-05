@@ -16,7 +16,10 @@
         public const uint F6_KEY = 0x75;
         public const uint F7_KEY = 0x76;
 
-        public const string WINDOW_TITLE_DEFAULT = "AutoClicker";
-        public const string WINDOW_TITLE_RUNNING = " - Running...";
+        public const string MAIN_WINDOW_TITLE_DEFAULT = "AutoClicker";
+        public const string MAIN_WINDOW_TITLE_RUNNING = " - Running...";
+
+        public const string ABOUT_WINDOW_TITLE = "About";
+        public const string ABOUT_WINDOW_CONTENT = "AutoClicker v2.1\n\nCreated by Ori Ashual\ngithub.com/oriash93";
     }
 }
