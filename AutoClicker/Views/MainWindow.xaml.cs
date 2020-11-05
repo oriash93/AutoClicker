@@ -7,7 +7,7 @@ using AutoClicker.Enums;
 using MouseCursor = System.Windows.Forms.Cursor;
 using Point = System.Drawing.Point;
 
-namespace AutoClicker
+namespace AutoClicker.Views
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml

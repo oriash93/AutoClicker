@@ -1,4 +1,4 @@
-﻿<Window x:Class="AutoClicker.MainWindow"
+﻿<Window x:Class="AutoClicker.Views.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:commands="clr-namespace:AutoClicker.Commands"
@@ -6,7 +6,7 @@
         ResizeMode="CanMinimize"
         Height="320" Width="450">
     <Window.Resources>
-        <ResourceDictionary Source="Resources/ResourceDictionary.xaml"/>
+        <ResourceDictionary Source="../Resources/ResourceDictionary.xaml"/>
     </Window.Resources>
 
     <Window.CommandBindings>
