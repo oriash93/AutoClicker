@@ -4,14 +4,12 @@ using System.Timers;
 using System.Windows;
 using System.Windows.Interop;
 using AutoClicker.Enums;
+using AutoClicker.Utils;
 using MouseCursor = System.Windows.Forms.Cursor;
 using Point = System.Drawing.Point;
 
 namespace AutoClicker.Views
 {
-    /// <summary>
-    /// Interaction logic for MainWindow.xaml
-    /// </summary>
     public partial class MainWindow : Window
     {
         #region Dependency Properties
@@ -218,7 +216,9 @@ namespace AutoClicker.Views
 
         private void AboutCommand_Execute(object sender, System.Windows.Input.ExecutedRoutedEventArgs e)
         {
-            MessageBox.Show(Constants.ABOUT_WINDOW_CONTENT, Constants.ABOUT_WINDOW_TITLE, MessageBoxButton.OK, MessageBoxImage.Information);
+            AboutWindow aboutWindow = new AboutWindow();
+            aboutWindow.Show();
+            //MessageBox.Show(Constants.ABOUT_WINDOW_CONTENT, Constants.ABOUT_WINDOW_TITLE, MessageBoxButton.OK, MessageBoxImage.Information);
         }
 
         #endregion About Command
