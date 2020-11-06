@@ -1,4 +1,4 @@
-﻿namespace AutoClicker
+﻿namespace AutoClicker.Enums
 {
     public enum MouseButton
     {

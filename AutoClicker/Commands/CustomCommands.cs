@@ -1,6 +1,6 @@
 ﻿using System.Windows.Input;
 
-namespace AutoClicker
+namespace AutoClicker.Commands
 {
     public static class CustomCommands
     {

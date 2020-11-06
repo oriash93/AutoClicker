@@ -73,13 +73,18 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="CustomCommands.cs" />
-    <Compile Include="EnumToBooleanConverter.cs" />
-    <Compile Include="DecisionEnums.cs" />
+    <Compile Include="Constants.cs" />
+    <Compile Include="Commands\CustomCommands.cs" />
+    <Compile Include="Enums\Enums.cs" />
+    <Compile Include="Enums\EnumToBooleanConverter.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="Resources\ResourceDictionary.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">

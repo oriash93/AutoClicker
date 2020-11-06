@@ -2,7 +2,7 @@
 using System.Globalization;
 using System.Windows.Data;
 
-namespace AutoClicker
+namespace AutoClicker.Enums
 {
     public class EnumToBooleanConverter : IValueConverter
     {

@@ -1,0 +1,37 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:enums="clr-namespace:AutoClicker.Enums"
+                    xmlns:system="clr-namespace:System;assembly=mscorlib">
+
+    <enums:EnumToBooleanConverter x:Key="EnumToBooleanConverter" />
+    <BitmapImage x:Key="HelpIcon" UriSource="question.png" />
+
+    <ObjectDataProvider x:Key="mouseButtonValues"
+                            MethodName="GetValues"
+                            ObjectType="{x:Type system:Enum}">
+        <ObjectDataProvider.MethodParameters>
+            <x:Type TypeName="enums:MouseButton"/>
+        </ObjectDataProvider.MethodParameters>
+    </ObjectDataProvider>
+    <ObjectDataProvider x:Key="mouseActionValues"
+                            MethodName="GetValues"
+                            ObjectType="{x:Type system:Enum}">
+        <ObjectDataProvider.MethodParameters>
+            <x:Type TypeName="enums:MouseAction"/>
+        </ObjectDataProvider.MethodParameters>
+    </ObjectDataProvider>
+    <ObjectDataProvider x:Key="repeatModeValues"
+                            MethodName="GetValues"
+                            ObjectType="{x:Type system:Enum}">
+        <ObjectDataProvider.MethodParameters>
+            <x:Type TypeName="enums:RepeatMode"/>
+        </ObjectDataProvider.MethodParameters>
+    </ObjectDataProvider>
+    <ObjectDataProvider x:Key="locationModeValues"
+                            MethodName="GetValues"
+                            ObjectType="{x:Type system:Enum}">
+        <ObjectDataProvider.MethodParameters>
+            <x:Type TypeName="enums:LocationMode"/>
+        </ObjectDataProvider.MethodParameters>
+    </ObjectDataProvider>
+</ResourceDictionary>

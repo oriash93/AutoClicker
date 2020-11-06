@@ -2,8 +2,8 @@
 using System.Runtime.InteropServices;
 using System.Timers;
 using System.Windows;
-using System.Windows.Input;
 using System.Windows.Interop;
+using AutoClicker.Enums;
 using MouseCursor = System.Windows.Forms.Cursor;
 using Point = System.Drawing.Point;
 
@@ -16,8 +16,6 @@ namespace AutoClicker
     {
         #region Dependency Properties
 
-        #region Hours
-
         public int Hours
         {
             get => (int)GetValue(HoursProperty);
@@ -26,11 +24,7 @@ namespace AutoClicker
 
         public static readonly DependencyProperty HoursProperty =
             DependencyProperty.Register(nameof(Hours), typeof(int), typeof(MainWindow),
-                new PropertyMetadata(0));
-
-        #endregion Hours
-
-        #region Minutes
+                new PropertyMetadata(default(int)));
 
         public int Minutes
         {
@@ -40,11 +34,7 @@ namespace AutoClicker
 
         public static readonly DependencyProperty MinutesProperty =
             DependencyProperty.Register(nameof(Minutes), typeof(int), typeof(MainWindow),
-                new PropertyMetadata(0));
-
-        #endregion Minutes
-
-        #region Seconds
+                new PropertyMetadata(default(int)));
 
         public int Seconds
         {
@@ -54,11 +44,7 @@ namespace AutoClicker
 
         public static readonly DependencyProperty SecondsProperty =
             DependencyProperty.Register(nameof(Seconds), typeof(int), typeof(MainWindow),
-                new PropertyMetadata(0));
-
-        #endregion Seconds
-
-        #region Milliseconds
+                new PropertyMetadata(default(int)));
 
         public int Milliseconds
         {
@@ -68,11 +54,7 @@ namespace AutoClicker
 
         public static readonly DependencyProperty MillisecondsProperty =
             DependencyProperty.Register(nameof(Milliseconds), typeof(int), typeof(MainWindow),
-                new PropertyMetadata(100));
-
-        #endregion Milliseconds
-
-        #region SelectedMouseButton
+                new PropertyMetadata(default(int)));
 
         public MouseButton SelectedMouseButton
         {
@@ -84,10 +66,6 @@ namespace AutoClicker
             DependencyProperty.Register(nameof(SelectedMouseButton), typeof(MouseButton), typeof(MainWindow),
                 new PropertyMetadata(default(MouseButton)));
 
-        #endregion SelectedMouseButton
-
-        #region SelectedMouseAction
-
         public MouseAction SelectedMouseAction
         {
             get => (MouseAction)GetValue(SelectedMouseActionProperty);
@@ -97,12 +75,6 @@ namespace AutoClicker
         public static readonly DependencyProperty SelectedMouseActionProperty =
             DependencyProperty.Register(nameof(SelectedMouseAction), typeof(MouseAction), typeof(MainWindow),
                 new PropertyMetadata(default(MouseAction)));
-
-
-        #endregion SelectedMouseAction
-
-        #region SelectedRepeatMode
-
         public RepeatMode SelectedRepeatMode
         {
             get => (RepeatMode)GetValue(SelectedRepeatModeProperty);
@@ -112,10 +84,6 @@ namespace AutoClicker
         public static readonly DependencyProperty SelectedRepeatModeProperty =
             DependencyProperty.Register(nameof(SelectedRepeatMode), typeof(RepeatMode), typeof(MainWindow),
                 new PropertyMetadata(default(RepeatMode)));
-
-        #endregion SelectedRepeatMode
-
-        #region SelectedLocationMode
 
         public LocationMode SelectedLocationMode
         {
@@ -127,10 +95,6 @@ namespace AutoClicker
             DependencyProperty.Register(nameof(SelectedLocationMode), typeof(LocationMode), typeof(MainWindow),
                 new PropertyMetadata(default(LocationMode)));
 
-        #endregion SelectedLocationMode
-
-        #region PickedXValue
-
         public int PickedXValue
         {
             get => (int)GetValue(PickedXValueProperty);
@@ -139,11 +103,7 @@ namespace AutoClicker
 
         public static readonly DependencyProperty PickedXValueProperty =
             DependencyProperty.Register(nameof(PickedXValue), typeof(int), typeof(MainWindow),
-                new PropertyMetadata(0));
-
-        #endregion PickedXValue
-
-        #region PickedYValue
+                new PropertyMetadata(default(int)));
 
         public int PickedYValue
         {
@@ -153,11 +113,7 @@ namespace AutoClicker
 
         public static readonly DependencyProperty PickedYValueProperty =
             DependencyProperty.Register(nameof(PickedYValue), typeof(int), typeof(MainWindow),
-                new PropertyMetadata(0));
-
-        #endregion PickedYValue
-
-        #region SelectedTimesToRepeat
+                new PropertyMetadata(default(int)));
 
         public int SelectedTimesToRepeat
         {
@@ -167,49 +123,14 @@ namespace AutoClicker
 
         public static readonly DependencyProperty SelectedTimesToRepeatProperty =
             DependencyProperty.Register(nameof(SelectedTimesToRepeat), typeof(int), typeof(MainWindow),
-                new PropertyMetadata(0));
-
-        #endregion SelectedTimesToRepeat
+                new PropertyMetadata(default(int)));
 
         #endregion Dependency Properties
 
         #region Fields
 
-        private const string defaultTitle = "AutoClicker";
-        private const string runningTitle = " - Running...";
-        private const string aboutWindowContent = "AutoClicker v2.1 \n\nCreated by Ori Ashual \ngithub.com/oriash93"; // TODO: Current version
-
-        private readonly Timer clickTimer;
         private int timesRepeated = 0;
-        private int TimesToRepeat => SelectedRepeatMode == RepeatMode.Count ? SelectedTimesToRepeat : -1;
-        private int Interval => Milliseconds + Seconds * 1000 + Minutes * 60 * 1000 + Hours * 60 * 60 * 1000;
-        private int NumMouseActions => SelectedMouseAction == MouseAction.Single ? 1 : 2;
-        private Point CurrentCursorPosition => MouseCursor.Position;
-        private Point SelectedPosition => SelectedLocationMode == LocationMode.CurrentLocation ?
-                            CurrentCursorPosition :
-                            new Point(PickedXValue, PickedYValue);
-
-        #region Mouse Consts
-
-        private const int MOUSEEVENTF_LEFTDOWN = 0x02;
-        private const int MOUSEEVENTF_LEFTUP = 0x04;
-        private const int MOUSEEVENTF_RIGHTDOWN = 0x08;
-        private const int MOUSEEVENTF_RIGHTUP = 0x10;
-        private const int MOUSEEVENTF_MIDDLEDOWN = 0x0020;
-        private const int MOUSEEVENTF_MIDDLEUP = 0x0040;
-
-        #endregion Mouse Consts
-
-        #region Keyboard Consts
-
-        private const int HOTKEY_ID = 9000;
-        private const int WM_HOTKEY = 0x0312;
-
-        private const uint MOD_NONE = 0x0000;
-        private const uint F6_KEY = 0x75;
-        private const uint F7_KEY = 0x76;
-
-        #endregion Keyboard Consts
+        private readonly Timer clickTimer;
 
         private IntPtr _windowHandle;
         private HwndSource _source;
@@ -224,7 +145,7 @@ namespace AutoClicker
             clickTimer.Elapsed += OnClickTimerElapsed;
 
             DataContext = this;
-            Title = defaultTitle;
+            Title = Constants.MAIN_WINDOW_TITLE_DEFAULT;
             InitializeComponent();
         }
 
@@ -236,14 +157,14 @@ namespace AutoClicker
             _source = HwndSource.FromHwnd(_windowHandle);
             _source.AddHook(StartStopHooks);
 
-            RegisterHotKey(_windowHandle, HOTKEY_ID, MOD_NONE, F6_KEY);
-            RegisterHotKey(_windowHandle, HOTKEY_ID, MOD_NONE, F7_KEY);
+            RegisterHotKey(_windowHandle, Constants.HOTKEY_ID, Constants.MOD_NONE, Constants.F6_KEY);
+            RegisterHotKey(_windowHandle, Constants.HOTKEY_ID, Constants.MOD_NONE, Constants.F7_KEY);
         }
 
         protected override void OnClosed(EventArgs e)
         {
             _source.RemoveHook(StartStopHooks);
-            UnregisterHotKey(_windowHandle, HOTKEY_ID);
+            UnregisterHotKey(_windowHandle, Constants.HOTKEY_ID);
 
             base.OnClosed(e);
         }
@@ -254,39 +175,39 @@ namespace AutoClicker
 
         #region Start Command
 
-        private void StartCommand_Execute(object sender, ExecutedRoutedEventArgs e)
+        private void StartCommand_Execute(object sender, System.Windows.Input.ExecutedRoutedEventArgs e)
         {
             timesRepeated = 0;
-            clickTimer.Interval = Interval;
+            clickTimer.Interval = CalculateInterval();
             clickTimer.Start();
-            Title += runningTitle;
+            Title += Constants.MAIN_WINDOW_TITLE_RUNNING;
         }
 
-        private void StartCommand_CanExecute(object sender, CanExecuteRoutedEventArgs e)
-            => e.CanExecute = !clickTimer.Enabled && IsRepeatModeValid();
-
-        private bool IsRepeatModeValid()
-            => SelectedRepeatMode == RepeatMode.Infinite ||
-                (SelectedRepeatMode == RepeatMode.Count && SelectedTimesToRepeat > 0);
+        private void StartCommand_CanExecute(object sender, System.Windows.Input.CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = !clickTimer.Enabled && IsRepeatModeValid();
+        }
 
         #endregion Start Command
 
         #region Stop Command
 
-        private void StopCommand_Execute(object sender, ExecutedRoutedEventArgs e)
+        private void StopCommand_Execute(object sender, System.Windows.Input.ExecutedRoutedEventArgs e)
         {
             clickTimer.Stop();
-            Title = defaultTitle;
+            Title = Constants.MAIN_WINDOW_TITLE_DEFAULT;
         }
 
-        private void StopCommand_CanExecute(object sender, CanExecuteRoutedEventArgs e)
-            => e.CanExecute = clickTimer.Enabled;
+        private void StopCommand_CanExecute(object sender, System.Windows.Input.CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = clickTimer.Enabled;
+        }
 
         #endregion Stop Command
 
         #region Exit Command
 
-        private void ExitCommand_Execute(object sender, ExecutedRoutedEventArgs e)
+        private void ExitCommand_Execute(object sender, System.Windows.Input.ExecutedRoutedEventArgs e)
         {
             Application.Current.Shutdown();
         }
@@ -295,8 +216,10 @@ namespace AutoClicker
 
         #region About Command
 
-        private void AboutCommand_Execute(object sender, ExecutedRoutedEventArgs e)
-            => MessageBox.Show(aboutWindowContent, "About", MessageBoxButton.OK, MessageBoxImage.Information);
+        private void AboutCommand_Execute(object sender, System.Windows.Input.ExecutedRoutedEventArgs e)
+        {
+            MessageBox.Show(Constants.ABOUT_WINDOW_CONTENT, Constants.ABOUT_WINDOW_TITLE, MessageBoxButton.OK, MessageBoxImage.Information);
+        }
 
         #endregion About Command
 
@@ -320,6 +243,45 @@ namespace AutoClicker
 
         #region Helper Methods
 
+        private int CalculateInterval()
+        {
+            return Milliseconds + (Seconds * 1000) + (Minutes * 60 * 1000) + (Hours * 60 * 60 * 1000);
+        }
+
+        private int GetTimesToRepeat()
+        {
+            return SelectedRepeatMode == RepeatMode.Count ? SelectedTimesToRepeat : -1;
+        }
+
+        private Point GetSelectedPosition()
+        {
+            return SelectedLocationMode == LocationMode.CurrentLocation ? MouseCursor.Position : new Point(PickedXValue, PickedYValue);
+        }
+
+        private int GetSelectedXPosition()
+        {
+            return GetSelectedPosition().X;
+        }
+
+        private int GetSelectedYPosition()
+        {
+            return GetSelectedPosition().Y;
+        }
+
+        private int GetNumberOfMouseActions()
+        {
+            return SelectedMouseAction == MouseAction.Single ? 1 : 2;
+        }
+
+        private bool IsRepeatModeValid()
+        {
+            return SelectedRepeatMode == RepeatMode.Infinite || (SelectedRepeatMode == RepeatMode.Count && SelectedTimesToRepeat > 0);
+        }
+
+        #endregion Helper Methods
+
+        #region Event Handlers
+
         private void OnClickTimerElapsed(object sender, ElapsedEventArgs e)
         {
             Dispatcher.Invoke(() =>
@@ -327,10 +289,10 @@ namespace AutoClicker
                 InitMouseClick();
                 timesRepeated++;
 
-                if (timesRepeated == TimesToRepeat)
+                if (timesRepeated == GetTimesToRepeat())
                 {
                     clickTimer.Stop();
-                    Title = defaultTitle;
+                    Title = Constants.MAIN_WINDOW_TITLE_DEFAULT;
                 }
             });
         }
@@ -342,13 +304,13 @@ namespace AutoClicker
                 switch (SelectedMouseButton)
                 {
                     case MouseButton.Left:
-                        PerformMouseClick(MOUSEEVENTF_LEFTDOWN, MOUSEEVENTF_LEFTUP, SelectedPosition.X, SelectedPosition.Y);
+                        PerformMouseClick(Constants.MOUSEEVENTF_LEFTDOWN, Constants.MOUSEEVENTF_LEFTUP, GetSelectedXPosition(), GetSelectedYPosition());
                         break;
                     case MouseButton.Right:
-                        PerformMouseClick(MOUSEEVENTF_RIGHTDOWN, MOUSEEVENTF_RIGHTUP, SelectedPosition.X, SelectedPosition.Y);
+                        PerformMouseClick(Constants.MOUSEEVENTF_RIGHTDOWN, Constants.MOUSEEVENTF_RIGHTUP, GetSelectedXPosition(), GetSelectedYPosition());
                         break;
                     case MouseButton.Middle:
-                        PerformMouseClick(MOUSEEVENTF_MIDDLEDOWN, MOUSEEVENTF_MIDDLEUP, SelectedPosition.X, SelectedPosition.Y);
+                        PerformMouseClick(Constants.MOUSEEVENTF_MIDDLEDOWN, Constants.MOUSEEVENTF_MIDDLEUP, GetSelectedXPosition(), GetSelectedYPosition());
                         break;
                 }
             });
@@ -356,7 +318,7 @@ namespace AutoClicker
 
         private void PerformMouseClick(int mouseDownAction, int mouseUpAction, int xPos, int yPos)
         {
-            for (int i = 0; i < NumMouseActions; ++i)
+            for (int i = 0; i < GetNumberOfMouseActions(); ++i)
             {
                 SetCursorPosition(xPos, yPos);
                 ExecuteMouseEvent(mouseDownAction | mouseUpAction, xPos, yPos, 0, 0);
@@ -365,14 +327,14 @@ namespace AutoClicker
 
         private IntPtr StartStopHooks(IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled)
         {
-            if (msg == WM_HOTKEY && wParam.ToInt32() == HOTKEY_ID)
+            if (msg == Constants.WM_HOTKEY && wParam.ToInt32() == Constants.HOTKEY_ID)
             {
                 int vkey = ((int)lParam >> 16) & 0xFFFF;
-                if (vkey == F6_KEY && !clickTimer.Enabled && IsRepeatModeValid())
+                if (vkey == Constants.F6_KEY && !clickTimer.Enabled && IsRepeatModeValid())
                 {
                     StartCommand_Execute(null, null);
                 }
-                if (vkey == F7_KEY && clickTimer.Enabled)
+                if (vkey == Constants.F7_KEY && clickTimer.Enabled)
                 {
                     StopCommand_Execute(null, null);
                 }
@@ -381,6 +343,6 @@ namespace AutoClicker
             return IntPtr.Zero;
         }
 
-        #endregion Helper Methods
+        #endregion Event Handlers
     }
 }
