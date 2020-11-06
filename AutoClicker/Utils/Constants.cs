@@ -6,8 +6,6 @@
         public const string MAIN_WINDOW_TITLE_RUNNING = " - Running...";
         public const string ABOUT_WINDOW_TITLE = "About";
 
-        public const string PROJECT_URL = "https://github.com/oriash93/AutoClicker";
-
         public const int MOUSEEVENTF_LEFTDOWN = 0x02;
         public const int MOUSEEVENTF_LEFTUP = 0x04;
         public const int MOUSEEVENTF_RIGHTDOWN = 0x08;

@@ -1,0 +1,17 @@
+﻿<Window x:Class="AutoClicker.Views.AboutWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        ResizeMode="CanMinimize"
+        Icon="{StaticResource HelpIcon}"
+        Height="150" Width="250">
+    <DockPanel>
+        <TextBlock VerticalAlignment="Center" TextAlignment="Center">
+            <Run Name="AboutInformationText"/>
+            <LineBreak/>
+            <Run Name="AuthorText" Text="Created by Ori Ashual"/>
+            <LineBreak/>
+            <LineBreak/>
+            <Hyperlink Name="UrlHyperlink" RequestNavigate="Hyperlink_RequestNavigate" ToolTip="GitHub"/>
+        </TextBlock>
+    </DockPanel>
+</Window>

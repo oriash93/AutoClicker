@@ -2,9 +2,7 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:enums="clr-namespace:AutoClicker.Enums"
                     xmlns:system="clr-namespace:System;assembly=mscorlib">
-
     <enums:EnumToBooleanConverter x:Key="EnumToBooleanConverter" />
-    <BitmapImage x:Key="HelpIcon" UriSource="question.png" />
 
     <ObjectDataProvider x:Key="mouseButtonValues"
                             MethodName="GetValues"

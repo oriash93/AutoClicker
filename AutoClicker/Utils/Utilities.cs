@@ -1,14 +1,19 @@
 ﻿using System;
-using System.Deployment.Application;
 using System.Reflection;
 
 namespace AutoClicker.Utils
 {
     public static class Utilities
     {
+        private static readonly Assembly assembly = Assembly.GetExecutingAssembly();
+
         public static AssemblyName GetAssemblyInfo()
-        {
-            return Assembly.GetExecutingAssembly().GetName();
-        }
+            => assembly.GetName();
+
+        public static string GetProjectURL()
+            => assembly.GetCustomAttribute<AssemblyDescriptionAttribute>().Description;
+
+        public static Uri GetProjectUri()
+            => new Uri(GetProjectURL());
     }
 }
