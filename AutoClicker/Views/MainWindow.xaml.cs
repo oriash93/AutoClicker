@@ -184,7 +184,7 @@ namespace AutoClicker.Views
 
         private void StartCommand_CanExecute(object sender, System.Windows.Input.CanExecuteRoutedEventArgs e)
         {
-            e.CanExecute = !clickTimer.Enabled && IsRepeatModeValid();
+            e.CanExecute = !clickTimer.Enabled && IsRepeatModeValid() && IsIntervalValid();
         }
 
         #endregion Start Command
@@ -252,6 +252,11 @@ namespace AutoClicker.Views
         private int CalculateInterval()
         {
             return Milliseconds + (Seconds * 1000) + (Minutes * 60 * 1000) + (Hours * 60 * 60 * 1000);
+        }
+
+        private bool IsIntervalValid()
+        {
+            return CalculateInterval() > 0;
         }
 
         private int GetTimesToRepeat()
@@ -336,7 +341,7 @@ namespace AutoClicker.Views
             if (msg == Constants.WM_HOTKEY && wParam.ToInt32() == Constants.HOTKEY_ID)
             {
                 int vkey = ((int)lParam >> 16) & 0xFFFF;
-                if (vkey == Constants.F6_KEY && !clickTimer.Enabled && IsRepeatModeValid())
+                if (vkey == Constants.F6_KEY && !clickTimer.Enabled && IsRepeatModeValid() && IsIntervalValid())
                 {
                     StartCommand_Execute(null, null);
                 }
