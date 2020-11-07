@@ -1,12 +1,16 @@
 ﻿using System;
+using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Timers;
 using System.Windows;
+using System.Windows.Forms;
 using System.Windows.Interop;
 using AutoClicker.Enums;
 using AutoClicker.Utils;
+using Application = System.Windows.Application;
 using MouseCursor = System.Windows.Forms.Cursor;
 using Point = System.Drawing.Point;
+using Timer = System.Timers.Timer;
 
 namespace AutoClicker.Views
 {
@@ -145,6 +149,28 @@ namespace AutoClicker.Views
             DataContext = this;
             Title = Constants.MAIN_WINDOW_TITLE_DEFAULT;
             InitializeComponent();
+
+            var systemTrayIcon = new NotifyIcon
+            {
+                Icon = System.Drawing.Icon.ExtractAssociatedIcon(Assembly.GetEntryAssembly()?.ManifestModule.Name),
+                Visible = true
+            };
+
+            systemTrayIcon.DoubleClick += delegate (object sender, EventArgs args)
+                {
+                    Show();
+                    WindowState = WindowState.Normal;
+                };
+        }
+
+        protected override void OnStateChanged(EventArgs e)
+        {
+            if (WindowState == WindowState.Minimized)
+            {
+                Hide();
+            }
+
+            base.OnStateChanged(e);
         }
 
         protected override void OnSourceInitialized(EventArgs e)
