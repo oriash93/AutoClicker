@@ -129,6 +129,7 @@ namespace AutoClicker.Views
 
         private int timesRepeated = 0;
         private readonly Timer clickTimer;
+        private AboutWindow aboutWindow = null;
 
         private IntPtr _windowHandle;
         private HwndSource _source;
@@ -216,9 +217,14 @@ namespace AutoClicker.Views
 
         private void AboutCommand_Execute(object sender, System.Windows.Input.ExecutedRoutedEventArgs e)
         {
-            AboutWindow aboutWindow = new AboutWindow();
+            if (aboutWindow == null)
+            {
+                aboutWindow = new AboutWindow();
+                aboutWindow.Closed += (o, args) => aboutWindow = null;
+            }
+
             aboutWindow.Show();
-            //MessageBox.Show(Constants.ABOUT_WINDOW_CONTENT, Constants.ABOUT_WINDOW_TITLE, MessageBoxButton.OK, MessageBoxImage.Information);
+            aboutWindow.Topmost = true;
         }
 
         #endregion About Command
