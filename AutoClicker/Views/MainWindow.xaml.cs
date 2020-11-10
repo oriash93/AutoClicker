@@ -224,7 +224,6 @@ namespace AutoClicker.Views
             }
 
             aboutWindow.Show();
-            aboutWindow.Topmost = true;
         }
 
         #endregion About Command
