@@ -6,7 +6,7 @@
         ResizeMode="CanMinimize"
         Height="320" Width="450">
     <Window.Resources>
-        <ResourceDictionary Source="../Resources/ResourceDictionary.xaml"/>
+        <ResourceDictionary Source="../Resources/MainWindowResources.xaml"/>
     </Window.Resources>
 
     <Window.CommandBindings>
