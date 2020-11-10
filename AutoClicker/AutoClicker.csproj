@@ -82,7 +82,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Utils\Constants.cs" />
-    <Compile Include="Commands\CustomCommands.cs" />
+    <Compile Include="Commands\MainWindowCommands.cs" />
     <Compile Include="Enums\Enums.cs" />
     <Compile Include="Enums\EnumToBooleanConverter.cs" />
     <Compile Include="Utils\Utilities.cs" />
@@ -93,7 +93,7 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="Resources\ResourceDictionary.xaml">
+    <Page Include="Resources\MainWindowResources.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -2,7 +2,7 @@
 
 namespace AutoClicker.Commands
 {
-    public static class CustomCommands
+    public static class MainWindowCommands
     {
         public static readonly RoutedUICommand Start = CreateCommand(nameof(Start), new KeyGesture(Key.F6));
 
@@ -13,6 +13,6 @@ namespace AutoClicker.Commands
         public static readonly RoutedUICommand About = CreateCommand(nameof(About), new KeyGesture(Key.F1));
 
         private static RoutedUICommand CreateCommand(string commandName, KeyGesture keyGesture = null)
-            => new RoutedUICommand(commandName, commandName, typeof(CustomCommands), new InputGestureCollection() { keyGesture });
+            => new RoutedUICommand(commandName, commandName, typeof(MainWindowCommands), new InputGestureCollection() { keyGesture });
     }
 }
