@@ -16,13 +16,13 @@
         <CommandBinding Command="commands:MainWindowCommands.About" Executed="AboutCommand_Execute"/>
     </Window.CommandBindings>
 
-    <Grid>
+    <Grid Name="mainWindowGrid">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <DockPanel Grid.Row="0">
+        <DockPanel Name="menuDockPanel" Grid.Row="0">
             <Menu DockPanel.Dock="Top">
                 <MenuItem Header="_Help">
                     <MenuItem Header="_About" Command="commands:MainWindowCommands.About">
@@ -35,7 +35,7 @@
             </Menu>
         </DockPanel>
 
-        <Grid Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center">
+        <Grid Name="primaryGrid" Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center">
             <Grid.RowDefinitions>
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="2*"/>
@@ -45,10 +45,14 @@
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
 
-            <GroupBox Header="Click Interval" Grid.Row="0" Grid.ColumnSpan="2">
-                <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
+            <GroupBox Name="clickIntervalGroupBox"
+                      Header="Click Interval" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="4">
+                <Grid Name="clickIntervalInnerGrid"
+                      HorizontalAlignment="Center" VerticalAlignment="Center">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
@@ -78,8 +82,10 @@
                 </Grid>
             </GroupBox>
 
-            <GroupBox Header="Click Repeat" Grid.Row="1" Grid.Column="0">
-                <Grid HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,5,0,0">
+            <GroupBox Name="clickRepeatGroupBox"
+                      Header="Click Repeat" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2">
+                <Grid Name="clickRepeatInnerGrid"
+                      HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,5,0,0">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
@@ -105,8 +111,10 @@
                 </Grid>
             </GroupBox>
 
-            <GroupBox Header="Click Position" Grid.Row="1" Grid.Column="1">
-                <Grid HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,5,0,0">
+            <GroupBox Name="clickPositionGroupBox"
+                      Header="Click Position" Grid.Row="1" Grid.Column="2" Grid.ColumnSpan="2">
+                <Grid Name="clickPositionInnerGrid"
+                      HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,5,0,0">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
@@ -136,8 +144,10 @@
                 </Grid>
             </GroupBox>
 
-            <GroupBox Header="Click Options" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3">
-                <UniformGrid HorizontalAlignment="Center" VerticalAlignment="Stretch" Rows="1" Columns="4">
+            <GroupBox Name="clickOptionGroupBox"
+                      Header="Click Options" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="4">
+                <UniformGrid Name="clickOptionInnerGrid"
+                             HorizontalAlignment="Center" VerticalAlignment="Stretch" Rows="1" Columns="4">
                     <TextBlock Grid.Row="0" Grid.Column="0" Text="Mouse Button"
                                Margin="5, 5, 5, 5" VerticalAlignment="Center" TextAlignment="Center"/>
                     <ComboBox Grid.Row="0" Grid.Column="1" Margin="5, 5, 5, 5"
@@ -151,10 +161,15 @@
                 </UniformGrid>
             </GroupBox>
 
-            <Button Grid.Row="3" Grid.Column="0" Margin="5"
-                    Content="Start (F6)" Command="commands:MainWindowCommands.Start"/>
-            <Button Grid.Row="3" Grid.Column="1" Margin="5"
-                    Content="Stop (F7)" Command="commands:MainWindowCommands.Stop"/>
+            <UniformGrid Name="buttonsGrid"
+                         Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="4" Rows="1" Columns="3">
+                <Button Grid.Row="0" Grid.Column="0" Margin="5"
+                        Content="Start (F6)" Command="commands:MainWindowCommands.Start"/>
+                <Button Grid.Row="0" Grid.Column="1" Margin="5"
+                        Content="Stop (F7)" Command="commands:MainWindowCommands.Stop"/>
+                <Button Grid.Row="0" Grid.Column="2" Margin="5"
+                        Content="Hotkey Settings" Command="commands:MainWindowCommands.HotkeySettings"/>
+            </UniformGrid>
         </Grid>
     </Grid>
 </Window>
