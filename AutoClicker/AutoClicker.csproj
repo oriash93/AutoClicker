@@ -82,7 +82,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Utils\Constants.cs" />
-    <Compile Include="Commands\CustomCommands.cs" />
+    <Compile Include="Commands\MainWindowCommands.cs" />
     <Compile Include="Enums\Enums.cs" />
     <Compile Include="Enums\EnumToBooleanConverter.cs" />
     <Compile Include="Utils\Utilities.cs" />

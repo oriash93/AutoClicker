@@ -10,10 +10,10 @@
     </Window.Resources>
 
     <Window.CommandBindings>
-        <CommandBinding Command="commands:CustomCommands.Start" Executed="StartCommand_Execute" CanExecute="StartCommand_CanExecute"/>
-        <CommandBinding Command="commands:CustomCommands.Stop" Executed="StopCommand_Execute" CanExecute="StopCommand_CanExecute"/>
-        <CommandBinding Command="commands:CustomCommands.Exit" Executed="ExitCommand_Execute"/>
-        <CommandBinding Command="commands:CustomCommands.About" Executed="AboutCommand_Execute"/>
+        <CommandBinding Command="commands:MainWindowCommands.Start" Executed="StartCommand_Execute" CanExecute="StartCommand_CanExecute"/>
+        <CommandBinding Command="commands:MainWindowCommands.Stop" Executed="StopCommand_Execute" CanExecute="StopCommand_CanExecute"/>
+        <CommandBinding Command="commands:MainWindowCommands.Exit" Executed="ExitCommand_Execute"/>
+        <CommandBinding Command="commands:MainWindowCommands.About" Executed="AboutCommand_Execute"/>
     </Window.CommandBindings>
 
     <Grid>
@@ -25,13 +25,13 @@
         <DockPanel Grid.Row="0">
             <Menu DockPanel.Dock="Top">
                 <MenuItem Header="_Help">
-                    <MenuItem Header="_About" Command="commands:CustomCommands.About">
+                    <MenuItem Header="_About" Command="commands:MainWindowCommands.About">
                         <MenuItem.Icon>
                             <Image Source="{StaticResource HelpIcon}"/>
                         </MenuItem.Icon>
                     </MenuItem>
                 </MenuItem>
-                <MenuItem Header="_Exit" Command="commands:CustomCommands.Exit"/>
+                <MenuItem Header="_Exit" Command="commands:MainWindowCommands.Exit"/>
             </Menu>
         </DockPanel>
 
@@ -152,9 +152,9 @@
             </GroupBox>
 
             <Button Grid.Row="3" Grid.Column="0" Margin="5"
-                    Content="Start (F6)" Command="commands:CustomCommands.Start"/>
+                    Content="Start (F6)" Command="commands:MainWindowCommands.Start"/>
             <Button Grid.Row="3" Grid.Column="1" Margin="5"
-                    Content="Stop (F7)" Command="commands:CustomCommands.Stop"/>
+                    Content="Stop (F7)" Command="commands:MainWindowCommands.Stop"/>
         </Grid>
     </Grid>
 </Window>
