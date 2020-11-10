@@ -5,6 +5,8 @@ using System.Windows;
 using System.Windows.Interop;
 using AutoClicker.Enums;
 using AutoClicker.Utils;
+using CanExecuteRoutedEventArgs = System.Windows.Input.CanExecuteRoutedEventArgs;
+using ExecutedRoutedEventArgs = System.Windows.Input.ExecutedRoutedEventArgs;
 using MouseCursor = System.Windows.Forms.Cursor;
 using Point = System.Drawing.Point;
 
@@ -144,7 +146,7 @@ namespace AutoClicker.Views
             clickTimer.Elapsed += OnClickTimerElapsed;
 
             DataContext = this;
-            Title = Constants.MAIN_WINDOW_TITLE_DEFAULT;
+            ResetTitle();
             InitializeComponent();
         }
 
@@ -174,7 +176,7 @@ namespace AutoClicker.Views
 
         #region Start Command
 
-        private void StartCommand_Execute(object sender, System.Windows.Input.ExecutedRoutedEventArgs e)
+        private void StartCommand_Execute(object sender, ExecutedRoutedEventArgs e)
         {
             timesRepeated = 0;
             clickTimer.Interval = CalculateInterval();
@@ -182,7 +184,7 @@ namespace AutoClicker.Views
             Title += Constants.MAIN_WINDOW_TITLE_RUNNING;
         }
 
-        private void StartCommand_CanExecute(object sender, System.Windows.Input.CanExecuteRoutedEventArgs e)
+        private void StartCommand_CanExecute(object sender, CanExecuteRoutedEventArgs e)
         {
             e.CanExecute = !clickTimer.Enabled && IsRepeatModeValid() && IsIntervalValid();
         }
@@ -191,13 +193,13 @@ namespace AutoClicker.Views
 
         #region Stop Command
 
-        private void StopCommand_Execute(object sender, System.Windows.Input.ExecutedRoutedEventArgs e)
+        private void StopCommand_Execute(object sender, ExecutedRoutedEventArgs e)
         {
             clickTimer.Stop();
-            Title = Constants.MAIN_WINDOW_TITLE_DEFAULT;
+            ResetTitle();
         }
 
-        private void StopCommand_CanExecute(object sender, System.Windows.Input.CanExecuteRoutedEventArgs e)
+        private void StopCommand_CanExecute(object sender, CanExecuteRoutedEventArgs e)
         {
             e.CanExecute = clickTimer.Enabled;
         }
@@ -206,7 +208,7 @@ namespace AutoClicker.Views
 
         #region Exit Command
 
-        private void ExitCommand_Execute(object sender, System.Windows.Input.ExecutedRoutedEventArgs e)
+        private void ExitCommand_Execute(object sender, ExecutedRoutedEventArgs e)
         {
             Application.Current.Shutdown();
         }
@@ -215,7 +217,7 @@ namespace AutoClicker.Views
 
         #region About Command
 
-        private void AboutCommand_Execute(object sender, System.Windows.Input.ExecutedRoutedEventArgs e)
+        private void AboutCommand_Execute(object sender, ExecutedRoutedEventArgs e)
         {
             if (aboutWindow == null)
             {
@@ -288,6 +290,11 @@ namespace AutoClicker.Views
             return SelectedRepeatMode == RepeatMode.Infinite || (SelectedRepeatMode == RepeatMode.Count && SelectedTimesToRepeat > 0);
         }
 
+        private void ResetTitle()
+        {
+            Title = Constants.MAIN_WINDOW_TITLE_DEFAULT;
+        }
+
         #endregion Helper Methods
 
         #region Event Handlers
@@ -302,7 +309,7 @@ namespace AutoClicker.Views
                 if (timesRepeated == GetTimesToRepeat())
                 {
                     clickTimer.Stop();
-                    Title = Constants.MAIN_WINDOW_TITLE_DEFAULT;
+                    ResetTitle();
                 }
             });
         }
