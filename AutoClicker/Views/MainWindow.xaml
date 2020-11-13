@@ -12,6 +12,7 @@
     <Window.CommandBindings>
         <CommandBinding Command="commands:MainWindowCommands.Start" Executed="StartCommand_Execute" CanExecute="StartCommand_CanExecute"/>
         <CommandBinding Command="commands:MainWindowCommands.Stop" Executed="StopCommand_Execute" CanExecute="StopCommand_CanExecute"/>
+        <CommandBinding Command="commands:MainWindowCommands.HotkeySettings" Executed="HotkeySettingsCommand_Execute"/>
         <CommandBinding Command="commands:MainWindowCommands.Exit" Executed="ExitCommand_Execute"/>
         <CommandBinding Command="commands:MainWindowCommands.About" Executed="AboutCommand_Execute"/>
     </Window.CommandBindings>
@@ -125,20 +126,19 @@
                     </Grid.ColumnDefinitions>
 
                     <RadioButton Grid.Row="0" Grid.Column="0" Margin="0, 0, 0, 5"
-                             Content="Current Cursor Position"
-                             IsChecked="{Binding Path=SelectedLocationMode, Converter={StaticResource EnumToBooleanConverter},
-                                        ConverterParameter={x:Static enums:LocationMode.CurrentLocation}}"/>
+                                 Content="Current Cursor Position"
+                                 IsChecked="{Binding Path=SelectedLocationMode, Converter={StaticResource EnumToBooleanConverter},
+                                                                                ConverterParameter={x:Static enums:LocationMode.CurrentLocation}}"/>
                     <RadioButton Grid.Row="1" Grid.ColumnSpan="2" Margin="0, 0, 0, 5"
-                             IsChecked="{Binding Path=SelectedLocationMode, Converter={StaticResource EnumToBooleanConverter},
-                                        ConverterParameter={x:Static enums:LocationMode.PickedLocation}}">
+                                 IsChecked="{Binding Path=SelectedLocationMode, Converter={StaticResource EnumToBooleanConverter},
+                                                                                ConverterParameter={x:Static enums:LocationMode.PickedLocation}}">
                         <StackPanel Orientation="Horizontal">
                             <TextBlock Text="X" Margin="5, 0, 0, 0"/>
                             <TextBox Width="50" Margin="5, 0, 0, 0"
-                                 Text="{Binding PickedXValue, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
-                            <!--<Button Content="Pick Location" Margin="5, 0, 0, 0"/>-->
+                                     Text="{Binding PickedXValue, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
                             <TextBlock Text="Y" Margin="5, 0, 0, 0"/>
                             <TextBox Width="50" Margin="5, 0, 0, 0"
-                                 Text="{Binding PickedYValue, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+                                     Text="{Binding PickedYValue, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
                         </StackPanel>
                     </RadioButton>
                 </Grid>

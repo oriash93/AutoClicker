@@ -132,6 +132,7 @@ namespace AutoClicker.Views
         private int timesRepeated = 0;
         private readonly Timer clickTimer;
         private AboutWindow aboutWindow = null;
+        private SettingsWindow settingsWindow = null;
 
         private IntPtr _windowHandle;
         private HwndSource _source;
@@ -158,14 +159,18 @@ namespace AutoClicker.Views
             _source = HwndSource.FromHwnd(_windowHandle);
             _source.AddHook(StartStopHooks);
 
-            RegisterHotKey(_windowHandle, Constants.HOTKEY_ID, Constants.MOD_NONE, Constants.F6_KEY);
-            RegisterHotKey(_windowHandle, Constants.HOTKEY_ID, Constants.MOD_NONE, Constants.F7_KEY);
+            AppSettings.HotKeyChangedEvent += AppSettings_HotKeyChanged;
+
+            RegisterHotKey(_windowHandle, Constants.START_HOTKEY_ID, Constants.MOD_NONE, AppSettings.StartHotkey.VirtualCode);
+            RegisterHotKey(_windowHandle, Constants.STOP_HOTKEY_ID, Constants.MOD_NONE, AppSettings.StopHotkey.VirtualCode);
         }
 
         protected override void OnClosed(EventArgs e)
         {
             _source.RemoveHook(StartStopHooks);
-            UnregisterHotKey(_windowHandle, Constants.HOTKEY_ID);
+            UnregisterHotKey(_windowHandle, Constants.START_HOTKEY_ID);
+            UnregisterHotKey(_windowHandle, Constants.STOP_HOTKEY_ID);
+            AppSettings.HotKeyChangedEvent -= AppSettings_HotKeyChanged;
 
             base.OnClosed(e);
         }
@@ -186,7 +191,7 @@ namespace AutoClicker.Views
 
         private void StartCommand_CanExecute(object sender, CanExecuteRoutedEventArgs e)
         {
-            e.CanExecute = !clickTimer.Enabled && IsRepeatModeValid() && IsIntervalValid();
+            e.CanExecute = CanStart();
         }
 
         #endregion Start Command
@@ -205,6 +210,21 @@ namespace AutoClicker.Views
         }
 
         #endregion Stop Command
+
+        #region HotkeySettings Command
+
+        private void HotkeySettingsCommand_Execute(object sender, ExecutedRoutedEventArgs e)
+        {
+            if (settingsWindow == null)
+            {
+                settingsWindow = new SettingsWindow();
+                settingsWindow.Closed += (o, args) => settingsWindow = null;
+            }
+
+            settingsWindow.Show();
+        }
+
+        #endregion HotkeySettings Command
 
         #region Exit Command
 
@@ -241,7 +261,7 @@ namespace AutoClicker.Views
         static extern void ExecuteMouseEvent(int dwFlags, int dx, int dy, int cButtons, int dwExtraInfo);
 
         [DllImport("user32.dll")]
-        private static extern bool RegisterHotKey(IntPtr hWnd, int id, uint fsModifiers, uint vk);
+        private static extern bool RegisterHotKey(IntPtr hWnd, int id, int fsModifiers, int vk);
 
         [DllImport("user32.dll")]
         private static extern bool UnregisterHotKey(IntPtr hWnd, int id);
@@ -258,6 +278,11 @@ namespace AutoClicker.Views
         private bool IsIntervalValid()
         {
             return CalculateInterval() > 0;
+        }
+
+        private bool CanStart()
+        {
+            return !clickTimer.Enabled && IsRepeatModeValid() && IsIntervalValid();
         }
 
         private int GetTimesToRepeat()
@@ -344,20 +369,38 @@ namespace AutoClicker.Views
 
         private IntPtr StartStopHooks(IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled)
         {
-            if (msg == Constants.WM_HOTKEY && wParam.ToInt32() == Constants.HOTKEY_ID)
+            int hotkeyId = wParam.ToInt32();
+            if (msg == Constants.WM_HOTKEY && hotkeyId == Constants.START_HOTKEY_ID || hotkeyId == Constants.STOP_HOTKEY_ID)
             {
-                int vkey = ((int)lParam >> 16) & 0xFFFF;
-                if (vkey == Constants.F6_KEY && !clickTimer.Enabled && IsRepeatModeValid() && IsIntervalValid())
+                int virtualKey = ((int)lParam >> 16) & 0xFFFF;
+                if (virtualKey == AppSettings.StartHotkey.VirtualCode && CanStart())
                 {
                     StartCommand_Execute(null, null);
                 }
-                if (vkey == Constants.F7_KEY && clickTimer.Enabled)
+                if (virtualKey == AppSettings.StopHotkey.VirtualCode && clickTimer.Enabled)
                 {
                     StopCommand_Execute(null, null);
                 }
                 handled = true;
             }
             return IntPtr.Zero;
+        }
+
+        private void AppSettings_HotKeyChanged(object sender, HotkeyChangedEventArgs e)
+        {
+            switch (e.Hotkey.Operation)
+            {
+                case Operation.Start:
+                    UnregisterHotKey(_windowHandle, Constants.START_HOTKEY_ID);
+                    RegisterHotKey(_windowHandle, Constants.START_HOTKEY_ID, Constants.MOD_NONE, e.Hotkey.VirtualCode);
+                    break;
+                case Operation.Stop:
+                    UnregisterHotKey(_windowHandle, Constants.STOP_HOTKEY_ID);
+                    RegisterHotKey(_windowHandle, Constants.STOP_HOTKEY_ID, Constants.MOD_NONE, e.Hotkey.VirtualCode);
+                    break;
+                default:
+                    throw new NotSupportedException("Operation not supported!");
+            }
         }
 
         #endregion Event Handlers
