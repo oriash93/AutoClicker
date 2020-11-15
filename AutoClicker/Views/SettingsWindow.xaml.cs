@@ -64,6 +64,12 @@ namespace AutoClicker.Views
 
         private void SaveCommand_CanExecute(object sender, CanExecuteRoutedEventArgs e)
         {
+            if (e.Parameter == null)
+            {
+                e.CanExecute = false;
+                return;
+            }
+
             Operation operation = (Operation)e.Parameter;
             switch (operation)
             {
