@@ -161,6 +161,7 @@ namespace AutoClicker.Views
 
             AppSettings.HotKeyChangedEvent += AppSettings_HotKeyChanged;
 
+            // TODO: extract register to method 
             RegisterHotKey(_windowHandle, Constants.START_HOTKEY_ID, Constants.MOD_NONE, AppSettings.StartHotkey.VirtualCode);
             RegisterHotKey(_windowHandle, Constants.STOP_HOTKEY_ID, Constants.MOD_NONE, AppSettings.StopHotkey.VirtualCode);
         }
@@ -168,6 +169,7 @@ namespace AutoClicker.Views
         protected override void OnClosed(EventArgs e)
         {
             _source.RemoveHook(StartStopHooks);
+            // TODO: extract unregister to method 
             UnregisterHotKey(_windowHandle, Constants.START_HOTKEY_ID);
             UnregisterHotKey(_windowHandle, Constants.STOP_HOTKEY_ID);
             AppSettings.HotKeyChangedEvent -= AppSettings_HotKeyChanged;
@@ -391,6 +393,7 @@ namespace AutoClicker.Views
             switch (e.Hotkey.Operation)
             {
                 case Operation.Start:
+                    // TODO: extract whole re-register to method 
                     if (UnregisterHotKey(_windowHandle, Constants.START_HOTKEY_ID))
                     {
                         RegisterHotKey(_windowHandle, Constants.START_HOTKEY_ID, Constants.MOD_NONE, e.Hotkey.VirtualCode);

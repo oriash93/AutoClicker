@@ -12,6 +12,7 @@ namespace AutoClicker.Utils
     {
         public Key Key { get; set; }
         public int VirtualCode { get; set; }
+        // TODO: consider moving Operation to HotkeyChangedEventArgs
         public Operation Operation { get; set; }
 
         public Hotkey(Key key, int virtualCode, Operation operation)
