@@ -24,7 +24,8 @@
         <ComboBox Name="comboBox1"
                   Grid.Row="0" Grid.Column="1" Margin="5, 5, 5, 5"
                   ItemsSource="{Binding Source={StaticResource keysValues}}"
-                  SelectedIndex="0" SelectedItem="{Binding SelectedStartKey}" HorizontalAlignment="Stretch"/>
+                  SelectedIndex="0" SelectedItem="{Binding SelectedStartKey}"
+                  VerticalContentAlignment="Center" HorizontalContentAlignment="Center"/>
         <Button Name="saveStartHotkeyButton"
                 Content="Save" Grid.Row="0" Grid.Column="2" Margin="5, 5, 5, 5"
                 Command="commands:SettingsWindowCommands.Save" CommandParameter="{x:Static enums:Operation.Start}"/>
@@ -35,7 +36,8 @@
         <ComboBox Name="comboBox2"
                   Grid.Row="1" Grid.Column="1" Margin="5, 5, 5, 5"
                   ItemsSource="{Binding Source={StaticResource keysValues}}"
-                  SelectedIndex="0" SelectedItem="{Binding SelectedStopKey}" HorizontalAlignment="Stretch"/>
+                  SelectedIndex="0" SelectedItem="{Binding SelectedStopKey}"
+                  VerticalContentAlignment="Center" HorizontalContentAlignment="Center"/>
         <Button Name="saveStopHotkeyButton"
                 Content="Save" Grid.Row="1" Grid.Column="2" Margin="5, 5, 5, 5"
                 Command="commands:SettingsWindowCommands.Save" CommandParameter="{x:Static enums:Operation.Stop}"/>
