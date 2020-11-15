@@ -73,6 +73,7 @@
     <Compile Include="Utils\AppSettings.cs" />
     <Compile Include="Utils\Hotkey.cs" />
     <Compile Include="Utils\HotkeyChangedEventArgs.cs" />
+    <Compile Include="Utils\User32Api.cs" />
     <Compile Include="Views\SettingsWindow.xaml.cs">
       <DependentUpon>SettingsWindow.xaml</DependentUpon>
     </Compile>

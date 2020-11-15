@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Runtime.InteropServices;
 using System.Timers;
 using System.Windows;
 using System.Windows.Interop;
@@ -134,7 +133,7 @@ namespace AutoClicker.Views
         private AboutWindow aboutWindow = null;
         private SettingsWindow settingsWindow = null;
 
-        private IntPtr _windowHandle;
+        private IntPtr _mainWindowHandle;
         private HwndSource _source;
 
         #endregion Fields
@@ -155,24 +154,22 @@ namespace AutoClicker.Views
         {
             base.OnSourceInitialized(e);
 
-            _windowHandle = new WindowInteropHelper(this).Handle;
-            _source = HwndSource.FromHwnd(_windowHandle);
+            _mainWindowHandle = new WindowInteropHelper(this).Handle;
+            _source = HwndSource.FromHwnd(_mainWindowHandle);
             _source.AddHook(StartStopHooks);
 
             AppSettings.HotKeyChangedEvent += AppSettings_HotKeyChanged;
-
-            // TODO: extract register to method 
-            RegisterHotKey(_windowHandle, Constants.START_HOTKEY_ID, Constants.MOD_NONE, AppSettings.StartHotkey.VirtualCode);
-            RegisterHotKey(_windowHandle, Constants.STOP_HOTKEY_ID, Constants.MOD_NONE, AppSettings.StopHotkey.VirtualCode);
+            RegisterHotkey(Constants.START_HOTKEY_ID, AppSettings.StartHotkey);
+            RegisterHotkey(Constants.STOP_HOTKEY_ID, AppSettings.StopHotkey);
         }
 
         protected override void OnClosed(EventArgs e)
         {
             _source.RemoveHook(StartStopHooks);
-            // TODO: extract unregister to method 
-            UnregisterHotKey(_windowHandle, Constants.START_HOTKEY_ID);
-            UnregisterHotKey(_windowHandle, Constants.STOP_HOTKEY_ID);
+
             AppSettings.HotKeyChangedEvent -= AppSettings_HotKeyChanged;
+            UnregisterHotkey(Constants.START_HOTKEY_ID);
+            UnregisterHotkey(Constants.STOP_HOTKEY_ID);
 
             base.OnClosed(e);
         }
@@ -254,22 +251,6 @@ namespace AutoClicker.Views
 
         #endregion Commands
 
-        #region External Methods
-
-        [DllImport("user32.dll", EntryPoint = "SetCursorPos")]
-        static extern bool SetCursorPosition(int x, int y);
-
-        [DllImport("user32.dll", EntryPoint = "mouse_event")]
-        static extern void ExecuteMouseEvent(int dwFlags, int dx, int dy, int cButtons, int dwExtraInfo);
-
-        [DllImport("user32.dll")]
-        static extern bool RegisterHotKey(IntPtr hWnd, int id, int fsModifiers, int vk);
-
-        [DllImport("user32.dll")]
-        static extern bool UnregisterHotKey(IntPtr hWnd, int id);
-
-        #endregion External Methods
-
         #region Helper Methods
 
         private int CalculateInterval()
@@ -322,6 +303,24 @@ namespace AutoClicker.Views
             Title = Constants.MAIN_WINDOW_TITLE_DEFAULT;
         }
 
+        private void ReRegisterHotkey(int hotkeyId, Hotkey hotkey)
+        {
+            UnregisterHotkey(hotkeyId);
+            RegisterHotkey(hotkeyId, hotkey);
+        }
+
+        private void RegisterHotkey(int hotkeyId, Hotkey hotkey)
+        {
+            User32Api.RegisterHotKey(_mainWindowHandle, hotkeyId, Constants.MOD_NONE, hotkey.VirtualCode);
+        }
+
+        private void UnregisterHotkey(int hotkeyId)
+        {
+            if (User32Api.UnregisterHotKey(_mainWindowHandle, hotkeyId))
+                return;
+            throw new InvalidOperationException($"No hotkey registered on {hotkeyId}");
+        }
+
         #endregion Helper Methods
 
         #region Event Handlers
@@ -364,8 +363,8 @@ namespace AutoClicker.Views
         {
             for (int i = 0; i < GetNumberOfMouseActions(); ++i)
             {
-                SetCursorPosition(xPos, yPos);
-                ExecuteMouseEvent(mouseDownAction | mouseUpAction, xPos, yPos, 0, 0);
+                User32Api.SetCursorPosition(xPos, yPos);
+                User32Api.ExecuteMouseEvent(mouseDownAction | mouseUpAction, xPos, yPos, 0, 0);
             }
         }
 
@@ -393,22 +392,13 @@ namespace AutoClicker.Views
             switch (e.Operation)
             {
                 case Operation.Start:
-                    // TODO: extract whole re-register to method 
-                    if (UnregisterHotKey(_windowHandle, Constants.START_HOTKEY_ID))
-                    {
-                        RegisterHotKey(_windowHandle, Constants.START_HOTKEY_ID, Constants.MOD_NONE, e.Hotkey.VirtualCode);
-                        startButton.Content = $"{Constants.MAIN_WINDOW_START_BUTTON_CONTENT} ({e.Hotkey.Key})";
-                        break;
-                    }
-                    throw new InvalidOperationException($"No hotkey registered on {Constants.START_HOTKEY_ID}");
+                    ReRegisterHotkey(Constants.START_HOTKEY_ID, e.Hotkey);
+                    startButton.Content = $"{Constants.MAIN_WINDOW_START_BUTTON_CONTENT} ({e.Hotkey.Key})"; // TODO: de-dup this line?
+                    break;
                 case Operation.Stop:
-                    if (UnregisterHotKey(_windowHandle, Constants.STOP_HOTKEY_ID))
-                    {
-                        RegisterHotKey(_windowHandle, Constants.STOP_HOTKEY_ID, Constants.MOD_NONE, e.Hotkey.VirtualCode);
-                        stopButton.Content = $"{Constants.MAIN_WINDOW_START_BUTTON_CONTENT} ({e.Hotkey.Key})";
-                        break;
-                    }
-                    throw new InvalidOperationException($"No hotkey registered on {Constants.STOP_HOTKEY_ID}");
+                    ReRegisterHotkey(Constants.STOP_HOTKEY_ID, e.Hotkey);
+                    stopButton.Content = $"{Constants.MAIN_WINDOW_STOP_BUTTON_CONTENT} ({e.Hotkey.Key})";
+                    break;
                 default:
                     throw new NotSupportedException("Operation not supported!");
             }
