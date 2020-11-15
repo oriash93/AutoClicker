@@ -2,6 +2,7 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:commands="clr-namespace:AutoClicker.Commands"
+        xmlns:enums="clr-namespace:AutoClicker.Enums"
         Topmost="true"
         ResizeMode="CanMinimize"
         Height="150" Width="250"
@@ -11,7 +12,8 @@
     </Window.Resources>
 
     <Window.CommandBindings>
-        <CommandBinding Command="commands:SettingsWindowCommands.Save" Executed="SaveCommand_Execute" CanExecute="SaveCommand_CanExecute"/>
+        <CommandBinding Command="commands:SettingsWindowCommands.Save"
+                        Executed="SaveCommand_Execute" CanExecute="SaveCommand_CanExecute"/>
     </Window.CommandBindings>
 
     <UniformGrid Name="settingsGrid"
@@ -24,8 +26,8 @@
                   ItemsSource="{Binding Source={StaticResource keysValues}}"
                   SelectedIndex="0" SelectedItem="{Binding SelectedStartKey}" HorizontalAlignment="Stretch"/>
         <Button Name="saveStartHotkeyButton"
-                Grid.Row="0" Grid.Column="2" Margin="5, 5, 5, 5"
-                Content="Save" Command="commands:SettingsWindowCommands.Save"/>
+                Content="Save" Grid.Row="0" Grid.Column="2" Margin="5, 5, 5, 5"
+                Command="commands:SettingsWindowCommands.Save" CommandParameter="{x:Static enums:Operation.Start}"/>
 
         <Label Grid.Row="0" Grid.Column="0"
                HorizontalAlignment="Center" VerticalAlignment="Center"
@@ -35,7 +37,7 @@
                   ItemsSource="{Binding Source={StaticResource keysValues}}"
                   SelectedIndex="0" SelectedItem="{Binding SelectedStopKey}" HorizontalAlignment="Stretch"/>
         <Button Name="saveStopHotkeyButton"
-                Grid.Row="1" Grid.Column="2" Margin="5, 5, 5, 5"
-                Content="Save" Command="commands:SettingsWindowCommands.Save"/>
+                Content="Save" Grid.Row="1" Grid.Column="2" Margin="5, 5, 5, 5"
+                Command="commands:SettingsWindowCommands.Save" CommandParameter="{x:Static enums:Operation.Stop}"/>
     </UniformGrid>
 </Window>

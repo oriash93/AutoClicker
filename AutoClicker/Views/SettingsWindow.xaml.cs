@@ -1,6 +1,7 @@
-﻿using System.Windows;
-using System.Windows.Controls;
+﻿using System;
+using System.Windows;
 using System.Windows.Input;
+using AutoClicker.Enums;
 using AutoClicker.Utils;
 
 namespace AutoClicker.Views
@@ -47,21 +48,34 @@ namespace AutoClicker.Views
 
         private void SaveCommand_Execute(object sender, ExecutedRoutedEventArgs e)
         {
-            Button source = (Button)e.Source;
-            if (source.Name == nameof(saveStartHotkeyButton)) // TODO: find a BETTER way to tell apart
+            Operation operation = (Operation)e.Parameter;
+            switch (operation)
             {
-                AppSettings.SetStartHotKey(SelectedStartKey);
-            }
-            else if (source.Name == nameof(saveStopHotkeyButton))
-            {
-                AppSettings.SetStopHotKey(SelectedStopKey);
+                case Operation.Start:
+                    AppSettings.SetStartHotKey(SelectedStartKey);
+                    break;
+                case Operation.Stop:
+                    AppSettings.SetStopHotKey(SelectedStopKey);
+                    break;
+                default:
+                    throw new NotSupportedException("Operation not supported!");
             }
         }
 
         private void SaveCommand_CanExecute(object sender, CanExecuteRoutedEventArgs e)
         {
-            // TODO: find a way to tell apart
-            e.CanExecute = SelectedStartKey != Key.None;
+            Operation operation = (Operation)e.Parameter;
+            switch (operation)
+            {
+                case Operation.Start:
+                    e.CanExecute = SelectedStartKey != Key.None;
+                    break;
+                case Operation.Stop:
+                    e.CanExecute = SelectedStopKey != Key.None;
+                    break;
+                default:
+                    throw new NotSupportedException("Operation not supported!");
+            }
         }
 
         #endregion Save Command
