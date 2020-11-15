@@ -24,4 +24,10 @@
         CurrentLocation = 0,
         PickedLocation = 1
     }
+
+    public enum Operation
+    {
+        Start = 0,
+        Stop = 1
+    }
 }

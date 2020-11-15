@@ -2,26 +2,17 @@
 
 namespace AutoClicker.Utils
 {
-    public enum Operation
-    {
-        Start,
-        Stop
-    }
-
     public class Hotkey
     {
         public Key Key { get; set; }
         public int VirtualCode { get; set; }
-        // TODO: consider moving Operation to HotkeyChangedEventArgs
-        public Operation Operation { get; set; }
 
-        public Hotkey(Key key, int virtualCode, Operation operation)
+        private Hotkey(Key key, int virtualCode)
         {
             Key = key;
             VirtualCode = virtualCode;
-            Operation = operation;
         }
 
-        public Hotkey(Key key, Operation operation) : this(key, KeyInterop.VirtualKeyFromKey(key), operation) { }
+        public Hotkey(Key key) : this(key, KeyInterop.VirtualKeyFromKey(key)) { }
     }
 }

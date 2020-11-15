@@ -390,7 +390,7 @@ namespace AutoClicker.Views
 
         private void AppSettings_HotKeyChanged(object sender, HotkeyChangedEventArgs e)
         {
-            switch (e.Hotkey.Operation)
+            switch (e.Operation)
             {
                 case Operation.Start:
                     // TODO: extract whole re-register to method 
