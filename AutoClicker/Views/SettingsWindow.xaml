@@ -13,14 +13,29 @@
     <Window.CommandBindings>
         <CommandBinding Command="commands:SettingsWindowCommands.Save" Executed="SaveCommand_Execute" CanExecute="SaveCommand_CanExecute"/>
     </Window.CommandBindings>
-    
+
     <UniformGrid Name="settingsGrid"
-                 Rows="1" Columns="2" Height="Auto" Width="Auto">
-        <ComboBox Name="comboBox"
-                  Grid.Row="0" Grid.Column="0" Margin="5, 5, 5, 5"
+                 Rows="2" Columns="3" Height="Auto" Width="Auto">
+        <Label Grid.Row="0" Grid.Column="0"
+               HorizontalAlignment="Center" VerticalAlignment="Center"
+               Content="Start Hotkey: "/>
+        <ComboBox Name="comboBox1"
+                  Grid.Row="0" Grid.Column="1" Margin="5, 5, 5, 5"
                   ItemsSource="{Binding Source={StaticResource keysValues}}"
-                  SelectedIndex="0" SelectedItem="{Binding SelectedKey}" HorizontalAlignment="Stretch"/>
-        <Button Grid.Row="0" Grid.Column="1" Margin="5, 5, 5, 5"
+                  SelectedIndex="0" SelectedItem="{Binding SelectedStartKey}" HorizontalAlignment="Stretch"/>
+        <Button Name="saveStartHotkeyButton"
+                Grid.Row="0" Grid.Column="2" Margin="5, 5, 5, 5"
+                Content="Save" Command="commands:SettingsWindowCommands.Save"/>
+
+        <Label Grid.Row="0" Grid.Column="0"
+               HorizontalAlignment="Center" VerticalAlignment="Center"
+               Content="Stop Hotkey: "/>
+        <ComboBox Name="comboBox2"
+                  Grid.Row="1" Grid.Column="1" Margin="5, 5, 5, 5"
+                  ItemsSource="{Binding Source={StaticResource keysValues}}"
+                  SelectedIndex="0" SelectedItem="{Binding SelectedStopKey}" HorizontalAlignment="Stretch"/>
+        <Button Name="saveStopHotkeyButton"
+                Grid.Row="1" Grid.Column="2" Margin="5, 5, 5, 5"
                 Content="Save" Command="commands:SettingsWindowCommands.Save"/>
     </UniformGrid>
 </Window>

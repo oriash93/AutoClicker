@@ -261,10 +261,10 @@ namespace AutoClicker.Views
         static extern void ExecuteMouseEvent(int dwFlags, int dx, int dy, int cButtons, int dwExtraInfo);
 
         [DllImport("user32.dll")]
-        private static extern bool RegisterHotKey(IntPtr hWnd, int id, int fsModifiers, int vk);
+        static extern bool RegisterHotKey(IntPtr hWnd, int id, int fsModifiers, int vk);
 
         [DllImport("user32.dll")]
-        private static extern bool UnregisterHotKey(IntPtr hWnd, int id);
+        static extern bool UnregisterHotKey(IntPtr hWnd, int id);
 
         #endregion External Methods
 
@@ -391,13 +391,21 @@ namespace AutoClicker.Views
             switch (e.Hotkey.Operation)
             {
                 case Operation.Start:
-                    UnregisterHotKey(_windowHandle, Constants.START_HOTKEY_ID);
-                    RegisterHotKey(_windowHandle, Constants.START_HOTKEY_ID, Constants.MOD_NONE, e.Hotkey.VirtualCode);
-                    break;
+                    if (UnregisterHotKey(_windowHandle, Constants.START_HOTKEY_ID))
+                    {
+                        RegisterHotKey(_windowHandle, Constants.START_HOTKEY_ID, Constants.MOD_NONE, e.Hotkey.VirtualCode);
+                        startButton.Content = $"{Constants.MAIN_WINDOW_START_BUTTON_CONTENT} ({e.Hotkey.Key})";
+                        break;
+                    }
+                    throw new InvalidOperationException($"No hotkey registered on {Constants.START_HOTKEY_ID}");
                 case Operation.Stop:
-                    UnregisterHotKey(_windowHandle, Constants.STOP_HOTKEY_ID);
-                    RegisterHotKey(_windowHandle, Constants.STOP_HOTKEY_ID, Constants.MOD_NONE, e.Hotkey.VirtualCode);
-                    break;
+                    if (UnregisterHotKey(_windowHandle, Constants.STOP_HOTKEY_ID))
+                    {
+                        RegisterHotKey(_windowHandle, Constants.STOP_HOTKEY_ID, Constants.MOD_NONE, e.Hotkey.VirtualCode);
+                        stopButton.Content = $"{Constants.MAIN_WINDOW_START_BUTTON_CONTENT} ({e.Hotkey.Key})";
+                        break;
+                    }
+                    throw new InvalidOperationException($"No hotkey registered on {Constants.STOP_HOTKEY_ID}");
                 default:
                     throw new NotSupportedException("Operation not supported!");
             }

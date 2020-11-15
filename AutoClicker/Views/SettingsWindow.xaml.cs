@@ -1,4 +1,5 @@
 ﻿using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
 using AutoClicker.Utils;
 
@@ -8,14 +9,24 @@ namespace AutoClicker.Views
     {
         #region Dependency Properties
 
-        public Key SelectedKey
+        public Key SelectedStartKey
         {
-            get => (Key)GetValue(SelectedKeyProperty);
-            set => SetValue(SelectedKeyProperty, value);
+            get => (Key)GetValue(SelectedStartKeyProperty);
+            set => SetValue(SelectedStartKeyProperty, value);
         }
 
-        public static readonly DependencyProperty SelectedKeyProperty =
-            DependencyProperty.Register(nameof(SelectedKey), typeof(Key), typeof(SettingsWindow),
+        public static readonly DependencyProperty SelectedStartKeyProperty =
+            DependencyProperty.Register(nameof(SelectedStartKey), typeof(Key), typeof(SettingsWindow),
+                new PropertyMetadata(default(Key)));
+
+        public Key SelectedStopKey
+        {
+            get => (Key)GetValue(SelectedStopKeyProperty);
+            set => SetValue(SelectedStopKeyProperty, value);
+        }
+
+        public static readonly DependencyProperty SelectedStopKeyProperty =
+            DependencyProperty.Register(nameof(SelectedStopKey), typeof(Key), typeof(SettingsWindow),
                 new PropertyMetadata(default(Key)));
 
         #endregion Dependency Properties
@@ -32,22 +43,27 @@ namespace AutoClicker.Views
 
         #endregion Lifetime
 
-        #region Stop Command
+        #region Save Command
 
         private void SaveCommand_Execute(object sender, ExecutedRoutedEventArgs e)
         {
-            AppSettings.SetStartHotKey(Key.F4);
+            Button source = (Button)e.Source;
+            if (source.Name == nameof(saveStartHotkeyButton)) // TODO: find a BETTER way to tell apart
+            {
+                AppSettings.SetStartHotKey(SelectedStartKey);
+            }
+            else if (source.Name == nameof(saveStopHotkeyButton))
+            {
+                AppSettings.SetStopHotKey(SelectedStopKey);
+            }
         }
 
         private void SaveCommand_CanExecute(object sender, CanExecuteRoutedEventArgs e)
         {
-            e.CanExecute = true;
+            // TODO: find a way to tell apart
+            e.CanExecute = SelectedStartKey != Key.None;
         }
 
-        #endregion Stop Command
-
-        #region Event Handlers
-
-        #endregion Event Handlers
+        #endregion Save Command
     }
 }

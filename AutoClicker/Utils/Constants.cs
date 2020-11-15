@@ -4,6 +4,9 @@
     {
         public const string MAIN_WINDOW_TITLE_DEFAULT = "AutoClicker";
         public const string MAIN_WINDOW_TITLE_RUNNING = " - Running...";
+        public const string MAIN_WINDOW_START_BUTTON_CONTENT = "Start";
+        public const string MAIN_WINDOW_STOP_BUTTON_CONTENT = "Stop";
+
         public const string ABOUT_WINDOW_TITLE = "About";
         public const string SETTINGS_WINDOW_TITLE = "Hotkey Settings";
 

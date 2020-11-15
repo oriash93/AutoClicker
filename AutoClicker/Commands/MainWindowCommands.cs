@@ -6,10 +6,10 @@ namespace AutoClicker.Commands
     public static class MainWindowCommands
     {
         public static readonly RoutedUICommand Start =
-            Utilities.CreateCommand(typeof(MainWindowCommands), nameof(Start), new KeyGesture(Key.F6));
+            Utilities.CreateCommand(typeof(MainWindowCommands), nameof(Start));
 
         public static readonly RoutedUICommand Stop =
-            Utilities.CreateCommand(typeof(MainWindowCommands), nameof(Stop), new KeyGesture(Key.F7));
+            Utilities.CreateCommand(typeof(MainWindowCommands), nameof(Stop));
 
         public static readonly RoutedUICommand HotkeySettings =
             Utilities.CreateCommand(typeof(MainWindowCommands), nameof(HotkeySettings), new KeyGesture(Key.CapsLock, ModifierKeys.Control));

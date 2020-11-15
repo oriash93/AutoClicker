@@ -163,11 +163,14 @@
 
             <UniformGrid Name="buttonsGrid"
                          Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="4" Rows="1" Columns="3">
-                <Button Grid.Row="0" Grid.Column="0" Margin="5"
+                <Button Name="startButton"
+                        Grid.Row="0" Grid.Column="0" Margin="5"
                         Content="Start (F6)" Command="commands:MainWindowCommands.Start"/>
-                <Button Grid.Row="0" Grid.Column="1" Margin="5"
+                <Button Name="stopButton"
+                        Grid.Row="0" Grid.Column="1" Margin="5"
                         Content="Stop (F7)" Command="commands:MainWindowCommands.Stop"/>
-                <Button Grid.Row="0" Grid.Column="2" Margin="5"
+                <Button Name="settingsButton"
+                        Grid.Row="0" Grid.Column="2" Margin="5"
                         Content="Hotkey Settings" Command="commands:MainWindowCommands.HotkeySettings"/>
             </UniformGrid>
         </Grid>
