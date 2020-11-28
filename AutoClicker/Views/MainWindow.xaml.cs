@@ -23,8 +23,7 @@ namespace AutoClicker.Views
         }
 
         public static readonly DependencyProperty HoursProperty =
-            DependencyProperty.Register(nameof(Hours), typeof(int), typeof(MainWindow),
-                new PropertyMetadata(default(int)));
+            DependencyProperty.Register(nameof(Hours), typeof(int), typeof(MainWindow));
 
         public int Minutes
         {
@@ -33,8 +32,7 @@ namespace AutoClicker.Views
         }
 
         public static readonly DependencyProperty MinutesProperty =
-            DependencyProperty.Register(nameof(Minutes), typeof(int), typeof(MainWindow),
-                new PropertyMetadata(default(int)));
+            DependencyProperty.Register(nameof(Minutes), typeof(int), typeof(MainWindow));
 
         public int Seconds
         {
@@ -43,8 +41,7 @@ namespace AutoClicker.Views
         }
 
         public static readonly DependencyProperty SecondsProperty =
-            DependencyProperty.Register(nameof(Seconds), typeof(int), typeof(MainWindow),
-                new PropertyMetadata(default(int)));
+            DependencyProperty.Register(nameof(Seconds), typeof(int), typeof(MainWindow));
 
         public int Milliseconds
         {
@@ -53,8 +50,7 @@ namespace AutoClicker.Views
         }
 
         public static readonly DependencyProperty MillisecondsProperty =
-            DependencyProperty.Register(nameof(Milliseconds), typeof(int), typeof(MainWindow),
-                new PropertyMetadata(default(int)));
+            DependencyProperty.Register(nameof(Milliseconds), typeof(int), typeof(MainWindow));
 
         public MouseButton SelectedMouseButton
         {
@@ -63,8 +59,7 @@ namespace AutoClicker.Views
         }
 
         public static readonly DependencyProperty SelectedMouseButtonProperty =
-            DependencyProperty.Register(nameof(SelectedMouseButton), typeof(MouseButton), typeof(MainWindow),
-                new PropertyMetadata(default(MouseButton)));
+            DependencyProperty.Register(nameof(SelectedMouseButton), typeof(MouseButton), typeof(MainWindow));
 
         public MouseAction SelectedMouseAction
         {
@@ -73,8 +68,7 @@ namespace AutoClicker.Views
         }
 
         public static readonly DependencyProperty SelectedMouseActionProperty =
-            DependencyProperty.Register(nameof(SelectedMouseAction), typeof(MouseAction), typeof(MainWindow),
-                new PropertyMetadata(default(MouseAction)));
+            DependencyProperty.Register(nameof(SelectedMouseAction), typeof(MouseAction), typeof(MainWindow));
         public RepeatMode SelectedRepeatMode
         {
             get => (RepeatMode)GetValue(SelectedRepeatModeProperty);
@@ -82,8 +76,7 @@ namespace AutoClicker.Views
         }
 
         public static readonly DependencyProperty SelectedRepeatModeProperty =
-            DependencyProperty.Register(nameof(SelectedRepeatMode), typeof(RepeatMode), typeof(MainWindow),
-                new PropertyMetadata(default(RepeatMode)));
+            DependencyProperty.Register(nameof(SelectedRepeatMode), typeof(RepeatMode), typeof(MainWindow));
 
         public LocationMode SelectedLocationMode
         {
@@ -92,8 +85,7 @@ namespace AutoClicker.Views
         }
 
         public static readonly DependencyProperty SelectedLocationModeProperty =
-            DependencyProperty.Register(nameof(SelectedLocationMode), typeof(LocationMode), typeof(MainWindow),
-                new PropertyMetadata(default(LocationMode)));
+            DependencyProperty.Register(nameof(SelectedLocationMode), typeof(LocationMode), typeof(MainWindow));
 
         public int PickedXValue
         {
@@ -102,8 +94,7 @@ namespace AutoClicker.Views
         }
 
         public static readonly DependencyProperty PickedXValueProperty =
-            DependencyProperty.Register(nameof(PickedXValue), typeof(int), typeof(MainWindow),
-                new PropertyMetadata(default(int)));
+            DependencyProperty.Register(nameof(PickedXValue), typeof(int), typeof(MainWindow));
 
         public int PickedYValue
         {
@@ -112,8 +103,7 @@ namespace AutoClicker.Views
         }
 
         public static readonly DependencyProperty PickedYValueProperty =
-            DependencyProperty.Register(nameof(PickedYValue), typeof(int), typeof(MainWindow),
-                new PropertyMetadata(default(int)));
+            DependencyProperty.Register(nameof(PickedYValue), typeof(int), typeof(MainWindow));
 
         public int SelectedTimesToRepeat
         {
@@ -122,8 +112,7 @@ namespace AutoClicker.Views
         }
 
         public static readonly DependencyProperty SelectedTimesToRepeatProperty =
-            DependencyProperty.Register(nameof(SelectedTimesToRepeat), typeof(int), typeof(MainWindow),
-                new PropertyMetadata(default(int)));
+            DependencyProperty.Register(nameof(SelectedTimesToRepeat), typeof(int), typeof(MainWindow));
 
         #endregion Dependency Properties
 
