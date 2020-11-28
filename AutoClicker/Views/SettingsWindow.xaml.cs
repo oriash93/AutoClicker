@@ -17,8 +17,7 @@ namespace AutoClicker.Views
         }
 
         public static readonly DependencyProperty SelectedStartKeyProperty =
-            DependencyProperty.Register(nameof(SelectedStartKey), typeof(Key), typeof(SettingsWindow),
-                new PropertyMetadata(default(Key)));
+            DependencyProperty.Register(nameof(SelectedStartKey), typeof(Key), typeof(SettingsWindow));
 
         public Key SelectedStopKey
         {
@@ -27,8 +26,7 @@ namespace AutoClicker.Views
         }
 
         public static readonly DependencyProperty SelectedStopKeyProperty =
-            DependencyProperty.Register(nameof(SelectedStopKey), typeof(Key), typeof(SettingsWindow),
-                new PropertyMetadata(default(Key)));
+            DependencyProperty.Register(nameof(SelectedStopKey), typeof(Key), typeof(SettingsWindow));
 
         #endregion Dependency Properties
 
@@ -39,6 +37,9 @@ namespace AutoClicker.Views
             DataContext = this;
 
             Title = Constants.SETTINGS_WINDOW_TITLE;
+            SelectedStartKey = AppSettings.StartHotkey.Key;
+            SelectedStopKey = AppSettings.StopHotkey.Key;
+
             InitializeComponent();
         }
 
