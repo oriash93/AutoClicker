@@ -1,18 +1,23 @@
 ﻿using System.Windows.Input;
+using AutoClicker.Utils;
 
 namespace AutoClicker.Commands
 {
     public static class MainWindowCommands
     {
-        public static readonly RoutedUICommand Start = CreateCommand(nameof(Start), new KeyGesture(Key.F6));
+        public static readonly RoutedUICommand Start =
+            Utilities.CreateCommand(typeof(MainWindowCommands), nameof(Start));
 
-        public static readonly RoutedUICommand Stop = CreateCommand(nameof(Stop), new KeyGesture(Key.F7));
+        public static readonly RoutedUICommand Stop =
+            Utilities.CreateCommand(typeof(MainWindowCommands), nameof(Stop));
 
-        public static readonly RoutedUICommand Exit = CreateCommand(nameof(Exit), new KeyGesture(Key.F4, ModifierKeys.Alt));
+        public static readonly RoutedUICommand HotkeySettings =
+            Utilities.CreateCommand(typeof(MainWindowCommands), nameof(HotkeySettings), new KeyGesture(Key.CapsLock, ModifierKeys.Control));
 
-        public static readonly RoutedUICommand About = CreateCommand(nameof(About), new KeyGesture(Key.F1));
+        public static readonly RoutedUICommand Exit =
+            Utilities.CreateCommand(typeof(MainWindowCommands), nameof(Exit), new KeyGesture(Key.F4, ModifierKeys.Alt));
 
-        private static RoutedUICommand CreateCommand(string commandName, KeyGesture keyGesture = null)
-            => new RoutedUICommand(commandName, commandName, typeof(MainWindowCommands), new InputGestureCollection() { keyGesture });
+        public static readonly RoutedUICommand About =
+            Utilities.CreateCommand(typeof(MainWindowCommands), nameof(About), new KeyGesture(Key.F1));
     }
 }

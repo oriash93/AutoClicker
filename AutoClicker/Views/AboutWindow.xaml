@@ -4,7 +4,7 @@
         Topmost="true"
         ResizeMode="CanMinimize"
         Height="150" Width="250"
-        Icon="{StaticResource HelpIcon}">
+        Icon="{StaticResource AboutIcon}">
     <DockPanel>
         <TextBlock VerticalAlignment="Center" TextAlignment="Center">
             <Run Name="AboutInformationText"/>
