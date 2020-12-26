@@ -1,7 +1,5 @@
-﻿using System;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Input;
-using AutoClicker.Enums;
 using AutoClicker.Utils;
 
 namespace AutoClicker.Views
@@ -37,8 +35,8 @@ namespace AutoClicker.Views
             DataContext = this;
 
             Title = Constants.SETTINGS_WINDOW_TITLE;
-            SelectedStartKey = AppSettings.StartHotkey.Key;
-            SelectedStopKey = AppSettings.StopHotkey.Key;
+            SelectedStartKey = SettingsUtils.GetStartHotKey().Key;
+            SelectedStopKey = SettingsUtils.GetStopHotKey().Key;
 
             InitializeComponent();
         }
@@ -49,42 +47,41 @@ namespace AutoClicker.Views
 
         private void SaveCommand_Execute(object sender, ExecutedRoutedEventArgs e)
         {
-            Operation operation = (Operation)e.Parameter;
-            switch (operation)
+            if (SelectedStartKey != SettingsUtils.GetStartHotKey().Key && IsKeyValid(SelectedStartKey))
             {
-                case Operation.Start:
-                    AppSettings.SetStartHotKey(SelectedStartKey);
-                    break;
-                case Operation.Stop:
-                    AppSettings.SetStopHotKey(SelectedStopKey);
-                    break;
-                default:
-                    throw new NotSupportedException("Operation not supported!");
+                SettingsUtils.SetStartHotKey(SelectedStartKey);
+            }
+            if (SelectedStopKey != SettingsUtils.GetStopHotKey().Key && IsKeyValid(SelectedStopKey))
+            {
+                SettingsUtils.SetStopHotKey(SelectedStopKey);
             }
         }
 
         private void SaveCommand_CanExecute(object sender, CanExecuteRoutedEventArgs e)
         {
-            if (e.Parameter == null)
-            {
-                e.CanExecute = false;
-                return;
-            }
-
-            Operation operation = (Operation)e.Parameter;
-            switch (operation)
-            {
-                case Operation.Start:
-                    e.CanExecute = SelectedStartKey != Key.None;
-                    break;
-                case Operation.Stop:
-                    e.CanExecute = SelectedStopKey != Key.None;
-                    break;
-                default:
-                    throw new NotSupportedException("Operation not supported!");
-            }
+            e.CanExecute = IsKeyValid(SelectedStartKey) || IsKeyValid(SelectedStopKey);
         }
 
         #endregion Save Command
+
+        #region Reset Command
+
+        private void ResetCommand_Execute(object sender, ExecutedRoutedEventArgs e)
+        {
+            SettingsUtils.LoadSettings();
+            SelectedStartKey = SettingsUtils.GetStartHotKey().Key;
+            SelectedStopKey = SettingsUtils.GetStopHotKey().Key;
+        }
+
+        #endregion Reset Command
+
+        #region Helper Methods
+
+        private bool IsKeyValid(Key key)
+        {
+            return key != Key.None;
+        }
+
+        #endregion Helper Methods
     }
 }

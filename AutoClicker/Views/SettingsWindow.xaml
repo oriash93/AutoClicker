@@ -2,7 +2,6 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:commands="clr-namespace:AutoClicker.Commands"
-        xmlns:enums="clr-namespace:AutoClicker.Enums"
         Topmost="true"
         ResizeMode="CanMinimize"
         Height="150" Width="300"
@@ -14,6 +13,8 @@
     <Window.CommandBindings>
         <CommandBinding Command="commands:SettingsWindowCommands.Save"
                         Executed="SaveCommand_Execute" CanExecute="SaveCommand_CanExecute"/>
+        <CommandBinding Command="commands:SettingsWindowCommands.Reset"
+                        Executed="ResetCommand_Execute"/>
     </Window.CommandBindings>
 
     <Grid Name="settingsGrid"
@@ -21,11 +22,11 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="Auto"/>
             <ColumnDefinition Width="120"/>
-            <ColumnDefinition Width="50"/>
+            <ColumnDefinition Width="120"/>
         </Grid.ColumnDefinitions>
 
         <Label Grid.Row="0" Grid.Column="0" Margin="5, 5, 5, 5"
@@ -36,10 +37,6 @@
                   SelectedIndex="0" SelectedItem="{Binding SelectedStartKey}"
                   HorizontalAlignment="Stretch"
                   VerticalContentAlignment="Center" HorizontalContentAlignment="Center"/>
-        <Button Name="saveStartHotkeyButton"
-                Content="Save" Grid.Row="0" Grid.Column="2" Margin="5, 5, 5, 5"
-                Command="commands:SettingsWindowCommands.Save"
-                CommandParameter="{x:Static enums:Operation.Start}"/>
 
         <Label Grid.Row="1" Grid.Column="0"  Margin="5, 5, 5, 5"
                Content="Stop Hotkey: "/>
@@ -49,9 +46,13 @@
                   SelectedIndex="0" SelectedItem="{Binding SelectedStopKey}"
                   HorizontalAlignment="Stretch"
                   VerticalContentAlignment="Center" HorizontalContentAlignment="Center"/>
-        <Button Name="saveStopHotkeyButton"
-                Content="Save" Grid.Row="1" Grid.Column="2" Margin="5, 5, 5, 5"
-                Command="commands:SettingsWindowCommands.Save"
-                CommandParameter="{x:Static enums:Operation.Stop}"/>
+
+        <Button Name="saveSettingsButton"
+                Content="Save" Grid.Row="2" Grid.Column="0" Margin="5, 5, 5, 5"
+                Command="commands:SettingsWindowCommands.Save"/>
+
+        <Button Name="resetSettingsButton"
+                Content="Reset" Grid.Row="2" Grid.Column="1" Margin="5, 5, 5, 5"
+                Command="commands:SettingsWindowCommands.Reset"/>
     </Grid>
 </Window>

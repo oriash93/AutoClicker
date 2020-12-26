@@ -147,16 +147,16 @@ namespace AutoClicker.Views
             _source = HwndSource.FromHwnd(_mainWindowHandle);
             _source.AddHook(StartStopHooks);
 
-            AppSettings.HotKeyChangedEvent += AppSettings_HotKeyChanged;
-            RegisterHotkey(Constants.START_HOTKEY_ID, AppSettings.StartHotkey);
-            RegisterHotkey(Constants.STOP_HOTKEY_ID, AppSettings.StopHotkey);
+            SettingsUtils.HotKeyChangedEvent += AppSettings_HotKeyChanged;
+            RegisterHotkey(Constants.START_HOTKEY_ID, SettingsUtils.GetStartHotKey());
+            RegisterHotkey(Constants.STOP_HOTKEY_ID, SettingsUtils.GetStopHotKey());
         }
 
         protected override void OnClosed(EventArgs e)
         {
             _source.RemoveHook(StartStopHooks);
 
-            AppSettings.HotKeyChangedEvent -= AppSettings_HotKeyChanged;
+            SettingsUtils.HotKeyChangedEvent -= AppSettings_HotKeyChanged;
             UnregisterHotkey(Constants.START_HOTKEY_ID);
             UnregisterHotkey(Constants.STOP_HOTKEY_ID);
 
@@ -363,11 +363,11 @@ namespace AutoClicker.Views
             if (msg == Constants.WM_HOTKEY && hotkeyId == Constants.START_HOTKEY_ID || hotkeyId == Constants.STOP_HOTKEY_ID)
             {
                 int virtualKey = ((int)lParam >> 16) & 0xFFFF;
-                if (virtualKey == AppSettings.StartHotkey.VirtualCode && CanStart())
+                if (virtualKey == SettingsUtils.GetStartHotKey().VirtualCode && CanStart())
                 {
                     StartCommand_Execute(null, null);
                 }
-                if (virtualKey == AppSettings.StopHotkey.VirtualCode && clickTimer.Enabled)
+                if (virtualKey == SettingsUtils.GetStopHotKey().VirtualCode && clickTimer.Enabled)
                 {
                     StopCommand_Execute(null, null);
                 }
@@ -382,7 +382,7 @@ namespace AutoClicker.Views
             {
                 case Operation.Start:
                     ReRegisterHotkey(Constants.START_HOTKEY_ID, e.Hotkey);
-                    startButton.Content = $"{Constants.MAIN_WINDOW_START_BUTTON_CONTENT} ({e.Hotkey.Key})"; // TODO: de-dup this line?
+                    startButton.Content = $"{Constants.MAIN_WINDOW_START_BUTTON_CONTENT} ({e.Hotkey.Key})";
                     break;
                 case Operation.Stop:
                     ReRegisterHotkey(Constants.STOP_HOTKEY_ID, e.Hotkey);
