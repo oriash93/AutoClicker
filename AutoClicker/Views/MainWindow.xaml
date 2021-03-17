@@ -6,36 +6,37 @@
         ResizeMode="CanMinimize"
         Height="320" Width="450">
     <Window.Resources>
-        <ResourceDictionary Source="../Resources/ResourceDictionary.xaml"/>
+        <ResourceDictionary Source="../Resources/MainWindowResources.xaml"/>
     </Window.Resources>
 
     <Window.CommandBindings>
-        <CommandBinding Command="commands:CustomCommands.Start" Executed="StartCommand_Execute" CanExecute="StartCommand_CanExecute"/>
-        <CommandBinding Command="commands:CustomCommands.Stop" Executed="StopCommand_Execute" CanExecute="StopCommand_CanExecute"/>
-        <CommandBinding Command="commands:CustomCommands.Exit" Executed="ExitCommand_Execute"/>
-        <CommandBinding Command="commands:CustomCommands.About" Executed="AboutCommand_Execute"/>
+        <CommandBinding Command="commands:MainWindowCommands.Start" Executed="StartCommand_Execute" CanExecute="StartCommand_CanExecute"/>
+        <CommandBinding Command="commands:MainWindowCommands.Stop" Executed="StopCommand_Execute" CanExecute="StopCommand_CanExecute"/>
+        <CommandBinding Command="commands:MainWindowCommands.HotkeySettings" Executed="HotkeySettingsCommand_Execute"/>
+        <CommandBinding Command="commands:MainWindowCommands.Exit" Executed="ExitCommand_Execute"/>
+        <CommandBinding Command="commands:MainWindowCommands.About" Executed="AboutCommand_Execute"/>
     </Window.CommandBindings>
 
-    <Grid>
+    <Grid Name="mainWindowGrid">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <DockPanel Grid.Row="0">
+        <DockPanel Name="menuDockPanel" Grid.Row="0">
             <Menu DockPanel.Dock="Top">
                 <MenuItem Header="_Help">
-                    <MenuItem Header="_About" Command="commands:CustomCommands.About">
+                    <MenuItem Header="_About" Command="commands:MainWindowCommands.About">
                         <MenuItem.Icon>
-                            <Image Source="{StaticResource HelpIcon}"/>
+                            <Image Source="{StaticResource AboutIcon}"/>
                         </MenuItem.Icon>
                     </MenuItem>
                 </MenuItem>
-                <MenuItem Header="_Exit" Command="commands:CustomCommands.Exit"/>
+                <MenuItem Header="_Exit" Command="commands:MainWindowCommands.Exit"/>
             </Menu>
         </DockPanel>
 
-        <Grid Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center">
+        <Grid Name="primaryGrid" Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center">
             <Grid.RowDefinitions>
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="2*"/>
@@ -45,10 +46,14 @@
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
 
-            <GroupBox Header="Click Interval" Grid.Row="0" Grid.ColumnSpan="2">
-                <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
+            <GroupBox Name="clickIntervalGroupBox"
+                      Header="Click Interval" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="4">
+                <Grid Name="clickIntervalInnerGrid"
+                      HorizontalAlignment="Center" VerticalAlignment="Center">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
@@ -78,8 +83,10 @@
                 </Grid>
             </GroupBox>
 
-            <GroupBox Header="Click Repeat" Grid.Row="1" Grid.Column="0">
-                <Grid HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,5,0,0">
+            <GroupBox Name="clickRepeatGroupBox"
+                      Header="Click Repeat" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2">
+                <Grid Name="clickRepeatInnerGrid"
+                      HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,5,0,0">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
@@ -105,8 +112,10 @@
                 </Grid>
             </GroupBox>
 
-            <GroupBox Header="Click Position" Grid.Row="1" Grid.Column="1">
-                <Grid HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,5,0,0">
+            <GroupBox Name="clickPositionGroupBox"
+                      Header="Click Position" Grid.Row="1" Grid.Column="2" Grid.ColumnSpan="2">
+                <Grid Name="clickPositionInnerGrid"
+                      HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,5,0,0">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
@@ -117,27 +126,28 @@
                     </Grid.ColumnDefinitions>
 
                     <RadioButton Grid.Row="0" Grid.Column="0" Margin="0, 0, 0, 5"
-                             Content="Current Cursor Position"
-                             IsChecked="{Binding Path=SelectedLocationMode, Converter={StaticResource EnumToBooleanConverter},
-                                        ConverterParameter={x:Static enums:LocationMode.CurrentLocation}}"/>
+                                 Content="Current Cursor Position"
+                                 IsChecked="{Binding Path=SelectedLocationMode, Converter={StaticResource EnumToBooleanConverter},
+                                                                                ConverterParameter={x:Static enums:LocationMode.CurrentLocation}}"/>
                     <RadioButton Grid.Row="1" Grid.ColumnSpan="2" Margin="0, 0, 0, 5"
-                             IsChecked="{Binding Path=SelectedLocationMode, Converter={StaticResource EnumToBooleanConverter},
-                                        ConverterParameter={x:Static enums:LocationMode.PickedLocation}}">
+                                 IsChecked="{Binding Path=SelectedLocationMode, Converter={StaticResource EnumToBooleanConverter},
+                                                                                ConverterParameter={x:Static enums:LocationMode.PickedLocation}}">
                         <StackPanel Orientation="Horizontal">
                             <TextBlock Text="X" Margin="5, 0, 0, 0"/>
                             <TextBox Width="50" Margin="5, 0, 0, 0"
-                                 Text="{Binding PickedXValue, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
-                            <!--<Button Content="Pick Location" Margin="5, 0, 0, 0"/>-->
+                                     Text="{Binding PickedXValue, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
                             <TextBlock Text="Y" Margin="5, 0, 0, 0"/>
                             <TextBox Width="50" Margin="5, 0, 0, 0"
-                                 Text="{Binding PickedYValue, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+                                     Text="{Binding PickedYValue, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
                         </StackPanel>
                     </RadioButton>
                 </Grid>
             </GroupBox>
 
-            <GroupBox Header="Click Options" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3">
-                <UniformGrid HorizontalAlignment="Center" VerticalAlignment="Stretch" Rows="1" Columns="4">
+            <GroupBox Name="clickOptionGroupBox"
+                      Header="Click Options" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="4">
+                <UniformGrid Name="clickOptionInnerGrid"
+                             HorizontalAlignment="Center" VerticalAlignment="Stretch" Rows="1" Columns="4">
                     <TextBlock Grid.Row="0" Grid.Column="0" Text="Mouse Button"
                                Margin="5, 5, 5, 5" VerticalAlignment="Center" TextAlignment="Center"/>
                     <ComboBox Grid.Row="0" Grid.Column="1" Margin="5, 5, 5, 5"
@@ -151,10 +161,18 @@
                 </UniformGrid>
             </GroupBox>
 
-            <Button Grid.Row="3" Grid.Column="0" Margin="5"
-                    Content="Start (F6)" Command="commands:CustomCommands.Start"/>
-            <Button Grid.Row="3" Grid.Column="1" Margin="5"
-                    Content="Stop (F7)" Command="commands:CustomCommands.Stop"/>
+            <UniformGrid Name="buttonsGrid"
+                         Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="4" Rows="1" Columns="3">
+                <Button Name="startButton"
+                        Grid.Row="0" Grid.Column="0" Margin="5"
+                        Content="Start (F6)" Command="commands:MainWindowCommands.Start"/>
+                <Button Name="stopButton"
+                        Grid.Row="0" Grid.Column="1" Margin="5"
+                        Content="Stop (F7)" Command="commands:MainWindowCommands.Stop"/>
+                <Button Name="settingsButton"
+                        Grid.Row="0" Grid.Column="2" Margin="5"
+                        Content="Hotkey Settings" Command="commands:MainWindowCommands.HotkeySettings"/>
+            </UniformGrid>
         </Grid>
     </Grid>
 </Window>

@@ -1,8 +1,10 @@
 ﻿<Application x:Class="AutoClicker.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             StartupUri="Views/MainWindow.xaml">
+             StartupUri="Views/MainWindow.xaml"
+             ShutdownMode="OnMainWindowClose">
     <Application.Resources>
-        <BitmapImage x:Key="HelpIcon" UriSource="Resources/question.ico" />
+        <BitmapImage x:Key="AboutIcon" UriSource="Resources/about.ico" />
+        <BitmapImage x:Key="SettingsIcon" UriSource="Resources/settings.ico" />
     </Application.Resources>
 </Application>
