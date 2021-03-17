@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System.Collections.Generic;
+using System.Windows;
 using System.Windows.Input;
 using AutoClicker.Utils;
 
@@ -8,23 +9,25 @@ namespace AutoClicker.Views
     {
         #region Dependency Properties
 
-        public Key SelectedStartKey
+        public KeyMapping SelectedStartKey
         {
-            get => (Key)GetValue(SelectedStartKeyProperty);
+            get => (KeyMapping)GetValue(SelectedStartKeyProperty);
             set => SetValue(SelectedStartKeyProperty, value);
         }
 
         public static readonly DependencyProperty SelectedStartKeyProperty =
-            DependencyProperty.Register(nameof(SelectedStartKey), typeof(Key), typeof(SettingsWindow));
+            DependencyProperty.Register(nameof(SelectedStartKey), typeof(KeyMapping), typeof(SettingsWindow));
 
-        public Key SelectedStopKey
+        public KeyMapping SelectedStopKey
         {
-            get => (Key)GetValue(SelectedStopKeyProperty);
+            get => (KeyMapping)GetValue(SelectedStopKeyProperty);
             set => SetValue(SelectedStopKeyProperty, value);
         }
 
         public static readonly DependencyProperty SelectedStopKeyProperty =
-            DependencyProperty.Register(nameof(SelectedStopKey), typeof(Key), typeof(SettingsWindow));
+            DependencyProperty.Register(nameof(SelectedStopKey), typeof(KeyMapping), typeof(SettingsWindow));
+
+        public List<KeyMapping> KeyMapping { get; set; }
 
         #endregion Dependency Properties
 
@@ -33,10 +36,11 @@ namespace AutoClicker.Views
         public SettingsWindow()
         {
             DataContext = this;
+            KeyMapping = KeyMappingUtils.KeyMapping;
 
             Title = Constants.SETTINGS_WINDOW_TITLE;
-            SelectedStartKey = SettingsUtils.GetStartHotKey().Key;
-            SelectedStopKey = SettingsUtils.GetStopHotKey().Key;
+            SelectedStartKey = SettingsUtils.GetStartHotKey();
+            SelectedStopKey = SettingsUtils.GetStopHotKey();
 
             InitializeComponent();
         }
@@ -47,19 +51,14 @@ namespace AutoClicker.Views
 
         private void SaveCommand_Execute(object sender, ExecutedRoutedEventArgs e)
         {
-            if (SelectedStartKey != SettingsUtils.GetStartHotKey().Key && IsKeyValid(SelectedStartKey))
+            if (SelectedStartKey != SettingsUtils.GetStartHotKey())
             {
                 SettingsUtils.SetStartHotKey(SelectedStartKey);
             }
-            if (SelectedStopKey != SettingsUtils.GetStopHotKey().Key && IsKeyValid(SelectedStopKey))
+            if (SelectedStopKey != SettingsUtils.GetStopHotKey())
             {
                 SettingsUtils.SetStopHotKey(SelectedStopKey);
             }
-        }
-
-        private void SaveCommand_CanExecute(object sender, CanExecuteRoutedEventArgs e)
-        {
-            e.CanExecute = IsKeyValid(SelectedStartKey) || IsKeyValid(SelectedStopKey);
         }
 
         #endregion Save Command
@@ -69,19 +68,10 @@ namespace AutoClicker.Views
         private void ResetCommand_Execute(object sender, ExecutedRoutedEventArgs e)
         {
             SettingsUtils.LoadSettings();
-            SelectedStartKey = SettingsUtils.GetStartHotKey().Key;
-            SelectedStopKey = SettingsUtils.GetStopHotKey().Key;
+            SelectedStartKey = SettingsUtils.GetStartHotKey();
+            SelectedStopKey = SettingsUtils.GetStopHotKey();
         }
 
         #endregion Reset Command
-
-        #region Helper Methods
-
-        private bool IsKeyValid(Key key)
-        {
-            return key != Key.None;
-        }
-
-        #endregion Helper Methods
     }
 }

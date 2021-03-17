@@ -2,8 +2,8 @@
 {
     public class ApplicationSettings
     {
-        public Hotkey StartHotkey { get; set; } = new Hotkey(Constants.DEFAULT_START_HOTKEY);
+        public KeyMapping StartHotkey { get; set; } = new KeyMapping(Constants.DEFAULT_START_HOTKEY);
 
-        public Hotkey StopHotkey { get; set; } = new Hotkey(Constants.DEFAULT_STOP_HOTKEY);
+        public KeyMapping StopHotkey { get; set; } = new KeyMapping(Constants.DEFAULT_STOP_HOTKEY);
     }
 }

@@ -12,7 +12,9 @@ namespace AutoClicker.Utils
         public const string ABOUT_WINDOW_TITLE = "About";
         public const string SETTINGS_WINDOW_TITLE = "Hotkey Settings";
 
-        public const string SETTINGS_FILE_NAME = "AutoClicker_Settings.json";
+        public const string RESOURCES_DIRECTORY = "Resources";
+        public const string KEY_MAPPINGs_RESOURCE_PATH = "keyMappings.json";
+        public const string SETTINGS_FILE_PATH = "AutoClicker_Settings.json";
 
         public const int MOUSEEVENTF_LEFTDOWN = 0x02;
         public const int MOUSEEVENTF_LEFTUP = 0x04;

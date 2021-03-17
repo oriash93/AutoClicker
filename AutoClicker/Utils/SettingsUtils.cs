@@ -9,7 +9,7 @@ namespace AutoClicker.Utils
     public static class SettingsUtils
     {
         private static readonly string settingsFilePath =
-            Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), Constants.SETTINGS_FILE_NAME);
+            Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), Constants.SETTINGS_FILE_PATH);
 
         private static ApplicationSettings CurrentSettings { get; set; }
 
@@ -18,29 +18,29 @@ namespace AutoClicker.Utils
             CurrentSettings = new ApplicationSettings();
         }
 
-        public static Hotkey GetStartHotKey()
+        public static KeyMapping GetStartHotKey()
         {
             return CurrentSettings.StartHotkey;
         }
 
-        public static Hotkey GetStopHotKey()
+        public static KeyMapping GetStopHotKey()
         {
             return CurrentSettings.StopHotkey;
         }
 
-        public static void SetStartHotKey(Key key)
+        public static void SetStartHotKey(KeyMapping key)
         {
-            CurrentSettings.StartHotkey = new Hotkey(key);
+            CurrentSettings.StartHotkey = key;
             NotifyChanges(CurrentSettings.StartHotkey, Operation.Start);
         }
 
-        public static void SetStopHotKey(Key key)
+        public static void SetStopHotKey(KeyMapping key)
         {
-            CurrentSettings.StopHotkey = new Hotkey(key);
+            CurrentSettings.StopHotkey = key;
             NotifyChanges(CurrentSettings.StopHotkey, Operation.Stop);
         }
 
-        private static void NotifyChanges(Hotkey hotkey, Operation operation)
+        private static void NotifyChanges(KeyMapping hotkey, Operation operation)
         {
             HotkeyChangedEventArgs args = new HotkeyChangedEventArgs
             {
