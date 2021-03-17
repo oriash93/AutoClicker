@@ -8,7 +8,7 @@ namespace AutoClicker.Utils
     public static class KeyMappingUtils
     {
         private static readonly string keysMappingPath =
-            Path.Combine(Environment.CurrentDirectory, Constants.RESOURCES_DIRECTORY, Constants.KEY_MAPPINGs_RESOURCE_PATH);
+            Path.Combine(Environment.CurrentDirectory, Constants.RESOURCES_DIRECTORY, Constants.KEY_MAPPINGS_RESOURCE_PATH);
        
         private static List<KeyMapping> keyMapping;
 
