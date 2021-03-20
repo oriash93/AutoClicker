@@ -5,7 +5,7 @@ namespace AutoClicker.Utils
 {
     public class HotkeyChangedEventArgs : EventArgs
     {
-        public Hotkey Hotkey { get; set; }
+        public KeyMapping Hotkey { get; set; }
         public Operation Operation { get; set; }
     }
 }

@@ -292,15 +292,15 @@ namespace AutoClicker.Views
             Title = Constants.MAIN_WINDOW_TITLE_DEFAULT;
         }
 
-        private void ReRegisterHotkey(int hotkeyId, Hotkey hotkey)
+        private void ReRegisterHotkey(int hotkeyId, KeyMapping hotkey)
         {
             UnregisterHotkey(hotkeyId);
             RegisterHotkey(hotkeyId, hotkey);
         }
 
-        private void RegisterHotkey(int hotkeyId, Hotkey hotkey)
+        private void RegisterHotkey(int hotkeyId, KeyMapping hotkey)
         {
-            User32Api.RegisterHotKey(_mainWindowHandle, hotkeyId, Constants.MOD_NONE, hotkey.VirtualCode);
+            User32Api.RegisterHotKey(_mainWindowHandle, hotkeyId, Constants.MOD_NONE, hotkey.VirtualKeyCode);
         }
 
         private void UnregisterHotkey(int hotkeyId)
@@ -363,11 +363,11 @@ namespace AutoClicker.Views
             if (msg == Constants.WM_HOTKEY && hotkeyId == Constants.START_HOTKEY_ID || hotkeyId == Constants.STOP_HOTKEY_ID)
             {
                 int virtualKey = ((int)lParam >> 16) & 0xFFFF;
-                if (virtualKey == SettingsUtils.GetStartHotKey().VirtualCode && CanStart())
+                if (virtualKey == SettingsUtils.GetStartHotKey().VirtualKeyCode && CanStart())
                 {
                     StartCommand_Execute(null, null);
                 }
-                if (virtualKey == SettingsUtils.GetStopHotKey().VirtualCode && clickTimer.Enabled)
+                if (virtualKey == SettingsUtils.GetStopHotKey().VirtualKeyCode && clickTimer.Enabled)
                 {
                     StopCommand_Execute(null, null);
                 }
@@ -382,11 +382,11 @@ namespace AutoClicker.Views
             {
                 case Operation.Start:
                     ReRegisterHotkey(Constants.START_HOTKEY_ID, e.Hotkey);
-                    startButton.Content = $"{Constants.MAIN_WINDOW_START_BUTTON_CONTENT} ({e.Hotkey.Key})";
+                    startButton.Content = $"{Constants.MAIN_WINDOW_START_BUTTON_CONTENT} ({e.Hotkey.DisplayName})";
                     break;
                 case Operation.Stop:
                     ReRegisterHotkey(Constants.STOP_HOTKEY_ID, e.Hotkey);
-                    stopButton.Content = $"{Constants.MAIN_WINDOW_STOP_BUTTON_CONTENT} ({e.Hotkey.Key})";
+                    stopButton.Content = $"{Constants.MAIN_WINDOW_STOP_BUTTON_CONTENT} ({e.Hotkey.DisplayName})";
                     break;
                 default:
                     throw new NotSupportedException("Operation not supported!");

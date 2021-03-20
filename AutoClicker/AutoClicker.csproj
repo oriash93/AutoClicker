@@ -98,18 +98,15 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Commands\SettingsWindowCommands.cs" />
+    <Compile Include="Utils\KeyMappingUtils.cs" />
     <Compile Include="Utils\ApplicationSettings.cs" />
+    <Compile Include="Utils\KeyMapping.cs" />
     <Compile Include="Utils\SettingsUtils.cs" />
-    <Compile Include="Utils\Hotkey.cs" />
     <Compile Include="Utils\HotkeyChangedEventArgs.cs" />
     <Compile Include="Utils\User32Api.cs" />
     <Compile Include="Views\SettingsWindow.xaml.cs">
       <DependentUpon>SettingsWindow.xaml</DependentUpon>
     </Compile>
-    <Page Include="Resources\SettingsWindowResources.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Views\AboutWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -162,6 +159,9 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <None Include="Resources\keyMappings.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

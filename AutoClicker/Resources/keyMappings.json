@@ -1,0 +1,602 @@
+[
+  {
+    "virtual_key_name": "VK_LBUTTON",
+    "virtual_key_hex_code": "0x01",
+    "display_name": "Left Mouse Button"
+  },
+  {
+    "virtual_key_name": "VK_RBUTTON",
+    "virtual_key_hex_code": "0x02",
+    "display_name": "Right Mouse Button"
+  },
+  {
+    "virtual_key_name": "VK_MBUTTON",
+    "virtual_key_hex_code": "0x04",
+    "display_name": "Middle Mouse Button"
+  },
+  {
+    "virtual_key_name": "VK_XBUTTON1",
+    "virtual_key_hex_code": "0x05",
+    "display_name": "X1 Mouse Button"
+  },
+  {
+    "virtual_key_name": "VK_XBUTTON2",
+    "virtual_key_hex_code": "0x06",
+    "display_name": "X2 Mouse Button"
+  },
+  {
+    "virtual_key_name": "VK_BACK",
+    "virtual_key_hex_code": "0x08",
+    "display_name": "Backspace"
+  },
+  {
+    "virtual_key_name": "VK_TAB",
+    "virtual_key_hex_code": "0x09",
+    "display_name": "Tab"
+  },
+  {
+    "virtual_key_name": "VK_RETURN",
+    "virtual_key_hex_code": "0x0D",
+    "display_name": "Enter"
+  },
+  {
+    "virtual_key_name": "VK_SHIFT",
+    "virtual_key_hex_code": "0x10",
+    "display_name": "Shift"
+  },
+  {
+    "virtual_key_name": "VK_CONTROL",
+    "virtual_key_hex_code": "0x11",
+    "display_name": "Ctrl"
+  },
+  {
+    "virtual_key_name": "VK_MENU",
+    "virtual_key_hex_code": "0x12",
+    "display_name": "Alt"
+  },
+  {
+    "virtual_key_name": "VK_PAUSE",
+    "virtual_key_hex_code": "0x13",
+    "display_name": "Pause"
+  },
+  {
+    "virtual_key_name": "VK_CAPITAL",
+    "virtual_key_hex_code": "0x14",
+    "display_name": "Caps Lock"
+  },
+  {
+    "virtual_key_name": "VK_ESCAPE",
+    "virtual_key_hex_code": "0x1B",
+    "display_name": "Esc"
+  },
+  {
+    "virtual_key_name": "VK_SPACE",
+    "virtual_key_hex_code": "0x20",
+    "display_name": "Spacebar"
+  },
+  {
+    "virtual_key_name": "VK_PRIOR",
+    "virtual_key_hex_code": "0x21",
+    "display_name": "Page Up"
+  },
+  {
+    "virtual_key_name": "VK_NEXT",
+    "virtual_key_hex_code": "0x22",
+    "display_name": "Page Down"
+  },
+  {
+    "virtual_key_name": "VK_END",
+    "virtual_key_hex_code": "0x23",
+    "display_name": "End"
+  },
+  {
+    "virtual_key_name": "VK_HOME",
+    "virtual_key_hex_code": "0x24",
+    "display_name": "Home"
+  },
+  {
+    "virtual_key_name": "VK_LEFT",
+    "virtual_key_hex_code": "0x25",
+    "display_name": "Left Arrow"
+  },
+  {
+    "virtual_key_name": "VK_UP",
+    "virtual_key_hex_code": "0x26",
+    "display_name": "Up Arrow"
+  },
+  {
+    "virtual_key_name": "VK_RIGHT",
+    "virtual_key_hex_code": "0x27",
+    "display_name": "Right Arrow"
+  },
+  {
+    "virtual_key_name": "VK_DOWN",
+    "virtual_key_hex_code": "0x28",
+    "display_name": "Down Arrow"
+  },
+  {
+    "virtual_key_name": "VK_SNAPSHOT",
+    "virtual_key_hex_code": "0x2C",
+    "display_name": "Print Screen"
+  },
+  {
+    "virtual_key_name": "VK_INSERT",
+    "virtual_key_hex_code": "0x2D",
+    "display_name": "Insert"
+  },
+  {
+    "virtual_key_name": "VK_DELETE",
+    "virtual_key_hex_code": "0x2E",
+    "display_name": "Delete"
+  },
+  {
+    "virtual_key_name": "VK_0",
+    "virtual_key_hex_code": "0x30",
+    "display_name": "0"
+  },
+  {
+    "virtual_key_name": "VK_1",
+    "virtual_key_hex_code": "0x31",
+    "display_name": "1"
+  },
+  {
+    "virtual_key_name": "VK_2",
+    "virtual_key_hex_code": "0x32",
+    "display_name": "2"
+  },
+  {
+    "virtual_key_name": "VK_3",
+    "virtual_key_hex_code": "0x33",
+    "display_name": "3"
+  },
+  {
+    "virtual_key_name": "VK_4",
+    "virtual_key_hex_code": "0x34",
+    "display_name": "4"
+  },
+  {
+    "virtual_key_name": "VK_5",
+    "virtual_key_hex_code": "0x35",
+    "display_name": "5"
+  },
+  {
+    "virtual_key_name": "VK_6",
+    "virtual_key_hex_code": "0x36",
+    "display_name": "6"
+  },
+  {
+    "virtual_key_name": "VK_7",
+    "virtual_key_hex_code": "0x37",
+    "display_name": "7"
+  },
+  {
+    "virtual_key_name": "VK_8",
+    "virtual_key_hex_code": "0x38",
+    "display_name": "8"
+  },
+  {
+    "virtual_key_name": "VK_9",
+    "virtual_key_hex_code": "0x39",
+    "display_name": "9"
+  },
+  {
+    "virtual_key_name": "VK_A",
+    "virtual_key_hex_code": "0x41",
+    "display_name": "A"
+  },
+  {
+    "virtual_key_name": "VK_B",
+    "virtual_key_hex_code": "0x42",
+    "display_name": "B"
+  },
+  {
+    "virtual_key_name": "VK_C",
+    "virtual_key_hex_code": "0x43",
+    "display_name": "C"
+  },
+  {
+    "virtual_key_name": "VK_D",
+    "virtual_key_hex_code": "0x44",
+    "display_name": "D"
+  },
+  {
+    "virtual_key_name": "VK_E",
+    "virtual_key_hex_code": "0x45",
+    "display_name": "E"
+  },
+  {
+    "virtual_key_name": "VK_F",
+    "virtual_key_hex_code": "0x46",
+    "display_name": "F"
+  },
+  {
+    "virtual_key_name": "VK_G",
+    "virtual_key_hex_code": "0x47",
+    "display_name": "G"
+  },
+  {
+    "virtual_key_name": "VK_H",
+    "virtual_key_hex_code": "0x48",
+    "display_name": "H"
+  },
+  {
+    "virtual_key_name": "VK_I",
+    "virtual_key_hex_code": "0x49",
+    "display_name": "I"
+  },
+  {
+    "virtual_key_name": "VK_J",
+    "virtual_key_hex_code": "0x4A",
+    "display_name": "J"
+  },
+  {
+    "virtual_key_name": "VK_K",
+    "virtual_key_hex_code": "0x4B",
+    "display_name": "K"
+  },
+  {
+    "virtual_key_name": "VK_L",
+    "virtual_key_hex_code": "0x4C",
+    "display_name": "L"
+  },
+  {
+    "virtual_key_name": "VK_M",
+    "virtual_key_hex_code": "0x4D",
+    "display_name": "M"
+  },
+  {
+    "virtual_key_name": "VK_N",
+    "virtual_key_hex_code": "0x4E",
+    "display_name": "N"
+  },
+  {
+    "virtual_key_name": "VK_O",
+    "virtual_key_hex_code": "0x4F",
+    "display_name": "O"
+  },
+  {
+    "virtual_key_name": "VK_P",
+    "virtual_key_hex_code": "0x50",
+    "display_name": "P"
+  },
+  {
+    "virtual_key_name": "VK_Q",
+    "virtual_key_hex_code": "0x51",
+    "display_name": "Q"
+  },
+  {
+    "virtual_key_name": "VK_R",
+    "virtual_key_hex_code": "0x52",
+    "display_name": "R"
+  },
+  {
+    "virtual_key_name": "VK_S",
+    "virtual_key_hex_code": "0x53",
+    "display_name": "S"
+  },
+  {
+    "virtual_key_name": "VK_T",
+    "virtual_key_hex_code": "0x54",
+    "display_name": "T"
+  },
+  {
+    "virtual_key_name": "VK_U",
+    "virtual_key_hex_code": "0x55",
+    "display_name": "U"
+  },
+  {
+    "virtual_key_name": "VK_V",
+    "virtual_key_hex_code": "0x56",
+    "display_name": "V"
+  },
+  {
+    "virtual_key_name": "VK_W",
+    "virtual_key_hex_code": "0x57",
+    "display_name": "W"
+  },
+  {
+    "virtual_key_name": "VK_X",
+    "virtual_key_hex_code": "0x58",
+    "display_name": "X"
+  },
+  {
+    "virtual_key_name": "VK_Y",
+    "virtual_key_hex_code": "0x59",
+    "display_name": "Y"
+  },
+  {
+    "virtual_key_name": "VK_Z",
+    "virtual_key_hex_code": "0x5A",
+    "display_name": "Z"
+  },
+  {
+    "virtual_key_name": "VK_LWIN",
+    "virtual_key_hex_code": "0x5B",
+    "display_name": "Left Windows key"
+  },
+  {
+    "virtual_key_name": "VK_RWIN",
+    "virtual_key_hex_code": "0x5C",
+    "display_name": "Right Windows key"
+  },
+  {
+    "virtual_key_name": "VK_CONTEXTKEY",
+    "virtual_key_hex_code": "0x5D",
+    "display_name": "Context Menu key"
+  },
+  {
+    "virtual_key_name": "VK_NUMPAD0",
+    "virtual_key_hex_code": "0x60",
+    "display_name": "Numpad 0"
+  },
+  {
+    "virtual_key_name": "VK_NUMPAD1",
+    "virtual_key_hex_code": "0x61",
+    "display_name": "Numpad 1"
+  },
+  {
+    "virtual_key_name": "VK_NUMPAD2",
+    "virtual_key_hex_code": "0x62",
+    "display_name": "Numpad 2"
+  },
+  {
+    "virtual_key_name": "VK_NUMPAD3",
+    "virtual_key_hex_code": "0x63",
+    "display_name": "Numpad 3"
+  },
+  {
+    "virtual_key_name": "VK_NUMPAD4",
+    "virtual_key_hex_code": "0x64",
+    "display_name": "Numpad 4"
+  },
+  {
+    "virtual_key_name": "VK_NUMPAD5",
+    "virtual_key_hex_code": "0x65",
+    "display_name": "Numpad 5"
+  },
+  {
+    "virtual_key_name": "VK_NUMPAD6",
+    "virtual_key_hex_code": "0x66",
+    "display_name": "Numpad 6"
+  },
+  {
+    "virtual_key_name": "VK_NUMPAD7",
+    "virtual_key_hex_code": "0x67",
+    "display_name": "Numpad 7"
+  },
+  {
+    "virtual_key_name": "VK_NUMPAD8",
+    "virtual_key_hex_code": "0x68",
+    "display_name": "Numpad 8"
+  },
+  {
+    "virtual_key_name": "VK_NUMPAD9",
+    "virtual_key_hex_code": "0x69",
+    "display_name": "Numpad 9"
+  },
+  {
+    "virtual_key_name": "VK_MULTIPLY",
+    "virtual_key_hex_code": "0x6A",
+    "display_name": "Numpad *"
+  },
+  {
+    "virtual_key_name": "VK_ADD",
+    "virtual_key_hex_code": "0x6B",
+    "display_name": "Numpad +"
+  },
+  {
+    "virtual_key_name": "VK_SUBTRACT",
+    "virtual_key_hex_code": "0x6D",
+    "display_name": "Numpad -"
+  },
+  {
+    "virtual_key_name": "VK_DECIMAL",
+    "virtual_key_hex_code": "0x6E",
+    "display_name": "Numpad ."
+  },
+  {
+    "virtual_key_name": "VK_DIVIDE",
+    "virtual_key_hex_code": "0x6F",
+    "display_name": "Numpad /"
+  },
+  {
+    "virtual_key_name": "VK_F1",
+    "virtual_key_hex_code": "0x70",
+    "display_name": "F1"
+  },
+  {
+    "virtual_key_name": "VK_F2",
+    "virtual_key_hex_code": "0x71",
+    "display_name": "F2"
+  },
+  {
+    "virtual_key_name": "VK_F3",
+    "virtual_key_hex_code": "0x72",
+    "display_name": "F3"
+  },
+  {
+    "virtual_key_name": "VK_F4",
+    "virtual_key_hex_code": "0x73",
+    "display_name": "F4"
+  },
+  {
+    "virtual_key_name": "VK_F5",
+    "virtual_key_hex_code": "0x74",
+    "display_name": "F5"
+  },
+  {
+    "virtual_key_name": "VK_F6",
+    "virtual_key_hex_code": "0x75",
+    "display_name": "F6"
+  },
+  {
+    "virtual_key_name": "VK_F7",
+    "virtual_key_hex_code": "0x76",
+    "display_name": "F7"
+  },
+  {
+    "virtual_key_name": "VK_F8",
+    "virtual_key_hex_code": "0x77",
+    "display_name": "F8"
+  },
+  {
+    "virtual_key_name": "VK_F9",
+    "virtual_key_hex_code": "0x78",
+    "display_name": "F9"
+  },
+  {
+    "virtual_key_name": "VK_F10",
+    "virtual_key_hex_code": "0x79",
+    "display_name": "F10"
+  },
+  {
+    "virtual_key_name": "VK_F11",
+    "virtual_key_hex_code": "0x7A",
+    "display_name": "F11"
+  },
+  {
+    "virtual_key_name": "VK_F12",
+    "virtual_key_hex_code": "0x7B",
+    "display_name": "F12"
+  },
+  {
+    "virtual_key_name": "VK_F13",
+    "virtual_key_hex_code": "0x7C",
+    "display_name": "F13"
+  },
+  {
+    "virtual_key_name": "VK_F14",
+    "virtual_key_hex_code": "0x7D",
+    "display_name": "F14"
+  },
+  {
+    "virtual_key_name": "VK_F15",
+    "virtual_key_hex_code": "0x7E",
+    "display_name": "F15"
+  },
+  {
+    "virtual_key_name": "VK_F16",
+    "virtual_key_hex_code": "0x7F",
+    "display_name": "F16"
+  },
+  {
+    "virtual_key_name": "VK_F17",
+    "virtual_key_hex_code": "0x80",
+    "display_name": "F17"
+  },
+  {
+    "virtual_key_name": "VK_F18",
+    "virtual_key_hex_code": "0x81",
+    "display_name": "F18"
+  },
+  {
+    "virtual_key_name": "VK_F19",
+    "virtual_key_hex_code": "0x82",
+    "display_name": "F19"
+  },
+  {
+    "virtual_key_name": "VK_F20",
+    "virtual_key_hex_code": "0x83",
+    "display_name": "F20"
+  },
+  {
+    "virtual_key_name": "VK_F21",
+    "virtual_key_hex_code": "0x84",
+    "display_name": "F21"
+  },
+  {
+    "virtual_key_name": "VK_F22",
+    "virtual_key_hex_code": "0x85",
+    "display_name": "F22"
+  },
+  {
+    "virtual_key_name": "VK_F23",
+    "virtual_key_hex_code": "0x86",
+    "display_name": "F23"
+  },
+  {
+    "virtual_key_name": "VK_F24",
+    "virtual_key_hex_code": "0x87",
+    "display_name": "F24"
+  },
+  {
+    "virtual_key_name": "VK_NUMLOCK",
+    "virtual_key_hex_code": "0x90",
+    "display_name": "Num Lock"
+  },
+  {
+    "virtual_key_name": "VK_OEM_SCROLL",
+    "virtual_key_hex_code": "0x91",
+    "display_name": "Scroll Lock"
+  },
+  {
+    "virtual_key_name": "VK_LCONTROL",
+    "virtual_key_hex_code": "0xA2",
+    "display_name": "Left Ctrl"
+  },
+  {
+    "virtual_key_name": "VK_RCONTROL",
+    "virtual_key_hex_code": "0xA3",
+    "display_name": "Right Ctrl"
+  },
+  {
+    "virtual_key_name": "VK_OEM_1",
+    "virtual_key_hex_code": "0xBA",
+    "display_name": ";"
+  },
+  {
+    "virtual_key_name": "VK_OEM_PLUS",
+    "virtual_key_hex_code": "0xBB",
+    "display_name": "+"
+  },
+  {
+    "virtual_key_name": "VK_OEM_COMMA",
+    "virtual_key_hex_code": "0xBC",
+    "display_name": ","
+  },
+  {
+    "virtual_key_name": "VK_OEM_MINUS",
+    "virtual_key_hex_code": "0xBD",
+    "display_name": "-"
+  },
+  {
+    "virtual_key_name": "VK_OEM_PERIOD",
+    "virtual_key_hex_code": "0xBE",
+    "display_name": "."
+  },
+  {
+    "virtual_key_name": "VK_OEM_2",
+    "virtual_key_hex_code": "0xBF",
+    "display_name": "/"
+  },
+  {
+    "virtual_key_name": "VK_OEM_3",
+    "virtual_key_hex_code": "0xC0",
+    "display_name": "`"
+  },
+  {
+    "virtual_key_name": "VK_OEM_4",
+    "virtual_key_hex_code": "0xDB",
+    "display_name": "["
+  },
+  {
+    "virtual_key_name": "VK_OEM_5",
+    "virtual_key_hex_code": "0xDC",
+    "display_name": "\\"
+  },
+  {
+    "virtual_key_name": "VK_OEM_6",
+    "virtual_key_hex_code": "0xDD",
+    "display_name": "]"
+  },
+  {
+    "virtual_key_name": "VK_OEM_7",
+    "virtual_key_hex_code": "0xDE",
+    "display_name": "'"
+  },
+  {
+    "virtual_key_name": "VK_OEM_CLEAR",
+    "virtual_key_hex_code": "0xFE",
+    "display_name": "Clear"
+  }
+]

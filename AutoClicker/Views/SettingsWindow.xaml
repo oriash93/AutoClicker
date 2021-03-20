@@ -4,15 +4,11 @@
         xmlns:commands="clr-namespace:AutoClicker.Commands"
         Topmost="true"
         ResizeMode="CanMinimize"
-        Height="150" Width="300"
+        Height="150" Width="350"
         Icon="{StaticResource SettingsIcon}">
-    <Window.Resources>
-        <ResourceDictionary Source="../Resources/SettingsWindowResources.xaml"/>
-    </Window.Resources>
-
     <Window.CommandBindings>
         <CommandBinding Command="commands:SettingsWindowCommands.Save"
-                        Executed="SaveCommand_Execute" CanExecute="SaveCommand_CanExecute"/>
+                        Executed="SaveCommand_Execute"/>
         <CommandBinding Command="commands:SettingsWindowCommands.Reset"
                         Executed="ResetCommand_Execute"/>
     </Window.CommandBindings>
@@ -25,15 +21,16 @@
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="120"/>
-            <ColumnDefinition Width="120"/>
+            <ColumnDefinition Width="150"/>
+            <ColumnDefinition Width="150"/>
         </Grid.ColumnDefinitions>
 
         <Label Grid.Row="0" Grid.Column="0" Margin="5, 5, 5, 5"
                Content="Start Hotkey: "/>
         <ComboBox Name="comboBox1"
                   Grid.Row="0" Grid.Column="1" Margin="5, 5, 5, 5"
-                  ItemsSource="{Binding Source={StaticResource keysValues}}"
+                  ItemsSource="{Binding Path=KeyMapping}"
+                  DisplayMemberPath="DisplayName"
                   SelectedIndex="0" SelectedItem="{Binding SelectedStartKey}"
                   HorizontalAlignment="Stretch"
                   VerticalContentAlignment="Center" HorizontalContentAlignment="Center"/>
@@ -42,7 +39,8 @@
                Content="Stop Hotkey: "/>
         <ComboBox Name="comboBox2"
                   Grid.Row="1" Grid.Column="1" Margin="5, 5, 5, 5"
-                  ItemsSource="{Binding Source={StaticResource keysValues}}"
+                  ItemsSource="{Binding Path=KeyMapping}"
+                  DisplayMemberPath="DisplayName"
                   SelectedIndex="0" SelectedItem="{Binding SelectedStopKey}"
                   HorizontalAlignment="Stretch"
                   VerticalContentAlignment="Center" HorizontalContentAlignment="Center"/>
