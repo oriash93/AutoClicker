@@ -1,13 +1,18 @@
 ﻿using System;
 using System.Timers;
 using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Input;
 using System.Windows.Interop;
 using AutoClicker.Enums;
 using AutoClicker.Utils;
-using CanExecuteRoutedEventArgs = System.Windows.Input.CanExecuteRoutedEventArgs;
-using ExecutedRoutedEventArgs = System.Windows.Input.ExecutedRoutedEventArgs;
+using MouseAction = AutoClicker.Enums.MouseAction;
+using MouseButton = AutoClicker.Enums.MouseButton;
 using MouseCursor = System.Windows.Forms.Cursor;
+using NotifyIcon = System.Windows.Forms.NotifyIcon;
+
 using Point = System.Drawing.Point;
+using Timer = System.Timers.Timer;
 
 namespace AutoClicker.Views
 {
@@ -119,6 +124,7 @@ namespace AutoClicker.Views
 
         private int timesRepeated = 0;
         private readonly Timer clickTimer;
+        private NotifyIcon systemTrayIcon;
         private AboutWindow aboutWindow = null;
         private SettingsWindow settingsWindow = null;
 
@@ -127,7 +133,7 @@ namespace AutoClicker.Views
 
         #endregion Fields
 
-        #region Lifetime
+        #region Life Cycle
 
         public MainWindow()
         {
@@ -150,6 +156,18 @@ namespace AutoClicker.Views
             SettingsUtils.HotKeyChangedEvent += AppSettings_HotKeyChanged;
             RegisterHotkey(Constants.START_HOTKEY_ID, SettingsUtils.GetStartHotKey());
             RegisterHotkey(Constants.STOP_HOTKEY_ID, SettingsUtils.GetStopHotKey());
+
+            InitializeSystemTrayIcon();
+        }
+
+        protected override void OnStateChanged(EventArgs e)
+        {
+            if (WindowState == WindowState.Minimized && SettingsUtils.GetMinimizeToTray())
+            {
+                Hide();
+            }
+
+            base.OnStateChanged(e);
         }
 
         protected override void OnClosed(EventArgs e)
@@ -160,10 +178,12 @@ namespace AutoClicker.Views
             UnregisterHotkey(Constants.START_HOTKEY_ID);
             UnregisterHotkey(Constants.STOP_HOTKEY_ID);
 
+            systemTrayIcon.Click -= OnSystemTrayIconClick;
+
             base.OnClosed(e);
         }
 
-        #endregion Lifetime
+        #endregion Life Cycle
 
         #region Commands
 
@@ -390,6 +410,34 @@ namespace AutoClicker.Views
                     break;
                 default:
                     throw new NotSupportedException("Operation not supported!");
+            }
+        }
+
+        private void InitializeSystemTrayIcon()
+        {
+            systemTrayIcon = new NotifyIcon
+            {
+                Visible = true,
+                Icon = Utilities.GetApplicationIcon()
+            };
+
+            systemTrayIcon.Click += OnSystemTrayIconClick;
+        }
+
+        private void OnSystemTrayIconClick(object sender, EventArgs e)
+        {
+            if (WindowState != WindowState.Normal && !IsVisible)
+            {
+                Show();
+                WindowState = WindowState.Normal;
+            }
+        }
+
+        private void OnMenuItemCheckChanged(object sender, RoutedEventArgs e)
+        {
+            if (sender is MenuItem menuItem)
+            {
+                SettingsUtils.SetMinimizeToTray(menuItem.IsChecked);
             }
         }
 
