@@ -18,7 +18,7 @@ namespace AutoClicker.Views
             InitializeComponent();
 
             AssemblyName assemblyInfo = Utilities.GetAssemblyInfo();
-            AboutInformationText.Text = $"{assemblyInfo.Name} v{assemblyInfo.Version.Major}.{assemblyInfo.Version.Minor}";
+            AboutInformationText.Text = $"{assemblyInfo.Name} v{assemblyInfo.Version.Major}.{assemblyInfo.Version.Minor}.{assemblyInfo.Version.Build}";
             UrlHyperlink.NavigateUri = Utilities.GetProjectUri();
             UrlHyperlink.Inlines.Add(Utilities.GetProjectURL());
         }
