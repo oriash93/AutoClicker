@@ -31,6 +31,9 @@
                             <Image Source="{StaticResource AboutIcon}"/>
                         </MenuItem.Icon>
                     </MenuItem>
+                    <MenuItem Header="Minimize to tray"
+                              IsCheckable="True" IsChecked="False"
+                              Checked="OnMenuItemCheckChanged" Unchecked="OnMenuItemCheckChanged"/>
                 </MenuItem>
                 <MenuItem Header="_Exit" Command="commands:MainWindowCommands.Exit"/>
             </Menu>

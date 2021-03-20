@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Drawing;
 using System.Reflection;
 using System.Windows.Input;
 
@@ -10,6 +11,9 @@ namespace AutoClicker.Utils
 
         public static AssemblyName GetAssemblyInfo()
             => assembly.GetName();
+
+        public static Icon GetApplicationIcon()
+            => Icon.ExtractAssociatedIcon(assembly.Location);
 
         public static string GetProjectURL()
             => assembly.GetCustomAttribute<AssemblyDescriptionAttribute>().Description;

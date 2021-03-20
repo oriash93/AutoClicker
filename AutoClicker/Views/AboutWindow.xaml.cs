@@ -8,7 +8,7 @@ namespace AutoClicker.Views
 {
     public partial class AboutWindow : Window
     {
-        #region Lifetime
+        #region Life Cycle
 
         public AboutWindow()
         {
@@ -23,7 +23,7 @@ namespace AutoClicker.Views
             UrlHyperlink.Inlines.Add(Utilities.GetProjectURL());
         }
 
-        #endregion Lifetime
+        #endregion Life Cycle
 
         #region Event Handlers
 

@@ -5,5 +5,7 @@
         public KeyMapping StartHotkey { get; set; } = new KeyMapping(Constants.DEFAULT_START_HOTKEY);
 
         public KeyMapping StopHotkey { get; set; } = new KeyMapping(Constants.DEFAULT_STOP_HOTKEY);
+
+        public bool MinimizeToTray { get; set; } = false;
     }
 }

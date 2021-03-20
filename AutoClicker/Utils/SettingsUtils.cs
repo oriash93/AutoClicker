@@ -1,7 +1,6 @@
 ﻿using System;
 using System.IO;
 using System.Text.Json;
-using System.Windows.Input;
 using AutoClicker.Enums;
 
 namespace AutoClicker.Utils
@@ -23,21 +22,31 @@ namespace AutoClicker.Utils
             return CurrentSettings.StartHotkey;
         }
 
-        public static KeyMapping GetStopHotKey()
-        {
-            return CurrentSettings.StopHotkey;
-        }
-
         public static void SetStartHotKey(KeyMapping key)
         {
             CurrentSettings.StartHotkey = key;
             NotifyChanges(CurrentSettings.StartHotkey, Operation.Start);
         }
 
+        public static KeyMapping GetStopHotKey()
+        {
+            return CurrentSettings.StopHotkey;
+        }
+
         public static void SetStopHotKey(KeyMapping key)
         {
             CurrentSettings.StopHotkey = key;
             NotifyChanges(CurrentSettings.StopHotkey, Operation.Stop);
+        }
+
+        public static void SetMinimizeToTray(bool minimize)
+        {
+            CurrentSettings.MinimizeToTray = minimize;
+        }
+
+        public static bool GetMinimizeToTray()
+        {
+            return CurrentSettings.MinimizeToTray;
         }
 
         private static void NotifyChanges(KeyMapping hotkey, Operation operation)

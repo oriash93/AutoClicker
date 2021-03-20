@@ -31,7 +31,7 @@ namespace AutoClicker.Views
 
         #endregion Dependency Properties
 
-        #region Lifetime
+        #region Life Cycle
 
         public SettingsWindow()
         {
@@ -45,7 +45,7 @@ namespace AutoClicker.Views
             InitializeComponent();
         }
 
-        #endregion Lifetime
+        #endregion Life Cycle
 
         #region Save Command
 
