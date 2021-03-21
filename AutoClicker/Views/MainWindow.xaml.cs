@@ -6,6 +6,7 @@ using System.Windows.Input;
 using System.Windows.Interop;
 using AutoClicker.Enums;
 using AutoClicker.Utils;
+using Serilog;
 using MouseAction = AutoClicker.Enums.MouseAction;
 using MouseButton = AutoClicker.Enums.MouseButton;
 using MouseCursor = System.Windows.Forms.Cursor;
@@ -153,7 +154,7 @@ namespace AutoClicker.Views
             _source = HwndSource.FromHwnd(_mainWindowHandle);
             _source.AddHook(StartStopHooks);
 
-            SettingsUtils.HotKeyChangedEvent += AppSettings_HotKeyChanged;
+            SettingsUtils.HotKeyChangedEvent += OnAppSettingsHotKeyChanged;
             RegisterHotkey(Constants.START_HOTKEY_ID, SettingsUtils.CurrentSettings.StartHotkey);
             RegisterHotkey(Constants.STOP_HOTKEY_ID, SettingsUtils.CurrentSettings.StopHotkey);
 
@@ -174,7 +175,7 @@ namespace AutoClicker.Views
         {
             _source.RemoveHook(StartStopHooks);
 
-            SettingsUtils.HotKeyChangedEvent -= AppSettings_HotKeyChanged;
+            SettingsUtils.HotKeyChangedEvent -= OnAppSettingsHotKeyChanged;
             UnregisterHotkey(Constants.START_HOTKEY_ID);
             UnregisterHotkey(Constants.STOP_HOTKEY_ID);
 
@@ -191,8 +192,11 @@ namespace AutoClicker.Views
 
         private void StartCommand_Execute(object sender, ExecutedRoutedEventArgs e)
         {
+            int interval = CalculateInterval();
+            Log.Information("Starting operation, interval={Interval}ms", interval);
+
             timesRepeated = 0;
-            clickTimer.Interval = CalculateInterval();
+            clickTimer.Interval = interval;
             clickTimer.Start();
             Title += Constants.MAIN_WINDOW_TITLE_RUNNING;
         }
@@ -208,6 +212,7 @@ namespace AutoClicker.Views
 
         private void StopCommand_Execute(object sender, ExecutedRoutedEventArgs e)
         {
+            Log.Information("Stopping operation");
             clickTimer.Stop();
             ResetTitle();
         }
@@ -320,13 +325,16 @@ namespace AutoClicker.Views
 
         private void RegisterHotkey(int hotkeyId, KeyMapping hotkey)
         {
+            Log.Information("RegisterHotkey with hotkeyId {HotkeyId} and hotkey {Hotkey}", hotkeyId, hotkey.DisplayName);
             User32Api.RegisterHotKey(_mainWindowHandle, hotkeyId, Constants.MOD_NONE, hotkey.VirtualKeyCode);
         }
 
         private void UnregisterHotkey(int hotkeyId)
         {
+            Log.Information("UnregisterHotkey with hotkeyId {HotkeyId}", hotkeyId);
             if (User32Api.UnregisterHotKey(_mainWindowHandle, hotkeyId))
                 return;
+            Log.Warning("No hotkey registered on {HotkeyId}", hotkeyId);
             throw new InvalidOperationException($"No hotkey registered on {hotkeyId}");
         }
 
@@ -396,8 +404,9 @@ namespace AutoClicker.Views
             return IntPtr.Zero;
         }
 
-        private void AppSettings_HotKeyChanged(object sender, HotkeyChangedEventArgs e)
+        private void OnAppSettingsHotKeyChanged(object sender, HotkeyChangedEventArgs e)
         {
+            Log.Information("OnAppSettingsHotKeyChanged with operation {Operation} and hotkey {Hotkey}", e.Operation, e.Hotkey.DisplayName);
             switch (e.Operation)
             {
                 case Operation.Start:
@@ -409,7 +418,8 @@ namespace AutoClicker.Views
                     stopButton.Content = $"{Constants.MAIN_WINDOW_STOP_BUTTON_CONTENT} ({e.Hotkey.DisplayName})";
                     break;
                 default:
-                    throw new NotSupportedException("Operation not supported!");
+                    Log.Warning("Operation {Operation} not supported!", e.Operation);
+                    throw new NotSupportedException($"Operation {e.Operation} not supported!");
             }
         }
 

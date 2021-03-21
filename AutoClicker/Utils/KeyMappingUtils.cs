@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Text.Json;
+using Serilog;
 
 namespace AutoClicker.Utils
 {
@@ -41,13 +42,15 @@ namespace AutoClicker.Utils
                 }
                 else
                 {
-                    // TODO: log this exception or show error message
+                    Log.Error("File {FilePath} is missing", keysMappingPath);
+                    throw new FileNotFoundException(keysMappingPath);
                 }
             }
             catch (JsonException)
             {
-                // TODO: log this exception or show error message
+                Log.Warning("Failed parsing KeyMapping");
             }
+            Log.Debug("Read file {FilePath} succesfully", keysMappingPath);
         }
 
     }

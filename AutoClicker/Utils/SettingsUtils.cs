@@ -2,6 +2,7 @@
 using System.IO;
 using System.Text.Json;
 using AutoClicker.Enums;
+using Serilog;
 
 namespace AutoClicker.Utils
 {
@@ -31,6 +32,7 @@ namespace AutoClicker.Utils
 
         public static void Reset()
         {
+            Log.Information("Reset settings to default");
             SetStartHotKey(ApplicationSettings.defaultStartKeyMapping);
             SetStopHotKey(ApplicationSettings.defaultStopKeyMapping);
         }
@@ -55,6 +57,7 @@ namespace AutoClicker.Utils
             using (StreamWriter streamWriter = File.CreateText(settingsFilePath))
             {
                 streamWriter.Write(jsonString);
+                Log.Information("Settings saved!");
             }
         }
 
@@ -64,19 +67,22 @@ namespace AutoClicker.Utils
             {
                 if (File.Exists(settingsFilePath))
                 {
+                    Log.Debug("Read file {FilePath}", settingsFilePath);
                     string jsonString = File.ReadAllText(settingsFilePath);
                     ApplicationSettings settings = JsonSerializer.Deserialize<ApplicationSettings>(jsonString);
                     CurrentSettings = settings;
                 }
                 else
                 {
-                    // TODO: log this exception or show error message
+                    Log.Error("File {FilePath} is missing", settingsFilePath);
+                    throw new FileNotFoundException(settingsFilePath);
                 }
             }
             catch (JsonException)
             {
-                // TODO: log this exception or show error message
+                Log.Warning("Failed parsing ApplicationSettings");
             }
+            Log.Debug("Read file {FilePath} succesfully", settingsFilePath);
         }
     }
 }
