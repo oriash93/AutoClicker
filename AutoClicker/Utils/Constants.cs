@@ -1,6 +1,4 @@
-﻿using System.Windows.Input;
-
-namespace AutoClicker.Utils
+﻿namespace AutoClicker.Utils
 {
     public static class Constants
     {
@@ -28,7 +26,7 @@ namespace AutoClicker.Utils
         public const int STOP_HOTKEY_ID = 9001;
         public const int WM_HOTKEY = 0x0312;
 
-        public const Key DEFAULT_START_HOTKEY = Key.F6;
-        public const Key DEFAULT_STOP_HOTKEY = Key.F7;
+        public const int DEFAULT_START_HOTKEY = 0x75;
+        public const int DEFAULT_STOP_HOTKEY = 0x76;
     }
 }

@@ -39,8 +39,8 @@ namespace AutoClicker.Views
             KeyMapping = KeyMappingUtils.KeyMapping;
 
             Title = Constants.SETTINGS_WINDOW_TITLE;
-            SelectedStartKey = SettingsUtils.GetStartHotKey();
-            SelectedStopKey = SettingsUtils.GetStopHotKey();
+            SelectedStartKey = SettingsUtils.CurrentSettings.StartHotkey;
+            SelectedStopKey = SettingsUtils.CurrentSettings.StopHotkey;
 
             InitializeComponent();
         }
@@ -51,11 +51,11 @@ namespace AutoClicker.Views
 
         private void SaveCommand_Execute(object sender, ExecutedRoutedEventArgs e)
         {
-            if (SelectedStartKey != SettingsUtils.GetStartHotKey())
+            if (SelectedStartKey != SettingsUtils.CurrentSettings.StartHotkey)
             {
                 SettingsUtils.SetStartHotKey(SelectedStartKey);
             }
-            if (SelectedStopKey != SettingsUtils.GetStopHotKey())
+            if (SelectedStopKey != SettingsUtils.CurrentSettings.StopHotkey)
             {
                 SettingsUtils.SetStopHotKey(SelectedStopKey);
             }
@@ -67,9 +67,9 @@ namespace AutoClicker.Views
 
         private void ResetCommand_Execute(object sender, ExecutedRoutedEventArgs e)
         {
-            SettingsUtils.LoadSettings();
-            SelectedStartKey = SettingsUtils.GetStartHotKey();
-            SelectedStopKey = SettingsUtils.GetStopHotKey();
+            SettingsUtils.Reset();
+            SelectedStartKey = SettingsUtils.CurrentSettings.StartHotkey;
+            SelectedStopKey = SettingsUtils.CurrentSettings.StopHotkey;
         }
 
         #endregion Reset Command

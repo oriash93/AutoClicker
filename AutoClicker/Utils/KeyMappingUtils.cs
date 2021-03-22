@@ -9,33 +9,35 @@ namespace AutoClicker.Utils
     {
         private static readonly string keysMappingPath =
             Path.Combine(Environment.CurrentDirectory, Constants.RESOURCES_DIRECTORY, Constants.KEY_MAPPINGS_RESOURCE_PATH);
-       
-        private static List<KeyMapping> keyMapping;
 
-        public static List<KeyMapping> KeyMapping
+        public static List<KeyMapping> KeyMapping { get; set; }
+
+        static KeyMappingUtils()
         {
-            get
-            {
-                if (keyMapping == null)
-                {
-                    LoadMapping();
-                }
-                return keyMapping;
-            }
-            set
-            {
-                keyMapping = value;
-            }
+            LoadMapping();
         }
 
         private static void LoadMapping()
+        {
+            if (KeyMapping == null)
+            {
+                ReadMapping();
+            }
+        }
+
+        public static KeyMapping GetKeyMappingByCode(int virtualKeyCode)
+        {
+            return KeyMapping.Find(keyMapping => keyMapping.VirtualKeyCode == virtualKeyCode);
+        }
+
+        private static void ReadMapping()
         {
             try
             {
                 if (File.Exists(keysMappingPath))
                 {
                     string jsonString = File.ReadAllText(keysMappingPath);
-                    keyMapping = JsonSerializer.Deserialize<List<KeyMapping>>(jsonString);
+                    KeyMapping = JsonSerializer.Deserialize<List<KeyMapping>>(jsonString);
                 }
                 else
                 {

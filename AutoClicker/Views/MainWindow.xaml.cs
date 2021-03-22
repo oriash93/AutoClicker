@@ -154,15 +154,15 @@ namespace AutoClicker.Views
             _source.AddHook(StartStopHooks);
 
             SettingsUtils.HotKeyChangedEvent += AppSettings_HotKeyChanged;
-            RegisterHotkey(Constants.START_HOTKEY_ID, SettingsUtils.GetStartHotKey());
-            RegisterHotkey(Constants.STOP_HOTKEY_ID, SettingsUtils.GetStopHotKey());
+            RegisterHotkey(Constants.START_HOTKEY_ID, SettingsUtils.CurrentSettings.StartHotkey);
+            RegisterHotkey(Constants.STOP_HOTKEY_ID, SettingsUtils.CurrentSettings.StopHotkey);
 
             InitializeSystemTrayIcon();
         }
 
         protected override void OnStateChanged(EventArgs e)
         {
-            if (WindowState == WindowState.Minimized && SettingsUtils.GetMinimizeToTray())
+            if (WindowState == WindowState.Minimized && SettingsUtils.CurrentSettings.MinimizeToTray)
             {
                 Hide();
             }
@@ -383,11 +383,11 @@ namespace AutoClicker.Views
             if (msg == Constants.WM_HOTKEY && hotkeyId == Constants.START_HOTKEY_ID || hotkeyId == Constants.STOP_HOTKEY_ID)
             {
                 int virtualKey = ((int)lParam >> 16) & 0xFFFF;
-                if (virtualKey == SettingsUtils.GetStartHotKey().VirtualKeyCode && CanStart())
+                if (virtualKey == SettingsUtils.CurrentSettings.StartHotkey.VirtualKeyCode && CanStart())
                 {
                     StartCommand_Execute(null, null);
                 }
-                if (virtualKey == SettingsUtils.GetStopHotKey().VirtualKeyCode && clickTimer.Enabled)
+                if (virtualKey == SettingsUtils.CurrentSettings.StopHotkey.VirtualKeyCode && clickTimer.Enabled)
                 {
                     StopCommand_Execute(null, null);
                 }
@@ -437,7 +437,7 @@ namespace AutoClicker.Views
         {
             if (sender is MenuItem menuItem)
             {
-                SettingsUtils.SetMinimizeToTray(menuItem.IsChecked);
+                SettingsUtils.CurrentSettings.MinimizeToTray = menuItem.IsChecked;
             }
         }
 

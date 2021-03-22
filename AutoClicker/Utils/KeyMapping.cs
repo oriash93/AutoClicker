@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Text.Json.Serialization;
-using System.Windows.Input;
 
 namespace AutoClicker.Utils
 {
@@ -10,12 +9,6 @@ namespace AutoClicker.Utils
 
         public KeyMapping()
         {
-        }
-
-        public KeyMapping(Key key)
-        {
-            DisplayName = key.ToString();
-            VirtualKeyCode = KeyInterop.VirtualKeyFromKey(key);
         }
 
         [JsonPropertyName("display_name")]

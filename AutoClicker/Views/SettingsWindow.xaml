@@ -27,21 +27,21 @@
 
         <Label Grid.Row="0" Grid.Column="0" Margin="5, 5, 5, 5"
                Content="Start Hotkey: "/>
-        <ComboBox Name="comboBox1"
+        <ComboBox Name="startKeyMapping"
                   Grid.Row="0" Grid.Column="1" Margin="5, 5, 5, 5"
                   ItemsSource="{Binding Path=KeyMapping}"
+                  SelectedItem="{Binding SelectedStartKey}"
                   DisplayMemberPath="DisplayName"
-                  SelectedIndex="0" SelectedItem="{Binding SelectedStartKey}"
                   HorizontalAlignment="Stretch"
                   VerticalContentAlignment="Center" HorizontalContentAlignment="Center"/>
 
         <Label Grid.Row="1" Grid.Column="0"  Margin="5, 5, 5, 5"
                Content="Stop Hotkey: "/>
-        <ComboBox Name="comboBox2"
+        <ComboBox Name="stopKeyMapping"
                   Grid.Row="1" Grid.Column="1" Margin="5, 5, 5, 5"
                   ItemsSource="{Binding Path=KeyMapping}"
+                  SelectedItem="{Binding SelectedStopKey}"
                   DisplayMemberPath="DisplayName"
-                  SelectedIndex="0" SelectedItem="{Binding SelectedStopKey}"
                   HorizontalAlignment="Stretch"
                   VerticalContentAlignment="Center" HorizontalContentAlignment="Center"/>
 
