@@ -180,6 +180,7 @@ namespace AutoClicker.Views
             UnregisterHotkey(Constants.STOP_HOTKEY_ID);
 
             systemTrayIcon.Click -= OnSystemTrayIconClick;
+            systemTrayIcon.Dispose();
 
             base.OnClosed(e);
         }
