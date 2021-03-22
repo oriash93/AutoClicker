@@ -1,6 +1,5 @@
 ﻿using System;
 using System.IO;
-using System.Text.Json;
 using AutoClicker.Enums;
 using Serilog;
 
@@ -53,36 +52,12 @@ namespace AutoClicker.Utils
 
         private static void SaveSettings()
         {
-            string jsonString = JsonSerializer.Serialize(CurrentSettings);
-            using (StreamWriter streamWriter = File.CreateText(settingsFilePath))
-            {
-                streamWriter.Write(jsonString);
-                Log.Information("Settings saved!");
-            }
+            JsonUtils.WriteJson(settingsFilePath, CurrentSettings);
         }
 
         public static void LoadSettings()
         {
-            try
-            {
-                if (File.Exists(settingsFilePath))
-                {
-                    Log.Debug("Read file {FilePath}", settingsFilePath);
-                    string jsonString = File.ReadAllText(settingsFilePath);
-                    ApplicationSettings settings = JsonSerializer.Deserialize<ApplicationSettings>(jsonString);
-                    CurrentSettings = settings;
-                }
-                else
-                {
-                    Log.Error("File {FilePath} is missing", settingsFilePath);
-                    throw new FileNotFoundException(settingsFilePath);
-                }
-            }
-            catch (JsonException)
-            {
-                Log.Warning("Failed parsing ApplicationSettings");
-            }
-            Log.Debug("Read file {FilePath} succesfully", settingsFilePath);
+            CurrentSettings = JsonUtils.ReadJson<ApplicationSettings>(settingsFilePath);
         }
     }
 }

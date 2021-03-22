@@ -33,25 +33,7 @@ namespace AutoClicker.Utils
 
         private static void ReadMapping()
         {
-            try
-            {
-                if (File.Exists(keysMappingPath))
-                {
-                    string jsonString = File.ReadAllText(keysMappingPath);
-                    KeyMapping = JsonSerializer.Deserialize<List<KeyMapping>>(jsonString);
-                }
-                else
-                {
-                    Log.Error("File {FilePath} is missing", keysMappingPath);
-                    throw new FileNotFoundException(keysMappingPath);
-                }
-            }
-            catch (JsonException)
-            {
-                Log.Warning("Failed parsing KeyMapping");
-            }
-            Log.Debug("Read file {FilePath} succesfully", keysMappingPath);
+            KeyMapping = JsonUtils.ReadJson<List<KeyMapping>>(keysMappingPath);
         }
-
     }
 }
