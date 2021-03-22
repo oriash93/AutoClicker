@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Text.Json.Serialization;
 
-namespace AutoClicker.Utils
+namespace AutoClicker.Models
 {
     public class KeyMapping
     {

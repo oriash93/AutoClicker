@@ -1,7 +1,7 @@
 ﻿using System;
 using AutoClicker.Enums;
 
-namespace AutoClicker.Utils
+namespace AutoClicker.Models
 {
     public class HotkeyChangedEventArgs : EventArgs
     {

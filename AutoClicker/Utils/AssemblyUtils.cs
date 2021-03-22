@@ -7,20 +7,9 @@ using Serilog;
 
 namespace AutoClicker.Utils
 {
-    public static class Utilities
+    public static class AssemblyUtils
     {
         private static readonly Assembly assembly = Assembly.GetExecutingAssembly();
-        private static readonly string logFilePath =
-            Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), Constants.LOG_FILE_PATH);
-
-        static Utilities()
-        {
-            Log.Logger = new LoggerConfiguration()
-                .MinimumLevel.Debug()
-                .WriteTo.Console()
-                .WriteTo.File(logFilePath)
-                .CreateLogger();
-        }
 
         public static AssemblyName GetAssemblyInfo()
             => assembly.GetName();

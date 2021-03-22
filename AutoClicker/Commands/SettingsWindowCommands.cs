@@ -6,9 +6,9 @@ namespace AutoClicker.Commands
     public static class SettingsWindowCommands
     {
         public static readonly RoutedUICommand Save =
-            Utilities.CreateCommand(typeof(SettingsWindowCommands), nameof(Save));
+            AssemblyUtils.CreateCommand(typeof(SettingsWindowCommands), nameof(Save));
 
         public static readonly RoutedUICommand Reset =
-            Utilities.CreateCommand(typeof(SettingsWindowCommands), nameof(Reset));
+            AssemblyUtils.CreateCommand(typeof(SettingsWindowCommands), nameof(Reset));
     }
 }

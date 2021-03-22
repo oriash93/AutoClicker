@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Text.Json;
-using Serilog;
+using AutoClicker.Models;
 
 namespace AutoClicker.Utils
 {

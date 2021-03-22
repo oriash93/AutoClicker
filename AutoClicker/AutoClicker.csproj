@@ -109,11 +109,11 @@
     <Compile Include="Commands\SettingsWindowCommands.cs" />
     <Compile Include="Utils\JsonUtils.cs" />
     <Compile Include="Utils\KeyMappingUtils.cs" />
-    <Compile Include="Utils\ApplicationSettings.cs" />
-    <Compile Include="Utils\KeyMapping.cs" />
+    <Compile Include="Models\ApplicationSettings.cs" />
+    <Compile Include="Models\KeyMapping.cs" />
     <Compile Include="Utils\SettingsUtils.cs" />
-    <Compile Include="Utils\HotkeyChangedEventArgs.cs" />
-    <Compile Include="Utils\User32Api.cs" />
+    <Compile Include="Models\HotkeyChangedEventArgs.cs" />
+    <Compile Include="Utils\User32ApiUtils.cs" />
     <Compile Include="Views\SettingsWindow.xaml.cs">
       <DependentUpon>SettingsWindow.xaml</DependentUpon>
     </Compile>
@@ -133,7 +133,7 @@
     <Compile Include="Commands\MainWindowCommands.cs" />
     <Compile Include="Enums\Enums.cs" />
     <Compile Include="Enums\EnumToBooleanConverter.cs" />
-    <Compile Include="Utils\Utilities.cs" />
+    <Compile Include="Utils\AssemblyUtils.cs" />
     <Compile Include="Views\AboutWindow.xaml.cs">
       <DependentUpon>AboutWindow.xaml</DependentUpon>
     </Compile>

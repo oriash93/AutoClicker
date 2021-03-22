@@ -1,4 +1,6 @@
-﻿namespace AutoClicker.Utils
+﻿using AutoClicker.Utils;
+
+namespace AutoClicker.Models
 {
     public class ApplicationSettings
     {

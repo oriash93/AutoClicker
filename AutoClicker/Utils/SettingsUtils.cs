@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using AutoClicker.Enums;
+using AutoClicker.Models;
 using Serilog;
 
 namespace AutoClicker.Utils
@@ -9,11 +10,20 @@ namespace AutoClicker.Utils
     {
         private static readonly string settingsFilePath =
             Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), Constants.SETTINGS_FILE_PATH);
+        private static readonly string logFilePath =
+            Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), Constants.LOG_FILE_PATH);
 
         public static ApplicationSettings CurrentSettings { get; set; }
 
         static SettingsUtils()
         {
+            Log.Logger = new LoggerConfiguration()
+                .MinimumLevel.Debug()
+                .WriteTo.Console()
+                .WriteTo.File(logFilePath)
+                .CreateLogger();
+            Log.Information("Logger initialized successfully");
+
             CurrentSettings = new ApplicationSettings();
         }
 
