@@ -13,6 +13,7 @@
         public const string RESOURCES_DIRECTORY = "Resources";
         public const string KEY_MAPPINGS_RESOURCE_PATH = "keyMappings.json";
         public const string SETTINGS_FILE_PATH = "AutoClicker_Settings.json";
+        public const string LOG_FILE_PATH = "AutoClicker_Logs.txt";
 
         public const int MOUSEEVENTF_LEFTDOWN = 0x02;
         public const int MOUSEEVENTF_LEFTUP = 0x04;
