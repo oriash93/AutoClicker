@@ -30,4 +30,11 @@
         Start = 0,
         Stop = 1
     }
+
+    public enum SystemTrayMenuAction
+    {
+        Show = 0,
+        Hide = 1,
+        Exit = 2
+    }
 }

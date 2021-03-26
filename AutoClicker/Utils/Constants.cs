@@ -10,6 +10,10 @@
         public const string ABOUT_WINDOW_TITLE = "About";
         public const string SETTINGS_WINDOW_TITLE = "Hotkey Settings";
 
+        public const string SYSTEM_TRAY_MENU_MINIMIZE = "Minimize to tray";
+        public const string SYSTEM_TRAY_MENU_SHOW = "Show AutoClicker";
+        public const string SYSTEM_TRAY_MENU_EXIT = "Exit";
+
         public const string RESOURCES_DIRECTORY = "Resources";
         public const string KEY_MAPPINGS_RESOURCE_PATH = "keyMappings.json";
         public const string SETTINGS_FILE_PATH = "AutoClicker_Settings.json";
