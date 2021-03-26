@@ -33,7 +33,11 @@ namespace AutoClicker.Utils
 
         public static void WriteJson<T>(string filePath, T data)
         {
-            string jsonString = JsonSerializer.Serialize(data);
+            JsonSerializerOptions options = new JsonSerializerOptions
+            {
+                WriteIndented = true
+            };
+            string jsonString = JsonSerializer.Serialize(data, options);
             using (StreamWriter streamWriter = File.CreateText(filePath))
             {
                 streamWriter.Write(jsonString);
