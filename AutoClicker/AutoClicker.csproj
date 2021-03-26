@@ -107,6 +107,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Commands\SettingsWindowCommands.cs" />
+    <Compile Include="Models\SystemTrayMenuActionEventArgs.cs" />
     <Compile Include="Utils\JsonUtils.cs" />
     <Compile Include="Utils\KeyMappingUtils.cs" />
     <Compile Include="Models\ApplicationSettings.cs" />
@@ -117,6 +118,7 @@
     <Compile Include="Views\SettingsWindow.xaml.cs">
       <DependentUpon>SettingsWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\SystemTrayMenu.cs" />
     <Page Include="Views\AboutWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

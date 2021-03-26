@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Timers;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Interop;
 using AutoClicker.Enums;
@@ -126,7 +125,9 @@ namespace AutoClicker.Views
 
         private int timesRepeated = 0;
         private readonly Timer clickTimer;
+
         private NotifyIcon systemTrayIcon;
+        private SystemTrayMenu systemTrayMenu;
         private AboutWindow aboutWindow = null;
         private SettingsWindow settingsWindow = null;
 
@@ -155,33 +156,25 @@ namespace AutoClicker.Views
             _source = HwndSource.FromHwnd(_mainWindowHandle);
             _source.AddHook(StartStopHooks);
 
-            SettingsUtils.HotKeyChangedEvent += OnAppSettingsHotKeyChanged;
+            SettingsUtils.HotKeyChangedEvent += SettingsUtils_HotKeyChangedEvent;
             RegisterHotkey(Constants.START_HOTKEY_ID, SettingsUtils.CurrentSettings.StartHotkey);
             RegisterHotkey(Constants.STOP_HOTKEY_ID, SettingsUtils.CurrentSettings.StopHotkey);
 
-            InitializeSystemTrayIcon();
-        }
-
-        protected override void OnStateChanged(EventArgs e)
-        {
-            if (WindowState == WindowState.Minimized && SettingsUtils.CurrentSettings.MinimizeToTray)
-            {
-                Hide();
-            }
-
-            base.OnStateChanged(e);
+            InitializeSystemTrayMenu();
         }
 
         protected override void OnClosed(EventArgs e)
         {
             _source.RemoveHook(StartStopHooks);
 
-            SettingsUtils.HotKeyChangedEvent -= OnAppSettingsHotKeyChanged;
+            SettingsUtils.HotKeyChangedEvent -= SettingsUtils_HotKeyChangedEvent;
             UnregisterHotkey(Constants.START_HOTKEY_ID);
             UnregisterHotkey(Constants.STOP_HOTKEY_ID);
 
-            systemTrayIcon.Click -= OnSystemTrayIconClick;
+            systemTrayIcon.Click -= SystemTrayIcon_Click;
             systemTrayIcon.Dispose();
+
+            systemTrayMenu.SystemTrayMenuActionEvent -= SystemTrayMenu_SystemTrayMenuActionEvent;
 
             Log.Information("Application closing");
 
@@ -207,7 +200,7 @@ namespace AutoClicker.Views
 
         private void StartCommand_CanExecute(object sender, CanExecuteRoutedEventArgs e)
         {
-            e.CanExecute = CanStart();
+            e.CanExecute = CanStartOperation();
         }
 
         #endregion Start Command
@@ -247,6 +240,11 @@ namespace AutoClicker.Views
 
         private void ExitCommand_Execute(object sender, ExecutedRoutedEventArgs e)
         {
+            Exit();
+        }
+
+        private void Exit()
+        {
             Application.Current.Shutdown();
         }
 
@@ -281,7 +279,7 @@ namespace AutoClicker.Views
             return CalculateInterval() > 0;
         }
 
-        private bool CanStart()
+        private bool CanStartOperation()
         {
             return !clickTimer.Enabled && IsRepeatModeValid() && IsIntervalValid();
         }
@@ -319,6 +317,20 @@ namespace AutoClicker.Views
         private void ResetTitle()
         {
             Title = Constants.MAIN_WINDOW_TITLE_DEFAULT;
+        }
+
+        private void InitializeSystemTrayMenu()
+        {
+            systemTrayIcon = new NotifyIcon
+            {
+                Visible = true,
+                Icon = AssemblyUtils.GetApplicationIcon()
+            };
+
+            systemTrayIcon.Click += SystemTrayIcon_Click;
+
+            systemTrayMenu = new SystemTrayMenu();
+            systemTrayMenu.SystemTrayMenuActionEvent += SystemTrayMenu_SystemTrayMenuActionEvent;
         }
 
         private void ReRegisterHotkey(int hotkeyId, KeyMapping hotkey)
@@ -395,7 +407,7 @@ namespace AutoClicker.Views
             if (msg == Constants.WM_HOTKEY && hotkeyId == Constants.START_HOTKEY_ID || hotkeyId == Constants.STOP_HOTKEY_ID)
             {
                 int virtualKey = ((int)lParam >> 16) & 0xFFFF;
-                if (virtualKey == SettingsUtils.CurrentSettings.StartHotkey.VirtualKeyCode && CanStart())
+                if (virtualKey == SettingsUtils.CurrentSettings.StartHotkey.VirtualKeyCode && CanStartOperation())
                 {
                     StartCommand_Execute(null, null);
                 }
@@ -408,7 +420,7 @@ namespace AutoClicker.Views
             return IntPtr.Zero;
         }
 
-        private void OnAppSettingsHotKeyChanged(object sender, HotkeyChangedEventArgs e)
+        private void SettingsUtils_HotKeyChangedEvent(object sender, HotkeyChangedEventArgs e)
         {
             Log.Information("OnAppSettingsHotKeyChanged with operation {Operation} and hotkey {Hotkey}", e.Operation, e.Hotkey.DisplayName);
             switch (e.Operation)
@@ -427,32 +439,51 @@ namespace AutoClicker.Views
             }
         }
 
-        private void InitializeSystemTrayIcon()
+        private void SystemTrayIcon_Click(object sender, EventArgs e)
         {
-            systemTrayIcon = new NotifyIcon
-            {
-                Visible = true,
-                Icon = AssemblyUtils.GetApplicationIcon()
-            };
-
-            systemTrayIcon.Click += OnSystemTrayIconClick;
+            systemTrayMenu.IsOpen = true;
+            systemTrayMenu.Focus();
         }
 
-        private void OnSystemTrayIconClick(object sender, EventArgs e)
+        private void SystemTrayMenu_SystemTrayMenuActionEvent(object sender, SystemTrayMenuActionEventArgs e)
         {
-            if (WindowState != WindowState.Normal && !IsVisible)
+            switch (e.Action)
             {
-                Show();
-                WindowState = WindowState.Normal;
+                case SystemTrayMenuAction.Show:
+                    Show();
+                    break;
+                case SystemTrayMenuAction.Hide:
+                    Hide();
+                    break;
+                case SystemTrayMenuAction.Exit:
+                    Exit();
+                    break;
+                default:
+                    Log.Warning("Action {Action} not supported!", e.Action);
+                    throw new NotSupportedException($"Action {e.Action} not supported!");
             }
         }
 
-        private void OnMenuItemCheckChanged(object sender, RoutedEventArgs e)
+        private void AboutMenuItem_Click(object sender, RoutedEventArgs e)
         {
-            if (sender is MenuItem menuItem)
+            if (aboutWindow == null)
             {
-                SettingsUtils.CurrentSettings.MinimizeToTray = menuItem.IsChecked;
+                aboutWindow = new AboutWindow();
+                aboutWindow.Closed += (o, args) => aboutWindow = null;
             }
+
+            aboutWindow.Show();
+        }
+
+        private void MinimizeMenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            Hide();
+            systemTrayMenu.ToggleMenuItemsVisibility(true);
+        }
+
+        private void ExitMenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            Exit();
         }
 
         #endregion Event Handlers

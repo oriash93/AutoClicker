@@ -11,7 +11,5 @@ namespace AutoClicker.Models
         public KeyMapping StartHotkey { get; set; } = defaultStartKeyMapping;
 
         public KeyMapping StopHotkey { get; set; } = defaultStopKeyMapping;
-
-        public bool MinimizeToTray { get; set; } = false;
     }
 }

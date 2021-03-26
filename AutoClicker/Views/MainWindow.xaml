@@ -26,16 +26,14 @@
         <DockPanel Name="menuDockPanel" Grid.Row="0">
             <Menu DockPanel.Dock="Top">
                 <MenuItem Header="_Help">
-                    <MenuItem Header="_About" Command="commands:MainWindowCommands.About">
+                    <MenuItem Header="_About" Click="AboutMenuItem_Click">
                         <MenuItem.Icon>
                             <Image Source="{StaticResource AboutIcon}"/>
                         </MenuItem.Icon>
                     </MenuItem>
-                    <MenuItem Header="Minimize to tray"
-                              IsCheckable="True" IsChecked="False"
-                              Checked="OnMenuItemCheckChanged" Unchecked="OnMenuItemCheckChanged"/>
+                    <MenuItem Header="Minimize to tray" Click="MinimizeMenuItem_Click"/>
                 </MenuItem>
-                <MenuItem Header="_Exit" Command="commands:MainWindowCommands.Exit"/>
+                <MenuItem Header="_Exit" Click="ExitMenuItem_Click"/>
             </Menu>
         </DockPanel>
 
