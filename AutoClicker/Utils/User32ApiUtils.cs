@@ -3,7 +3,7 @@ using System.Runtime.InteropServices;
 
 namespace AutoClicker.Utils
 {
-    public static class User32Api
+    public static class User32ApiUtils
     {
         [DllImport("user32.dll", EntryPoint = "SetCursorPos")]
         internal static extern bool SetCursorPosition(int x, int y);

@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Input;
+using AutoClicker.Models;
 using AutoClicker.Utils;
 
 namespace AutoClicker.Views

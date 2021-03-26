@@ -4,7 +4,7 @@
              StartupUri="Views/MainWindow.xaml"
              ShutdownMode="OnMainWindowClose">
     <Application.Resources>
-        <BitmapImage x:Key="AboutIcon" UriSource="Resources/about.ico" />
-        <BitmapImage x:Key="SettingsIcon" UriSource="Resources/settings.ico" />
+        <BitmapImage x:Key="AboutIcon" UriSource="Resources/Icons/about.ico" />
+        <BitmapImage x:Key="SettingsIcon" UriSource="Resources/Icons/settings.ico" />
     </Application.Resources>
 </Application>

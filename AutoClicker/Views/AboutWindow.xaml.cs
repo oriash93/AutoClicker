@@ -17,10 +17,10 @@ namespace AutoClicker.Views
             Title = Constants.ABOUT_WINDOW_TITLE;
             InitializeComponent();
 
-            AssemblyName assemblyInfo = Utilities.GetAssemblyInfo();
+            AssemblyName assemblyInfo = AssemblyUtils.GetAssemblyInfo();
             AboutInformationText.Text = $"{assemblyInfo.Name} v{assemblyInfo.Version.Major}.{assemblyInfo.Version.Minor}.{assemblyInfo.Version.Build}";
-            UrlHyperlink.NavigateUri = Utilities.GetProjectUri();
-            UrlHyperlink.Inlines.Add(Utilities.GetProjectURL());
+            UrlHyperlink.NavigateUri = AssemblyUtils.GetProjectUri();
+            UrlHyperlink.Inlines.Add(AssemblyUtils.GetProjectURL());
         }
 
         #endregion Life Cycle

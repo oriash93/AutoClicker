@@ -35,7 +35,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>Resources\icon.ico</ApplicationIcon>
+    <ApplicationIcon>Resources\Icons\icon.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.Bcl.AsyncInterfaces, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
@@ -107,12 +107,13 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Commands\SettingsWindowCommands.cs" />
+    <Compile Include="Utils\JsonUtils.cs" />
     <Compile Include="Utils\KeyMappingUtils.cs" />
-    <Compile Include="Utils\ApplicationSettings.cs" />
-    <Compile Include="Utils\KeyMapping.cs" />
+    <Compile Include="Models\ApplicationSettings.cs" />
+    <Compile Include="Models\KeyMapping.cs" />
     <Compile Include="Utils\SettingsUtils.cs" />
-    <Compile Include="Utils\HotkeyChangedEventArgs.cs" />
-    <Compile Include="Utils\User32Api.cs" />
+    <Compile Include="Models\HotkeyChangedEventArgs.cs" />
+    <Compile Include="Utils\User32ApiUtils.cs" />
     <Compile Include="Views\SettingsWindow.xaml.cs">
       <DependentUpon>SettingsWindow.xaml</DependentUpon>
     </Compile>
@@ -132,7 +133,7 @@
     <Compile Include="Commands\MainWindowCommands.cs" />
     <Compile Include="Enums\Enums.cs" />
     <Compile Include="Enums\EnumToBooleanConverter.cs" />
-    <Compile Include="Utils\Utilities.cs" />
+    <Compile Include="Utils\AssemblyUtils.cs" />
     <Compile Include="Views\AboutWindow.xaml.cs">
       <DependentUpon>AboutWindow.xaml</DependentUpon>
     </Compile>
@@ -182,16 +183,13 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Resources\question.ico" />
+    <Resource Include="Resources\Icons\settings.ico" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Resources\settings.ico" />
+    <Resource Include="Resources\Icons\about.ico" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Resources\about.ico" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Resources\icon.ico" />
+    <Resource Include="Resources\Icons\icon.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

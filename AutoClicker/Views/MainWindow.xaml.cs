@@ -5,6 +5,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Interop;
 using AutoClicker.Enums;
+using AutoClicker.Models;
 using AutoClicker.Utils;
 using Serilog;
 using MouseAction = AutoClicker.Enums.MouseAction;
@@ -182,6 +183,8 @@ namespace AutoClicker.Views
             systemTrayIcon.Click -= OnSystemTrayIconClick;
             systemTrayIcon.Dispose();
 
+            Log.Information("Application closing");
+
             base.OnClosed(e);
         }
 
@@ -327,13 +330,13 @@ namespace AutoClicker.Views
         private void RegisterHotkey(int hotkeyId, KeyMapping hotkey)
         {
             Log.Information("RegisterHotkey with hotkeyId {HotkeyId} and hotkey {Hotkey}", hotkeyId, hotkey.DisplayName);
-            User32Api.RegisterHotKey(_mainWindowHandle, hotkeyId, Constants.MOD_NONE, hotkey.VirtualKeyCode);
+            User32ApiUtils.RegisterHotKey(_mainWindowHandle, hotkeyId, Constants.MOD_NONE, hotkey.VirtualKeyCode);
         }
 
         private void UnregisterHotkey(int hotkeyId)
         {
             Log.Information("UnregisterHotkey with hotkeyId {HotkeyId}", hotkeyId);
-            if (User32Api.UnregisterHotKey(_mainWindowHandle, hotkeyId))
+            if (User32ApiUtils.UnregisterHotKey(_mainWindowHandle, hotkeyId))
                 return;
             Log.Warning("No hotkey registered on {HotkeyId}", hotkeyId);
             throw new InvalidOperationException($"No hotkey registered on {hotkeyId}");
@@ -381,8 +384,8 @@ namespace AutoClicker.Views
         {
             for (int i = 0; i < GetNumberOfMouseActions(); ++i)
             {
-                User32Api.SetCursorPosition(xPos, yPos);
-                User32Api.ExecuteMouseEvent(mouseDownAction | mouseUpAction, xPos, yPos, 0, 0);
+                User32ApiUtils.SetCursorPosition(xPos, yPos);
+                User32ApiUtils.ExecuteMouseEvent(mouseDownAction | mouseUpAction, xPos, yPos, 0, 0);
             }
         }
 
@@ -429,7 +432,7 @@ namespace AutoClicker.Views
             systemTrayIcon = new NotifyIcon
             {
                 Visible = true,
-                Icon = Utilities.GetApplicationIcon()
+                Icon = AssemblyUtils.GetApplicationIcon()
             };
 
             systemTrayIcon.Click += OnSystemTrayIconClick;

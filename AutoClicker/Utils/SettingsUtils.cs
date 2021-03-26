@@ -1,7 +1,7 @@
 ﻿using System;
 using System.IO;
-using System.Text.Json;
 using AutoClicker.Enums;
+using AutoClicker.Models;
 using Serilog;
 
 namespace AutoClicker.Utils
@@ -10,11 +10,20 @@ namespace AutoClicker.Utils
     {
         private static readonly string settingsFilePath =
             Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), Constants.SETTINGS_FILE_PATH);
+        private static readonly string logFilePath =
+            Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), Constants.LOG_FILE_PATH);
 
         public static ApplicationSettings CurrentSettings { get; set; }
 
         static SettingsUtils()
         {
+            Log.Logger = new LoggerConfiguration()
+                .MinimumLevel.Debug()
+                .WriteTo.Console()
+                .WriteTo.File(logFilePath)
+                .CreateLogger();
+            Log.Information("Logger initialized successfully");
+
             CurrentSettings = new ApplicationSettings();
         }
 
@@ -53,36 +62,12 @@ namespace AutoClicker.Utils
 
         private static void SaveSettings()
         {
-            string jsonString = JsonSerializer.Serialize(CurrentSettings);
-            using (StreamWriter streamWriter = File.CreateText(settingsFilePath))
-            {
-                streamWriter.Write(jsonString);
-                Log.Information("Settings saved!");
-            }
+            JsonUtils.WriteJson(settingsFilePath, CurrentSettings);
         }
 
         public static void LoadSettings()
         {
-            try
-            {
-                if (File.Exists(settingsFilePath))
-                {
-                    Log.Debug("Read file {FilePath}", settingsFilePath);
-                    string jsonString = File.ReadAllText(settingsFilePath);
-                    ApplicationSettings settings = JsonSerializer.Deserialize<ApplicationSettings>(jsonString);
-                    CurrentSettings = settings;
-                }
-                else
-                {
-                    Log.Error("File {FilePath} is missing", settingsFilePath);
-                    throw new FileNotFoundException(settingsFilePath);
-                }
-            }
-            catch (JsonException)
-            {
-                Log.Warning("Failed parsing ApplicationSettings");
-            }
-            Log.Debug("Read file {FilePath} succesfully", settingsFilePath);
+            CurrentSettings = JsonUtils.ReadJson<ApplicationSettings>(settingsFilePath);
         }
     }
 }
