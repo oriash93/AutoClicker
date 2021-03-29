@@ -7,7 +7,7 @@ using AutoClicker.Utils;
 
 namespace AutoClicker.Views
 {
-    public class SystemTrayMenu : ContextMenu
+    public class SystemTrayMenu : ContextMenu, IDisposable
     {
         private readonly List<object> contextMenu = new List<object>();
 
@@ -38,6 +38,13 @@ namespace AutoClicker.Views
             contextMenu.Add(showMenuItem);
             contextMenu.Add(new Separator());
             contextMenu.Add(exitMenuItem);
+        }
+
+        public void Dispose()
+        {
+            (contextMenu[0] as MenuItem).Click -= OnMinimizeMenuItemClick;
+            (contextMenu[1] as MenuItem).Click -= OnShowMenuItemClick;
+            (contextMenu[3] as MenuItem).Click -= OnExitMenuItemClick;
         }
 
         public event EventHandler<SystemTrayMenuActionEventArgs> SystemTrayMenuActionEvent;

@@ -175,6 +175,7 @@ namespace AutoClicker.Views
             systemTrayIcon.Dispose();
 
             systemTrayMenu.SystemTrayMenuActionEvent -= SystemTrayMenu_SystemTrayMenuActionEvent;
+            systemTrayMenu.Dispose();
 
             Log.Information("Application closing");
 
