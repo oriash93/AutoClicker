@@ -48,7 +48,7 @@ namespace AutoClicker.Views
 
         #endregion Life Cycle
 
-        #region Save Command
+        #region Commands
 
         private void SaveCommand_Execute(object sender, ExecutedRoutedEventArgs e)
         {
@@ -62,10 +62,6 @@ namespace AutoClicker.Views
             }
         }
 
-        #endregion Save Command
-
-        #region Reset Command
-
         private void ResetCommand_Execute(object sender, ExecutedRoutedEventArgs e)
         {
             SettingsUtils.Reset();
@@ -73,6 +69,6 @@ namespace AutoClicker.Views
             SelectedStopKey = SettingsUtils.CurrentSettings.StopHotkey;
         }
 
-        #endregion Reset Command
+        #endregion Commands
     }
 }

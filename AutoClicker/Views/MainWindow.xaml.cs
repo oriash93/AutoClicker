@@ -186,8 +186,6 @@ namespace AutoClicker.Views
 
         #region Commands
 
-        #region Start Command
-
         private void StartCommand_Execute(object sender, ExecutedRoutedEventArgs e)
         {
             int interval = CalculateInterval();
@@ -204,10 +202,6 @@ namespace AutoClicker.Views
             e.CanExecute = CanStartOperation();
         }
 
-        #endregion Start Command
-
-        #region Stop Command
-
         private void StopCommand_Execute(object sender, ExecutedRoutedEventArgs e)
         {
             Log.Information("Stopping operation");
@@ -220,10 +214,6 @@ namespace AutoClicker.Views
             e.CanExecute = clickTimer.Enabled;
         }
 
-        #endregion Stop Command
-
-        #region HotkeySettings Command
-
         private void HotkeySettingsCommand_Execute(object sender, ExecutedRoutedEventArgs e)
         {
             if (settingsWindow == null)
@@ -235,10 +225,6 @@ namespace AutoClicker.Views
             settingsWindow.Show();
         }
 
-        #endregion HotkeySettings Command
-
-        #region Exit Command
-
         private void ExitCommand_Execute(object sender, ExecutedRoutedEventArgs e)
         {
             Exit();
@@ -248,10 +234,6 @@ namespace AutoClicker.Views
         {
             Application.Current.Shutdown();
         }
-
-        #endregion Exit Command
-
-        #region About Command
 
         private void AboutCommand_Execute(object sender, ExecutedRoutedEventArgs e)
         {
@@ -263,8 +245,6 @@ namespace AutoClicker.Views
 
             aboutWindow.Show();
         }
-
-        #endregion About Command
 
         #endregion Commands
 
