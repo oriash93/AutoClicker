@@ -191,7 +191,14 @@
     <Resource Include="Resources\Icons\about.ico" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Resources\Icons\icon.ico" />
+    <Content Include="Resources\Icons\icon.ico">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\Icons\icon_running.ico">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

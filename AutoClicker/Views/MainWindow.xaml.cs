@@ -3,6 +3,8 @@ using System.Timers;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Interop;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
 using AutoClicker.Enums;
 using AutoClicker.Models;
 using AutoClicker.Utils;
@@ -125,12 +127,15 @@ namespace AutoClicker.Views
 
         private int timesRepeated = 0;
         private readonly Timer clickTimer;
+        private readonly Uri runningIconUri =
+            new Uri(Constants.RUNNING_ICON_RESOURCE_PATH, UriKind.Relative);
 
         private NotifyIcon systemTrayIcon;
         private SystemTrayMenu systemTrayMenu;
         private AboutWindow aboutWindow = null;
         private SettingsWindow settingsWindow = null;
 
+        private ImageSource _defaultIcon;
         private IntPtr _mainWindowHandle;
         private HwndSource _source;
 
@@ -159,6 +164,8 @@ namespace AutoClicker.Views
             SettingsUtils.HotKeyChangedEvent += SettingsUtils_HotKeyChangedEvent;
             RegisterHotkey(Constants.START_HOTKEY_ID, SettingsUtils.CurrentSettings.StartHotkey);
             RegisterHotkey(Constants.STOP_HOTKEY_ID, SettingsUtils.CurrentSettings.StopHotkey);
+
+            _defaultIcon = Icon;
 
             InitializeSystemTrayMenu();
         }
@@ -194,7 +201,9 @@ namespace AutoClicker.Views
             timesRepeated = 0;
             clickTimer.Interval = interval;
             clickTimer.Start();
+
             Title += Constants.MAIN_WINDOW_TITLE_RUNNING;
+            Icon = new BitmapImage(runningIconUri);
         }
 
         private void StartCommand_CanExecute(object sender, CanExecuteRoutedEventArgs e)
@@ -206,7 +215,9 @@ namespace AutoClicker.Views
         {
             Log.Information("Stopping operation");
             clickTimer.Stop();
+
             ResetTitle();
+            Icon = _defaultIcon;
         }
 
         private void StopCommand_CanExecute(object sender, CanExecuteRoutedEventArgs e)
