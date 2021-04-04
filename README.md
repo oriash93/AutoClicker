@@ -5,9 +5,8 @@
 ![GitHub](https://img.shields.io/github/license/oriash93/AutoClicker?style=plastic)
 
 
-
 AutoClicker is a desktop application for automating mouse clicks.
-<br>Written in C# and WPF (Windows Presentation Foundation).
+<br>Written in C# and WPF.
 
 
 ## Features
@@ -16,6 +15,10 @@ AutoClicker is a desktop application for automating mouse clicks.
 * Perform single click tasks, or double click tasks.
 * Perform clicks infinitely, or choose a limited number of times.
 * Perform clicks at the current cursor position, or choose a custom position. 
+
+## Platform
+Currently available only for Windows OS.
+
 
 ## Download ##
 Download the latest version from the [releases](https://github.com/oriash93/AutoClicker/releases) page, unzip and run AutoClicker.exe.
