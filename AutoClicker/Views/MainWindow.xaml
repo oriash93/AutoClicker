@@ -12,6 +12,7 @@
     <Window.CommandBindings>
         <CommandBinding Command="commands:MainWindowCommands.Start" Executed="StartCommand_Execute" CanExecute="StartCommand_CanExecute"/>
         <CommandBinding Command="commands:MainWindowCommands.Stop" Executed="StopCommand_Execute" CanExecute="StopCommand_CanExecute"/>
+        <CommandBinding Command="commands:MainWindowCommands.SaveSettings" Executed="SaveSettingsCommand_Execute"/>
         <CommandBinding Command="commands:MainWindowCommands.HotkeySettings" Executed="HotkeySettingsCommand_Execute"/>
         <CommandBinding Command="commands:MainWindowCommands.Exit" Executed="ExitCommand_Execute"/>
         <CommandBinding Command="commands:MainWindowCommands.About" Executed="AboutCommand_Execute"/>
@@ -39,10 +40,10 @@
 
         <Grid Name="primaryGrid" Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center">
             <Grid.RowDefinitions>
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="2*"/>
-                <RowDefinition Height="2*"/>
-                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
@@ -163,16 +164,19 @@
             </GroupBox>
 
             <UniformGrid Name="buttonsGrid"
-                         Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="4" Rows="1" Columns="3">
+                         Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="4" Rows="2" Columns="2">
                 <Button Name="startButton"
                         Grid.Row="0" Grid.Column="0" Margin="5"
                         Content="Start (F6)" Command="commands:MainWindowCommands.Start"/>
                 <Button Name="stopButton"
                         Grid.Row="0" Grid.Column="1" Margin="5"
                         Content="Stop (F7)" Command="commands:MainWindowCommands.Stop"/>
-                <Button Name="settingsButton"
-                        Grid.Row="0" Grid.Column="2" Margin="5"
-                        Content="Hotkey Settings" Command="commands:MainWindowCommands.HotkeySettings"/>
+                <Button Name="saveSettingsButton"
+                        Grid.Row="1" Grid.Column="0" Margin="5"
+                        Content="Save Settings" Command="commands:MainWindowCommands.SaveSettings"/>
+                <Button Name="hotkeysButton"
+                        Grid.Row="1" Grid.Column="1" Margin="5"
+                        Content="Hotkeys" Command="commands:MainWindowCommands.HotkeySettings"/>
             </UniformGrid>
         </Grid>
     </Grid>

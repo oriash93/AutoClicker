@@ -225,6 +225,11 @@ namespace AutoClicker.Views
             e.CanExecute = clickTimer.Enabled;
         }
 
+        private void SaveSettingsCommand_Execute(object sender, ExecutedRoutedEventArgs e)
+        {
+            Log.Information("Saving Settings");
+        }
+
         private void HotkeySettingsCommand_Execute(object sender, ExecutedRoutedEventArgs e)
         {
             if (settingsWindow == null)
