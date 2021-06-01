@@ -66,8 +66,16 @@ namespace AutoClicker.Views
             _source.AddHook(StartStopHooks);
 
             SettingsUtils.HotKeyChangedEvent += SettingsUtils_HotKeyChangedEvent;
-            RegisterHotkey(Constants.START_HOTKEY_ID, SettingsUtils.CurrentSettings.StartHotkey);
-            RegisterHotkey(Constants.STOP_HOTKEY_ID, SettingsUtils.CurrentSettings.StopHotkey);
+            SettingsUtils_HotKeyChangedEvent(this, new HotkeyChangedEventArgs()
+            {
+                Hotkey = SettingsUtils.CurrentSettings.HotkeySettings.StartHotkey,
+                Operation = Operation.Start
+            });
+            SettingsUtils_HotKeyChangedEvent(this, new HotkeyChangedEventArgs()
+            {
+                Hotkey = SettingsUtils.CurrentSettings.HotkeySettings.StopHotkey,
+                Operation = Operation.Stop
+            });
 
             _defaultIcon = Icon;
 
@@ -259,7 +267,6 @@ namespace AutoClicker.Views
             if (User32ApiUtils.UnregisterHotKey(_mainWindowHandle, hotkeyId))
                 return;
             Log.Warning("No hotkey registered on {HotkeyId}", hotkeyId);
-            throw new InvalidOperationException($"No hotkey registered on {hotkeyId}");
         }
 
         #endregion Helper Methods
@@ -315,11 +322,11 @@ namespace AutoClicker.Views
             if (msg == Constants.WM_HOTKEY && hotkeyId == Constants.START_HOTKEY_ID || hotkeyId == Constants.STOP_HOTKEY_ID)
             {
                 int virtualKey = ((int)lParam >> 16) & 0xFFFF;
-                if (virtualKey == SettingsUtils.CurrentSettings.StartHotkey.VirtualKeyCode && CanStartOperation())
+                if (virtualKey == SettingsUtils.CurrentSettings.HotkeySettings.StartHotkey.VirtualKeyCode && CanStartOperation())
                 {
                     StartCommand_Execute(null, null);
                 }
-                if (virtualKey == SettingsUtils.CurrentSettings.StopHotkey.VirtualKeyCode && clickTimer.Enabled)
+                if (virtualKey == SettingsUtils.CurrentSettings.HotkeySettings.StopHotkey.VirtualKeyCode && clickTimer.Enabled)
                 {
                     StopCommand_Execute(null, null);
                 }
@@ -330,7 +337,7 @@ namespace AutoClicker.Views
 
         private void SettingsUtils_HotKeyChangedEvent(object sender, HotkeyChangedEventArgs e)
         {
-            Log.Information("OnAppSettingsHotKeyChanged with operation {Operation} and hotkey {Hotkey}", e.Operation, e.Hotkey.DisplayName);
+            Log.Information("HotKeyChangedEvent with operation {Operation} and hotkey {Hotkey}", e.Operation, e.Hotkey.DisplayName);
             switch (e.Operation)
             {
                 case Operation.Start:

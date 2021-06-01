@@ -30,21 +30,21 @@ namespace AutoClicker.Utils
 
         public static void SetStartHotKey(KeyMapping key)
         {
-            CurrentSettings.StartHotkey = key;
-            NotifyChanges(CurrentSettings.StartHotkey, Operation.Start);
+            CurrentSettings.HotkeySettings.StartHotkey = key;
+            NotifyChanges(CurrentSettings.HotkeySettings.StartHotkey, Operation.Start);
         }
 
         public static void SetStopHotKey(KeyMapping key)
         {
-            CurrentSettings.StopHotkey = key;
-            NotifyChanges(CurrentSettings.StopHotkey, Operation.Stop);
+            CurrentSettings.HotkeySettings.StopHotkey = key;
+            NotifyChanges(CurrentSettings.HotkeySettings.StopHotkey, Operation.Stop);
         }
 
         public static void Reset()
         {
             Log.Information("Reset hotkey settings to default");
-            SetStartHotKey(ApplicationSettings.defaultStartKeyMapping);
-            SetStopHotKey(ApplicationSettings.defaultStopKeyMapping);
+            SetStartHotKey(HotkeySettings.defaultStartKeyMapping);
+            SetStopHotKey(HotkeySettings.defaultStopKeyMapping);
         }
 
         private static void NotifyChanges(KeyMapping hotkey, Operation operation)
