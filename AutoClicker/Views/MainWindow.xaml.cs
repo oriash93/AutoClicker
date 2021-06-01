@@ -185,6 +185,7 @@ namespace AutoClicker.Views
             systemTrayMenu.Dispose();
 
             Log.Information("Application closing");
+            Log.Debug("==================================================");
 
             base.OnClosed(e);
         }

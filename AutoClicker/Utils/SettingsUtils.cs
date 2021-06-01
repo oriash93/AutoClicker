@@ -22,6 +22,7 @@ namespace AutoClicker.Utils
                 .WriteTo.Console()
                 .WriteTo.File(logFilePath)
                 .CreateLogger();
+            Log.Debug("==================================================");
             Log.Information("Logger initialized successfully");
 
             CurrentSettings = new ApplicationSettings();
