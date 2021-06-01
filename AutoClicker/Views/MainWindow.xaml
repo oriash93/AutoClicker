@@ -71,16 +71,16 @@
                     </Grid.ColumnDefinitions>
 
                     <TextBox Grid.Column="0" Width="45"
-                             Text="{Binding Hours, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+                             Text="{Binding AutoClickerSettings.Hours, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
                     <TextBlock Grid.Column="1" Margin="5, 0, 5, 5" Text="hours"/>
                     <TextBox Grid.Column="2" Width="45"
-                             Text="{Binding Minutes, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+                             Text="{Binding AutoClickerSettings.Minutes, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
                     <TextBlock Grid.Column="3" Margin="5, 0, 5, 5" Text="minutes"/>
                     <TextBox Grid.Column="4" Width="45"
-                             Text="{Binding Seconds, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+                             Text="{Binding AutoClickerSettings.Seconds, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
                     <TextBlock Grid.Column="5" Margin="5, 0, 5, 5" Text="seconds"/>
                     <TextBox Grid.Column="6" Width="45"
-                             Text="{Binding Milliseconds, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+                             Text="{Binding AutoClickerSettings.Milliseconds, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
                     <TextBlock Grid.Column="7" Margin="5, 0, 5, 5" Text="milliseconds"/>
                 </Grid>
             </GroupBox>
@@ -100,14 +100,18 @@
 
                     <RadioButton Grid.Row="0" Grid.Column="0" Margin="0, 0, 0, 5"
                                  Content="Infinite (Until stopped)"
-                                 IsChecked="{Binding Path=SelectedRepeatMode, Converter={StaticResource EnumToBooleanConverter},
-                                        ConverterParameter={x:Static enums:RepeatMode.Infinite}}"/>
+                                 IsChecked="{Binding AutoClickerSettings.SelectedRepeatMode,
+                                                     Converter={StaticResource EnumToBooleanConverter},
+                                                     ConverterParameter={x:Static enums:RepeatMode.Infinite}}"/>
                     <RadioButton Grid.Row="1" Grid.ColumnSpan="2" Margin="0, 0, 0, 5"
-                                 IsChecked="{Binding Path=SelectedRepeatMode, Converter={StaticResource EnumToBooleanConverter},
-                                        ConverterParameter={x:Static enums:RepeatMode.Count}}">
+                                 IsChecked="{Binding AutoClickerSettings.SelectedRepeatMode,
+                                                     Converter={StaticResource EnumToBooleanConverter},
+                                                     ConverterParameter={x:Static enums:RepeatMode.Count}}">
                         <StackPanel Orientation="Horizontal">
                             <TextBox Width="50" Margin="5, 0, 0, 0"
-                                     Text="{Binding SelectedTimesToRepeat, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+                                     Text="{Binding AutoClickerSettings.SelectedTimesToRepeat,
+                                                    UpdateSourceTrigger=PropertyChanged,
+                                                    Mode=TwoWay}"/>
                             <TextBlock Text="Times" Margin="5, 0, 0, 0" />
                         </StackPanel>
                     </RadioButton>
@@ -129,18 +133,20 @@
 
                     <RadioButton Grid.Row="0" Grid.Column="0" Margin="0, 0, 0, 5"
                                  Content="Current Cursor Position"
-                                 IsChecked="{Binding Path=SelectedLocationMode, Converter={StaticResource EnumToBooleanConverter},
-                                                                                ConverterParameter={x:Static enums:LocationMode.CurrentLocation}}"/>
+                                 IsChecked="{Binding AutoClickerSettings.SelectedLocationMode,
+                                                     Converter={StaticResource EnumToBooleanConverter},
+                                                     ConverterParameter={x:Static enums:LocationMode.CurrentLocation}}"/>
                     <RadioButton Grid.Row="1" Grid.ColumnSpan="2" Margin="0, 0, 0, 5"
-                                 IsChecked="{Binding Path=SelectedLocationMode, Converter={StaticResource EnumToBooleanConverter},
-                                                                                ConverterParameter={x:Static enums:LocationMode.PickedLocation}}">
+                                 IsChecked="{Binding AutoClickerSettings.SelectedLocationMode,
+                                                     Converter={StaticResource EnumToBooleanConverter},
+                                                     ConverterParameter={x:Static enums:LocationMode.PickedLocation}}">
                         <StackPanel Orientation="Horizontal">
                             <TextBlock Text="X" Margin="5, 0, 0, 0"/>
                             <TextBox Width="50" Margin="5, 0, 0, 0"
-                                     Text="{Binding PickedXValue, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+                                     Text="{Binding AutoClickerSettings.PickedXValue, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
                             <TextBlock Text="Y" Margin="5, 0, 0, 0"/>
                             <TextBox Width="50" Margin="5, 0, 0, 0"
-                                     Text="{Binding PickedYValue, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+                                     Text="{Binding AutoClickerSettings.PickedYValue, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
                         </StackPanel>
                     </RadioButton>
                 </Grid>
@@ -154,12 +160,12 @@
                                Margin="5, 5, 5, 5" VerticalAlignment="Center" TextAlignment="Center"/>
                     <ComboBox Grid.Row="0" Grid.Column="1" Margin="5, 5, 5, 5"
                               ItemsSource="{Binding Source={StaticResource mouseButtonValues}}"
-                              SelectedIndex="0" SelectedItem="{Binding SelectedMouseButton}" HorizontalAlignment="Stretch"/>
+                              SelectedIndex="0" SelectedItem="{Binding AutoClickerSettings.SelectedMouseButton}" HorizontalAlignment="Stretch"/>
                     <TextBlock Grid.Row="0" Grid.Column="2" Text="Click Type"
                                Margin="5, 5, 5, 5" VerticalAlignment="Center" TextAlignment="Center"/>
                     <ComboBox Grid.Row="0" Grid.Column="3" Margin="0, 5, 5, 5"
                               ItemsSource="{Binding Source={StaticResource mouseActionValues}}"
-                              SelectedIndex="0" SelectedItem="{Binding SelectedMouseAction}" HorizontalAlignment="Stretch"/>
+                              SelectedIndex="0" SelectedItem="{Binding AutoClickerSettings.SelectedMouseAction}" HorizontalAlignment="Stretch"/>
                 </UniformGrid>
             </GroupBox>
 

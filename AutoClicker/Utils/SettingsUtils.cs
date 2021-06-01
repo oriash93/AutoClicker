@@ -25,7 +25,7 @@ namespace AutoClicker.Utils
             Log.Debug("==================================================");
             Log.Information("Logger initialized successfully");
 
-            CurrentSettings = new ApplicationSettings();
+            LoadSettingsFromFile();
         }
 
         public static void SetStartHotKey(KeyMapping key)
@@ -56,19 +56,38 @@ namespace AutoClicker.Utils
             };
             HotKeyChangedEvent.Invoke(null, args);
 
-            SaveSettings();
+            SaveSettingsToFile();
         }
 
         public static event EventHandler<HotkeyChangedEventArgs> HotKeyChangedEvent;
 
-        private static void SaveSettings()
+        private static void SaveSettingsToFile()
         {
             JsonUtils.WriteJson(settingsFilePath, CurrentSettings);
         }
 
-        public static void LoadSettings()
+        public static void LoadSettingsFromFile()
         {
             CurrentSettings = JsonUtils.ReadJson<ApplicationSettings>(settingsFilePath);
+        }
+
+        public static void SetApplicationSettings(AutoClickerSettings settings)
+        {
+            CurrentSettings.AutoClickerSettings.Milliseconds = settings.Milliseconds;
+            CurrentSettings.AutoClickerSettings.Seconds = settings.Seconds;
+            CurrentSettings.AutoClickerSettings.Minutes = settings.Minutes;
+            CurrentSettings.AutoClickerSettings.Hours = settings.Hours;
+
+            CurrentSettings.AutoClickerSettings.PickedXValue = settings.PickedXValue;
+            CurrentSettings.AutoClickerSettings.PickedYValue = settings.PickedYValue;
+
+            CurrentSettings.AutoClickerSettings.SelectedLocationMode = settings.SelectedLocationMode;
+            CurrentSettings.AutoClickerSettings.SelectedMouseAction = settings.SelectedMouseAction;
+            CurrentSettings.AutoClickerSettings.SelectedMouseButton = settings.SelectedMouseButton;
+            CurrentSettings.AutoClickerSettings.SelectedRepeatMode = settings.SelectedRepeatMode;
+            CurrentSettings.AutoClickerSettings.SelectedTimesToRepeat = settings.SelectedTimesToRepeat;
+
+            SaveSettingsToFile();
         }
     }
 }

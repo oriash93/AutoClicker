@@ -21,109 +21,15 @@ namespace AutoClicker.Views
 {
     public partial class MainWindow : Window
     {
-        #region Dependency Properties
-
-        public int Hours
+        public AutoClickerSettings AutoClickerSettings
         {
-            get => (int)GetValue(HoursProperty);
-            set => SetValue(HoursProperty, value);
+            get { return (AutoClickerSettings)GetValue(CurrentSettingsProperty); }
+            set { SetValue(CurrentSettingsProperty, value); }
         }
 
-        public static readonly DependencyProperty HoursProperty =
-            DependencyProperty.Register(nameof(Hours), typeof(int), typeof(MainWindow));
-
-        public int Minutes
-        {
-            get => (int)GetValue(MinutesProperty);
-            set => SetValue(MinutesProperty, value);
-        }
-
-        public static readonly DependencyProperty MinutesProperty =
-            DependencyProperty.Register(nameof(Minutes), typeof(int), typeof(MainWindow));
-
-        public int Seconds
-        {
-            get => (int)GetValue(SecondsProperty);
-            set => SetValue(SecondsProperty, value);
-        }
-
-        public static readonly DependencyProperty SecondsProperty =
-            DependencyProperty.Register(nameof(Seconds), typeof(int), typeof(MainWindow));
-
-        public int Milliseconds
-        {
-            get => (int)GetValue(MillisecondsProperty);
-            set => SetValue(MillisecondsProperty, value);
-        }
-
-        public static readonly DependencyProperty MillisecondsProperty =
-            DependencyProperty.Register(nameof(Milliseconds), typeof(int), typeof(MainWindow));
-
-        public MouseButton SelectedMouseButton
-        {
-            get => (MouseButton)GetValue(SelectedMouseButtonProperty);
-            set => SetValue(SelectedMouseButtonProperty, value);
-        }
-
-        public static readonly DependencyProperty SelectedMouseButtonProperty =
-            DependencyProperty.Register(nameof(SelectedMouseButton), typeof(MouseButton), typeof(MainWindow));
-
-        public MouseAction SelectedMouseAction
-        {
-            get => (MouseAction)GetValue(SelectedMouseActionProperty);
-            set => SetValue(SelectedMouseActionProperty, value);
-        }
-
-        public static readonly DependencyProperty SelectedMouseActionProperty =
-            DependencyProperty.Register(nameof(SelectedMouseAction), typeof(MouseAction), typeof(MainWindow));
-        public RepeatMode SelectedRepeatMode
-        {
-            get => (RepeatMode)GetValue(SelectedRepeatModeProperty);
-            set => SetValue(SelectedRepeatModeProperty, value);
-        }
-
-        public static readonly DependencyProperty SelectedRepeatModeProperty =
-            DependencyProperty.Register(nameof(SelectedRepeatMode), typeof(RepeatMode), typeof(MainWindow));
-
-        public LocationMode SelectedLocationMode
-        {
-            get => (LocationMode)GetValue(SelectedLocationModeProperty);
-            set => SetValue(SelectedLocationModeProperty, value);
-        }
-
-        public static readonly DependencyProperty SelectedLocationModeProperty =
-            DependencyProperty.Register(nameof(SelectedLocationMode), typeof(LocationMode), typeof(MainWindow));
-
-        public int PickedXValue
-        {
-            get => (int)GetValue(PickedXValueProperty);
-            set => SetValue(PickedXValueProperty, value);
-        }
-
-        public static readonly DependencyProperty PickedXValueProperty =
-            DependencyProperty.Register(nameof(PickedXValue), typeof(int), typeof(MainWindow));
-
-        public int PickedYValue
-        {
-            get => (int)GetValue(PickedYValueProperty);
-            set => SetValue(PickedYValueProperty, value);
-        }
-
-        public static readonly DependencyProperty PickedYValueProperty =
-            DependencyProperty.Register(nameof(PickedYValue), typeof(int), typeof(MainWindow));
-
-        public int SelectedTimesToRepeat
-        {
-            get => (int)GetValue(SelectedTimesToRepeatProperty);
-            set => SetValue(SelectedTimesToRepeatProperty, value);
-        }
-
-        public static readonly DependencyProperty SelectedTimesToRepeatProperty =
-            DependencyProperty.Register(nameof(SelectedTimesToRepeat), typeof(int), typeof(MainWindow));
-
-        #endregion Dependency Properties
-
-        #region Fields
+        public static readonly DependencyProperty CurrentSettingsProperty =
+           DependencyProperty.Register(nameof(AutoClickerSettings), typeof(AutoClickerSettings), typeof(MainWindow),
+               new UIPropertyMetadata(SettingsUtils.CurrentSettings.AutoClickerSettings));
 
         private int timesRepeated = 0;
         private readonly Timer clickTimer;
@@ -138,8 +44,6 @@ namespace AutoClicker.Views
         private ImageSource _defaultIcon;
         private IntPtr _mainWindowHandle;
         private HwndSource _source;
-
-        #endregion Fields
 
         #region Life Cycle
 
@@ -229,6 +133,7 @@ namespace AutoClicker.Views
         private void SaveSettingsCommand_Execute(object sender, ExecutedRoutedEventArgs e)
         {
             Log.Information("Saving Settings");
+            SettingsUtils.SetApplicationSettings(AutoClickerSettings);
         }
 
         private void HotkeySettingsCommand_Execute(object sender, ExecutedRoutedEventArgs e)
@@ -269,7 +174,10 @@ namespace AutoClicker.Views
 
         private int CalculateInterval()
         {
-            return Milliseconds + (Seconds * 1000) + (Minutes * 60 * 1000) + (Hours * 60 * 60 * 1000);
+            return AutoClickerSettings.Milliseconds
+                + (AutoClickerSettings.Seconds * 1000)
+                + (AutoClickerSettings.Minutes * 60 * 1000)
+                + (AutoClickerSettings.Hours * 60 * 60 * 1000);
         }
 
         private bool IsIntervalValid()
@@ -284,12 +192,13 @@ namespace AutoClicker.Views
 
         private int GetTimesToRepeat()
         {
-            return SelectedRepeatMode == RepeatMode.Count ? SelectedTimesToRepeat : -1;
+            return AutoClickerSettings.SelectedRepeatMode == RepeatMode.Count ? AutoClickerSettings.SelectedTimesToRepeat : -1;
         }
 
         private Point GetSelectedPosition()
         {
-            return SelectedLocationMode == LocationMode.CurrentLocation ? MouseCursor.Position : new Point(PickedXValue, PickedYValue);
+            return AutoClickerSettings.SelectedLocationMode == LocationMode.CurrentLocation ?
+                MouseCursor.Position : new Point(AutoClickerSettings.PickedXValue, AutoClickerSettings.PickedYValue);
         }
 
         private int GetSelectedXPosition()
@@ -304,12 +213,13 @@ namespace AutoClicker.Views
 
         private int GetNumberOfMouseActions()
         {
-            return SelectedMouseAction == MouseAction.Single ? 1 : 2;
+            return AutoClickerSettings.SelectedMouseAction == MouseAction.Single ? 1 : 2;
         }
 
         private bool IsRepeatModeValid()
         {
-            return SelectedRepeatMode == RepeatMode.Infinite || (SelectedRepeatMode == RepeatMode.Count && SelectedTimesToRepeat > 0);
+            return AutoClickerSettings.SelectedRepeatMode == RepeatMode.Infinite
+                || (AutoClickerSettings.SelectedRepeatMode == RepeatMode.Count && AutoClickerSettings.SelectedTimesToRepeat > 0);
         }
 
         private void ResetTitle()
@@ -375,7 +285,7 @@ namespace AutoClicker.Views
         {
             Dispatcher.Invoke(() =>
             {
-                switch (SelectedMouseButton)
+                switch (AutoClickerSettings.SelectedMouseButton)
                 {
                     case MouseButton.Left:
                         PerformMouseClick(Constants.MOUSEEVENTF_LEFTDOWN, Constants.MOUSEEVENTF_LEFTUP, GetSelectedXPosition(), GetSelectedYPosition());
