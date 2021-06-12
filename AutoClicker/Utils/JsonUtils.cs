@@ -12,10 +12,10 @@ namespace AutoClicker.Utils
             {
                 if (File.Exists(filePath))
                 {
-                    Log.Debug("Read file {FilePath}", filePath);
+                    Log.Debug("Reading file = {FilePath}", filePath);
                     string jsonString = File.ReadAllText(filePath);
                     T result = JsonSerializer.Deserialize<T>(jsonString);
-                    Log.Debug("Read from file {FilePath} successfully", filePath);
+                    Log.Debug("Read from file successfully", filePath);
                     return result;
                 }
                 else

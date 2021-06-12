@@ -42,7 +42,7 @@ namespace AutoClicker.Utils
 
         public static void Reset()
         {
-            Log.Information("Reset settings to default");
+            Log.Information("Reset hotkey settings to default");
             SetStartHotKey(ApplicationSettings.defaultStartKeyMapping);
             SetStopHotKey(ApplicationSettings.defaultStopKeyMapping);
         }
