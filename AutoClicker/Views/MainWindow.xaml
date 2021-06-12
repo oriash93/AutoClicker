@@ -10,12 +10,18 @@
     </Window.Resources>
 
     <Window.CommandBindings>
-        <CommandBinding Command="commands:MainWindowCommands.Start" Executed="StartCommand_Execute" CanExecute="StartCommand_CanExecute"/>
-        <CommandBinding Command="commands:MainWindowCommands.Stop" Executed="StopCommand_Execute" CanExecute="StopCommand_CanExecute"/>
-        <CommandBinding Command="commands:MainWindowCommands.SaveSettings" Executed="SaveSettingsCommand_Execute"/>
-        <CommandBinding Command="commands:MainWindowCommands.HotkeySettings" Executed="HotkeySettingsCommand_Execute"/>
-        <CommandBinding Command="commands:MainWindowCommands.Exit" Executed="ExitCommand_Execute"/>
-        <CommandBinding Command="commands:MainWindowCommands.About" Executed="AboutCommand_Execute"/>
+        <CommandBinding Command="commands:MainWindowCommands.Start"
+                        Executed="StartCommand_Execute" CanExecute="StartCommand_CanExecute"/>
+        <CommandBinding Command="commands:MainWindowCommands.Stop"
+                        Executed="StopCommand_Execute" CanExecute="StopCommand_CanExecute"/>
+        <CommandBinding Command="commands:MainWindowCommands.SaveSettings"
+                        Executed="SaveSettingsCommand_Execute"/>
+        <CommandBinding Command="commands:MainWindowCommands.HotkeySettings"
+                        Executed="HotkeySettingsCommand_Execute"/>
+        <CommandBinding Command="commands:MainWindowCommands.Exit"
+                        Executed="ExitCommand_Execute"/>
+        <CommandBinding Command="commands:MainWindowCommands.About"
+                        Executed="AboutCommand_Execute"/>
     </Window.CommandBindings>
 
     <Grid Name="mainWindowGrid">
