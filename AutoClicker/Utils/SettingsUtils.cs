@@ -22,28 +22,29 @@ namespace AutoClicker.Utils
                 .WriteTo.Console()
                 .WriteTo.File(logFilePath)
                 .CreateLogger();
+            Log.Debug("==================================================");
             Log.Information("Logger initialized successfully");
 
-            CurrentSettings = new ApplicationSettings();
+            LoadSettingsFromFile();
         }
 
         public static void SetStartHotKey(KeyMapping key)
         {
-            CurrentSettings.StartHotkey = key;
-            NotifyChanges(CurrentSettings.StartHotkey, Operation.Start);
+            CurrentSettings.HotkeySettings.StartHotkey = key;
+            NotifyChanges(CurrentSettings.HotkeySettings.StartHotkey, Operation.Start);
         }
 
         public static void SetStopHotKey(KeyMapping key)
         {
-            CurrentSettings.StopHotkey = key;
-            NotifyChanges(CurrentSettings.StopHotkey, Operation.Stop);
+            CurrentSettings.HotkeySettings.StopHotkey = key;
+            NotifyChanges(CurrentSettings.HotkeySettings.StopHotkey, Operation.Stop);
         }
 
         public static void Reset()
         {
-            Log.Information("Reset settings to default");
-            SetStartHotKey(ApplicationSettings.defaultStartKeyMapping);
-            SetStopHotKey(ApplicationSettings.defaultStopKeyMapping);
+            Log.Information("Reset hotkey settings to default");
+            SetStartHotKey(HotkeySettings.defaultStartKeyMapping);
+            SetStopHotKey(HotkeySettings.defaultStopKeyMapping);
         }
 
         private static void NotifyChanges(KeyMapping hotkey, Operation operation)
@@ -55,19 +56,46 @@ namespace AutoClicker.Utils
             };
             HotKeyChangedEvent.Invoke(null, args);
 
-            SaveSettings();
+            SaveSettingsToFile();
         }
 
         public static event EventHandler<HotkeyChangedEventArgs> HotKeyChangedEvent;
 
-        private static void SaveSettings()
+        private static void SaveSettingsToFile()
         {
             JsonUtils.WriteJson(settingsFilePath, CurrentSettings);
         }
 
-        public static void LoadSettings()
+        public static void LoadSettingsFromFile()
         {
-            CurrentSettings = JsonUtils.ReadJson<ApplicationSettings>(settingsFilePath);
+            ApplicationSettings applicationSettings = JsonUtils.ReadJson<ApplicationSettings>(settingsFilePath);
+            if (applicationSettings == null)
+            {
+                CurrentSettings = new ApplicationSettings();
+            }
+            else
+            {
+                CurrentSettings = applicationSettings;
+            }
+        }
+
+        public static void SetApplicationSettings(AutoClickerSettings settings)
+        {
+            CurrentSettings.AutoClickerSettings.Milliseconds = settings.Milliseconds;
+            CurrentSettings.AutoClickerSettings.Seconds = settings.Seconds;
+            CurrentSettings.AutoClickerSettings.Minutes = settings.Minutes;
+            CurrentSettings.AutoClickerSettings.Hours = settings.Hours;
+
+            CurrentSettings.AutoClickerSettings.PickedXValue = settings.PickedXValue;
+            CurrentSettings.AutoClickerSettings.PickedYValue = settings.PickedYValue;
+
+            CurrentSettings.AutoClickerSettings.SelectedLocationMode = settings.SelectedLocationMode;
+            CurrentSettings.AutoClickerSettings.SelectedMouseAction = settings.SelectedMouseAction;
+            CurrentSettings.AutoClickerSettings.SelectedMouseButton = settings.SelectedMouseButton;
+            CurrentSettings.AutoClickerSettings.SelectedRepeatMode = settings.SelectedRepeatMode;
+            CurrentSettings.AutoClickerSettings.SelectedTimesToRepeat = settings.SelectedTimesToRepeat;
+
+            SaveSettingsToFile();
         }
     }
 }

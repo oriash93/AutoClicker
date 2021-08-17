@@ -11,6 +11,9 @@ namespace AutoClicker.Commands
         public static readonly RoutedUICommand Stop =
             AssemblyUtils.CreateCommand(typeof(MainWindowCommands), nameof(Stop));
 
+        public static readonly RoutedUICommand SaveSettings =
+            AssemblyUtils.CreateCommand(typeof(MainWindowCommands), nameof(SaveSettings));
+
         public static readonly RoutedUICommand HotkeySettings =
             AssemblyUtils.CreateCommand(typeof(MainWindowCommands), nameof(HotkeySettings), new KeyGesture(Key.CapsLock, ModifierKeys.Control));
 

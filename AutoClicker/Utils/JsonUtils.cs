@@ -12,21 +12,21 @@ namespace AutoClicker.Utils
             {
                 if (File.Exists(filePath))
                 {
-                    Log.Debug("Read file {FilePath}", filePath);
+                    Log.Debug("Reading file = {FilePath}", filePath);
                     string jsonString = File.ReadAllText(filePath);
                     T result = JsonSerializer.Deserialize<T>(jsonString);
-                    Log.Debug("Read from file {FilePath} successfully", filePath);
+                    Log.Debug("Read from file successfully", filePath);
                     return result;
                 }
                 else
                 {
-                    Log.Error("File {FilePath} is missing", filePath);
-                    throw new FileNotFoundException(filePath);
+                    Log.Warning("File {FilePath} is missing", filePath);
+                    return default;
                 }
             }
             catch (JsonException)
             {
-                Log.Warning("Failed parsing object of type {Type}", typeof(T));
+                Log.Error("Failed parsing object of type {Type}", typeof(T));
                 throw;
             }
         }

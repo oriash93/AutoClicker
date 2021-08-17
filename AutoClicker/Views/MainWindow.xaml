@@ -10,11 +10,18 @@
     </Window.Resources>
 
     <Window.CommandBindings>
-        <CommandBinding Command="commands:MainWindowCommands.Start" Executed="StartCommand_Execute" CanExecute="StartCommand_CanExecute"/>
-        <CommandBinding Command="commands:MainWindowCommands.Stop" Executed="StopCommand_Execute" CanExecute="StopCommand_CanExecute"/>
-        <CommandBinding Command="commands:MainWindowCommands.HotkeySettings" Executed="HotkeySettingsCommand_Execute"/>
-        <CommandBinding Command="commands:MainWindowCommands.Exit" Executed="ExitCommand_Execute"/>
-        <CommandBinding Command="commands:MainWindowCommands.About" Executed="AboutCommand_Execute"/>
+        <CommandBinding Command="commands:MainWindowCommands.Start"
+                        Executed="StartCommand_Execute" CanExecute="StartCommand_CanExecute"/>
+        <CommandBinding Command="commands:MainWindowCommands.Stop"
+                        Executed="StopCommand_Execute" CanExecute="StopCommand_CanExecute"/>
+        <CommandBinding Command="commands:MainWindowCommands.SaveSettings"
+                        Executed="SaveSettingsCommand_Execute"/>
+        <CommandBinding Command="commands:MainWindowCommands.HotkeySettings"
+                        Executed="HotkeySettingsCommand_Execute"/>
+        <CommandBinding Command="commands:MainWindowCommands.Exit"
+                        Executed="ExitCommand_Execute"/>
+        <CommandBinding Command="commands:MainWindowCommands.About"
+                        Executed="AboutCommand_Execute"/>
     </Window.CommandBindings>
 
     <Grid Name="mainWindowGrid">
@@ -39,10 +46,10 @@
 
         <Grid Name="primaryGrid" Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center">
             <Grid.RowDefinitions>
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="2*"/>
-                <RowDefinition Height="2*"/>
-                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
@@ -70,16 +77,16 @@
                     </Grid.ColumnDefinitions>
 
                     <TextBox Grid.Column="0" Width="45"
-                             Text="{Binding Hours, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+                             Text="{Binding AutoClickerSettings.Hours, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
                     <TextBlock Grid.Column="1" Margin="5, 0, 5, 5" Text="hours"/>
                     <TextBox Grid.Column="2" Width="45"
-                             Text="{Binding Minutes, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+                             Text="{Binding AutoClickerSettings.Minutes, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
                     <TextBlock Grid.Column="3" Margin="5, 0, 5, 5" Text="minutes"/>
                     <TextBox Grid.Column="4" Width="45"
-                             Text="{Binding Seconds, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+                             Text="{Binding AutoClickerSettings.Seconds, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
                     <TextBlock Grid.Column="5" Margin="5, 0, 5, 5" Text="seconds"/>
                     <TextBox Grid.Column="6" Width="45"
-                             Text="{Binding Milliseconds, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+                             Text="{Binding AutoClickerSettings.Milliseconds, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
                     <TextBlock Grid.Column="7" Margin="5, 0, 5, 5" Text="milliseconds"/>
                 </Grid>
             </GroupBox>
@@ -99,14 +106,18 @@
 
                     <RadioButton Grid.Row="0" Grid.Column="0" Margin="0, 0, 0, 5"
                                  Content="Infinite (Until stopped)"
-                                 IsChecked="{Binding Path=SelectedRepeatMode, Converter={StaticResource EnumToBooleanConverter},
-                                        ConverterParameter={x:Static enums:RepeatMode.Infinite}}"/>
+                                 IsChecked="{Binding AutoClickerSettings.SelectedRepeatMode,
+                                                     Converter={StaticResource EnumToBooleanConverter},
+                                                     ConverterParameter={x:Static enums:RepeatMode.Infinite}}"/>
                     <RadioButton Grid.Row="1" Grid.ColumnSpan="2" Margin="0, 0, 0, 5"
-                                 IsChecked="{Binding Path=SelectedRepeatMode, Converter={StaticResource EnumToBooleanConverter},
-                                        ConverterParameter={x:Static enums:RepeatMode.Count}}">
+                                 IsChecked="{Binding AutoClickerSettings.SelectedRepeatMode,
+                                                     Converter={StaticResource EnumToBooleanConverter},
+                                                     ConverterParameter={x:Static enums:RepeatMode.Count}}">
                         <StackPanel Orientation="Horizontal">
                             <TextBox Width="50" Margin="5, 0, 0, 0"
-                                     Text="{Binding SelectedTimesToRepeat, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+                                     Text="{Binding AutoClickerSettings.SelectedTimesToRepeat,
+                                                    UpdateSourceTrigger=PropertyChanged,
+                                                    Mode=TwoWay}"/>
                             <TextBlock Text="Times" Margin="5, 0, 0, 0" />
                         </StackPanel>
                     </RadioButton>
@@ -128,18 +139,20 @@
 
                     <RadioButton Grid.Row="0" Grid.Column="0" Margin="0, 0, 0, 5"
                                  Content="Current Cursor Position"
-                                 IsChecked="{Binding Path=SelectedLocationMode, Converter={StaticResource EnumToBooleanConverter},
-                                                                                ConverterParameter={x:Static enums:LocationMode.CurrentLocation}}"/>
+                                 IsChecked="{Binding AutoClickerSettings.SelectedLocationMode,
+                                                     Converter={StaticResource EnumToBooleanConverter},
+                                                     ConverterParameter={x:Static enums:LocationMode.CurrentLocation}}"/>
                     <RadioButton Grid.Row="1" Grid.ColumnSpan="2" Margin="0, 0, 0, 5"
-                                 IsChecked="{Binding Path=SelectedLocationMode, Converter={StaticResource EnumToBooleanConverter},
-                                                                                ConverterParameter={x:Static enums:LocationMode.PickedLocation}}">
+                                 IsChecked="{Binding AutoClickerSettings.SelectedLocationMode,
+                                                     Converter={StaticResource EnumToBooleanConverter},
+                                                     ConverterParameter={x:Static enums:LocationMode.PickedLocation}}">
                         <StackPanel Orientation="Horizontal">
                             <TextBlock Text="X" Margin="5, 0, 0, 0"/>
                             <TextBox Width="50" Margin="5, 0, 0, 0"
-                                     Text="{Binding PickedXValue, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+                                     Text="{Binding AutoClickerSettings.PickedXValue, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
                             <TextBlock Text="Y" Margin="5, 0, 0, 0"/>
                             <TextBox Width="50" Margin="5, 0, 0, 0"
-                                     Text="{Binding PickedYValue, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+                                     Text="{Binding AutoClickerSettings.PickedYValue, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
                         </StackPanel>
                     </RadioButton>
                 </Grid>
@@ -153,26 +166,29 @@
                                Margin="5, 5, 5, 5" VerticalAlignment="Center" TextAlignment="Center"/>
                     <ComboBox Grid.Row="0" Grid.Column="1" Margin="5, 5, 5, 5"
                               ItemsSource="{Binding Source={StaticResource mouseButtonValues}}"
-                              SelectedIndex="0" SelectedItem="{Binding SelectedMouseButton}" HorizontalAlignment="Stretch"/>
+                              SelectedIndex="0" SelectedItem="{Binding AutoClickerSettings.SelectedMouseButton}" HorizontalAlignment="Stretch"/>
                     <TextBlock Grid.Row="0" Grid.Column="2" Text="Click Type"
                                Margin="5, 5, 5, 5" VerticalAlignment="Center" TextAlignment="Center"/>
                     <ComboBox Grid.Row="0" Grid.Column="3" Margin="0, 5, 5, 5"
                               ItemsSource="{Binding Source={StaticResource mouseActionValues}}"
-                              SelectedIndex="0" SelectedItem="{Binding SelectedMouseAction}" HorizontalAlignment="Stretch"/>
+                              SelectedIndex="0" SelectedItem="{Binding AutoClickerSettings.SelectedMouseAction}" HorizontalAlignment="Stretch"/>
                 </UniformGrid>
             </GroupBox>
 
             <UniformGrid Name="buttonsGrid"
-                         Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="4" Rows="1" Columns="3">
+                         Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="4" Rows="2" Columns="2">
                 <Button Name="startButton"
                         Grid.Row="0" Grid.Column="0" Margin="5"
                         Content="Start (F6)" Command="commands:MainWindowCommands.Start"/>
                 <Button Name="stopButton"
                         Grid.Row="0" Grid.Column="1" Margin="5"
                         Content="Stop (F7)" Command="commands:MainWindowCommands.Stop"/>
-                <Button Name="settingsButton"
-                        Grid.Row="0" Grid.Column="2" Margin="5"
-                        Content="Hotkey Settings" Command="commands:MainWindowCommands.HotkeySettings"/>
+                <Button Name="saveSettingsButton"
+                        Grid.Row="1" Grid.Column="0" Margin="5"
+                        Content="Save Settings" Command="commands:MainWindowCommands.SaveSettings"/>
+                <Button Name="hotkeysButton"
+                        Grid.Row="1" Grid.Column="1" Margin="5"
+                        Content="Hotkeys" Command="commands:MainWindowCommands.HotkeySettings"/>
             </UniformGrid>
         </Grid>
     </Grid>

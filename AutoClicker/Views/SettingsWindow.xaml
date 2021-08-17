@@ -27,23 +27,21 @@
 
         <Label Grid.Row="0" Grid.Column="0" Margin="5, 5, 5, 5"
                Content="Start Hotkey: "/>
-        <ComboBox Name="startKeyMapping"
-                  Grid.Row="0" Grid.Column="1" Margin="5, 5, 5, 5"
-                  ItemsSource="{Binding Path=KeyMapping}"
-                  SelectedItem="{Binding SelectedStartKey}"
-                  DisplayMemberPath="DisplayName"
-                  HorizontalAlignment="Stretch"
-                  VerticalContentAlignment="Center" HorizontalContentAlignment="Center"/>
+        <TextBox Name="startKeyTextBox"
+                 Grid.Row="0" Grid.Column="1" Margin="5, 5, 5, 5"
+                 Text="{Binding Path=SelectedStartKey.DisplayName, Mode=OneWay}"
+                 KeyDown="StartKeyTextBox_KeyDown"
+                 HorizontalAlignment="Stretch"
+                 VerticalContentAlignment="Center" HorizontalContentAlignment="Center"/>
 
         <Label Grid.Row="1" Grid.Column="0"  Margin="5, 5, 5, 5"
                Content="Stop Hotkey: "/>
-        <ComboBox Name="stopKeyMapping"
-                  Grid.Row="1" Grid.Column="1" Margin="5, 5, 5, 5"
-                  ItemsSource="{Binding Path=KeyMapping}"
-                  SelectedItem="{Binding SelectedStopKey}"
-                  DisplayMemberPath="DisplayName"
-                  HorizontalAlignment="Stretch"
-                  VerticalContentAlignment="Center" HorizontalContentAlignment="Center"/>
+        <TextBox Name="stopKeyTextBox"
+                 Grid.Row="1" Grid.Column="1" Margin="5, 5, 5, 5"
+                 Text="{Binding Path=SelectedStopKey.DisplayName, Mode=OneWay}"
+                 KeyDown="StopKeyTextBox_KeyDown"
+                 HorizontalAlignment="Stretch"
+                 VerticalContentAlignment="Center" HorizontalContentAlignment="Center"/>
 
         <Button Name="saveSettingsButton"
                 Content="Save" Grid.Row="2" Grid.Column="0" Margin="5, 5, 5, 5"
