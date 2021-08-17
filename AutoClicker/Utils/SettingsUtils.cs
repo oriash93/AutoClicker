@@ -68,7 +68,15 @@ namespace AutoClicker.Utils
 
         public static void LoadSettingsFromFile()
         {
-            CurrentSettings = JsonUtils.ReadJson<ApplicationSettings>(settingsFilePath);
+            ApplicationSettings applicationSettings = JsonUtils.ReadJson<ApplicationSettings>(settingsFilePath);
+            if (applicationSettings == null)
+            {
+                CurrentSettings = new ApplicationSettings();
+            }
+            else
+            {
+                CurrentSettings = applicationSettings;
+            }
         }
 
         public static void SetApplicationSettings(AutoClickerSettings settings)

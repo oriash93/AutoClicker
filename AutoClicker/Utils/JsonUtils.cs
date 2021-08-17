@@ -20,13 +20,13 @@ namespace AutoClicker.Utils
                 }
                 else
                 {
-                    Log.Error("File {FilePath} is missing", filePath);
-                    throw new FileNotFoundException(filePath);
+                    Log.Warning("File {FilePath} is missing", filePath);
+                    return default;
                 }
             }
             catch (JsonException)
             {
-                Log.Warning("Failed parsing object of type {Type}", typeof(T));
+                Log.Error("Failed parsing object of type {Type}", typeof(T));
                 throw;
             }
         }
