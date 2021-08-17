@@ -1,8 +1,10 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Windows;
 using System.Windows.Input;
 using AutoClicker.Models;
 using AutoClicker.Utils;
+using Serilog;
 
 namespace AutoClicker.Views
 {
@@ -70,5 +72,42 @@ namespace AutoClicker.Views
         }
 
         #endregion Commands
+
+        #region Helper Methods
+
+        private void StartKeyTextBox_KeyDown(object sender, KeyEventArgs e)
+        {
+            KeyMapping newKeyMapping = GetNewKeyMapping(e.Key);
+            if (newKeyMapping == null)
+            {
+                Log.Error("No Matching key for {Key}", e.Key);
+                return;
+            }
+
+            e.Handled = true;
+            SelectedStartKey = newKeyMapping;
+        }
+
+        private void StopKeyTextBox_KeyDown(object sender, KeyEventArgs e)
+        {
+            KeyMapping newKeyMapping = GetNewKeyMapping(e.Key);
+            if (newKeyMapping == null)
+            {
+                Log.Error("No Matching key for {Key}", e.Key);
+                return;
+            }
+
+            e.Handled = true;
+            SelectedStopKey = newKeyMapping;
+        }
+
+        private KeyMapping GetNewKeyMapping(Key key)
+        {
+            int virtualKeyCode = KeyInterop.VirtualKeyFromKey(key);
+            Log.Debug("GetNewKeyMapping with virtualKeyCode {VirtualKeyCode}", virtualKeyCode);
+            return KeyMapping.FirstOrDefault(keyMapping => keyMapping.VirtualKeyCode == virtualKeyCode);
+        }
+
+        #endregion Helper Methods
     }
 }
