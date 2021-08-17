@@ -115,8 +115,9 @@ namespace AutoClicker.Views
             clickTimer.Interval = interval;
             clickTimer.Start();
 
-            Title += Constants.MAIN_WINDOW_TITLE_RUNNING;
             Icon = new BitmapImage(runningIconUri);
+            Title += Constants.MAIN_WINDOW_TITLE_RUNNING;
+            systemTrayIcon.Text += Constants.MAIN_WINDOW_TITLE_RUNNING;
         }
 
         private void StartCommand_CanExecute(object sender, CanExecuteRoutedEventArgs e)
@@ -233,6 +234,10 @@ namespace AutoClicker.Views
         private void ResetTitle()
         {
             Title = Constants.MAIN_WINDOW_TITLE_DEFAULT;
+            if (systemTrayIcon != null)
+            {
+                systemTrayIcon.Text = Constants.MAIN_WINDOW_TITLE_DEFAULT;
+            }
         }
 
         private void InitializeSystemTrayMenu()
@@ -244,7 +249,7 @@ namespace AutoClicker.Views
             };
 
             systemTrayIcon.Click += SystemTrayIcon_Click;
-
+            systemTrayIcon.Text = Constants.MAIN_WINDOW_TITLE_DEFAULT;
             systemTrayMenu = new SystemTrayMenu();
             systemTrayMenu.SystemTrayMenuActionEvent += SystemTrayMenu_SystemTrayMenuActionEvent;
         }
