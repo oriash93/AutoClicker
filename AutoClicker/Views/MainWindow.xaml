@@ -96,6 +96,84 @@
             <GroupBox Name="randomizedClickIntveralGroupBox"
                       Header="Randomized Click Interval" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="4">
 
+                <Grid
+                    HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <GroupBox Grid.Row="0" Name="maximumIntervalGroupBox"
+                              Header="Maximum Interval">
+                        <Grid Name="maximumIntervalInnerGrid"
+                              HorizontalAlignment="Center" VerticalAlignment="Center">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+
+                            <TextBox Grid.Column="0" Width="45"
+                                     Text="{Binding AutoClickerSettings.Hours, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+                            <TextBlock Grid.Column="1" Margin="5, 0, 5, 5" Text="hours"/>
+                            <TextBox Grid.Column="2" Width="45"
+                                     Text="{Binding AutoClickerSettings.Minutes, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+                            <TextBlock Grid.Column="3" Margin="5, 0, 5, 5" Text="minutes"/>
+                            <TextBox Grid.Column="4" Width="45"
+                                     Text="{Binding AutoClickerSettings.Seconds, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+                            <TextBlock Grid.Column="5" Margin="5, 0, 5, 5" Text="seconds"/>
+                            <TextBox Grid.Column="6" Width="45"
+                                     Text="{Binding AutoClickerSettings.Milliseconds, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+                            <TextBlock Grid.Column="7" Margin="5, 0, 5, 5" Text="milliseconds"/>
+                        </Grid>
+                    </GroupBox>
+
+                    <GroupBox Grid.Row="1" Name="minimumIntervalGroupBox"
+                          Header="Minimum Interval">
+                    <Grid Name="minimumIntervalInnerGrid"
+                          HorizontalAlignment="Center" VerticalAlignment="Center">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+
+                        <TextBox Grid.Column="0" Width="45"
+                                 Text="{Binding AutoClickerSettings.Hours, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+                        <TextBlock Grid.Column="1" Margin="5, 0, 5, 5" Text="hours"/>
+                        <TextBox Grid.Column="2" Width="45"
+                                 Text="{Binding AutoClickerSettings.Minutes, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+                        <TextBlock Grid.Column="3" Margin="5, 0, 5, 5" Text="minutes"/>
+                        <TextBox Grid.Column="4" Width="45"
+                                 Text="{Binding AutoClickerSettings.Seconds, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+                        <TextBlock Grid.Column="5" Margin="5, 0, 5, 5" Text="seconds"/>
+                        <TextBox Grid.Column="6" Width="45"
+                                 Text="{Binding AutoClickerSettings.Milliseconds, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+                        <TextBlock Grid.Column="7" Margin="5, 0, 5, 5" Text="milliseconds"/>
+                    </Grid>
+                </GroupBox>
+
+                </Grid>
+
+
+
+
             </GroupBox>
 
             <GroupBox Name="clickRepeatGroupBox"
