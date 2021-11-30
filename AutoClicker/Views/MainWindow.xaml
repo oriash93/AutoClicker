@@ -4,7 +4,7 @@
         xmlns:commands="clr-namespace:AutoClicker.Commands"
         xmlns:enums="clr-namespace:AutoClicker.Enums"
         ResizeMode="CanMinimize"
-        Height="320" Width="450">
+        Height="400" Width="500">
     <Window.Resources>
         <ResourceDictionary Source="../Resources/MainWindowResources.xaml"/>
     </Window.Resources>
