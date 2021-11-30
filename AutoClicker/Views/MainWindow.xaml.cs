@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Timers;
 using System.Windows;
 using System.Windows.Input;
@@ -305,6 +306,7 @@ namespace AutoClicker.Views
         {
             Dispatcher.Invoke(() =>
             {
+                Debug.WriteLine("Click");
                 InitMouseClick();
                 timesRepeated++;
 
@@ -313,6 +315,11 @@ namespace AutoClicker.Views
                     clickTimer.Stop();
                     ResetTitle();
                 }
+
+                var interval = CalculateInterval();
+                if (IsIntervalValid())
+                    clickTimer.Interval = CalculateInterval();
+                Debug.WriteLine(clickTimer.Interval);
             });
         }
 
