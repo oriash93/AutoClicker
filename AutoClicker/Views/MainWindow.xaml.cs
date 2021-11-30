@@ -183,10 +183,33 @@ namespace AutoClicker.Views
 
         private int CalculateInterval()
         {
-            return AutoClickerSettings.Milliseconds
-                + (AutoClickerSettings.Seconds * 1000)
-                + (AutoClickerSettings.Minutes * 60 * 1000)
-                + (AutoClickerSettings.Hours * 60 * 60 * 1000);
+            var clickInterval = AutoClickerSettings.Milliseconds
+                                + (AutoClickerSettings.Seconds * 1000)
+                                + (AutoClickerSettings.Minutes * 60 * 1000)
+                                + (AutoClickerSettings.Hours * 60 * 60 * 1000);
+
+            // if the clickInterval is 0, check the randomizedClickInterval
+            if (clickInterval == 0)
+            {
+                var maximumRandomizedClickInterval = AutoClickerSettings.MaximumMilliseconds
+                                                     + (AutoClickerSettings.MaximumSeconds * 1000)
+                                                     + (AutoClickerSettings.MaximumMinutes * 60 * 1000)
+                                                     + (AutoClickerSettings.MaximumHours * 60 * 60 * 1000);
+
+                var minimumRandomizedClickInterval = AutoClickerSettings.MinimumMilliseconds
+                                                     + (AutoClickerSettings.MinimumSeconds * 1000)
+                                                     + (AutoClickerSettings.MinimumMinutes * 60 * 1000)
+                                                     + (AutoClickerSettings.MinimumHours * 60 * 60 * 1000);
+
+                // if there is a valid randomizedClickInterval, calculate a random interval in the range
+                if (maximumRandomizedClickInterval - minimumRandomizedClickInterval > 0)
+                {
+                    var rng = new Random();
+                    clickInterval = rng.Next(minimumRandomizedClickInterval, maximumRandomizedClickInterval);
+                }
+            }
+
+            return clickInterval;
         }
 
         private bool IsIntervalValid()
