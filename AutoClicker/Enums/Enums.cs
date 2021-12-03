@@ -28,7 +28,8 @@
     public enum Operation
     {
         Start = 0,
-        Stop = 1
+        Stop = 1,
+        Toogle = 2
     }
 
     public enum SystemTrayMenuAction

@@ -76,7 +76,11 @@ namespace AutoClicker.Views
                 Hotkey = SettingsUtils.CurrentSettings.HotkeySettings.StopHotkey,
                 Operation = Operation.Stop
             });
-
+            SettingsUtils_HotKeyChangedEvent(this, new HotkeyChangedEventArgs()
+            {
+                Hotkey = SettingsUtils.CurrentSettings.HotkeySettings.ToggleHotkey,
+                Operation = Operation.Toogle
+            });
             _defaultIcon = Icon;
 
             InitializeSystemTrayMenu();
@@ -89,6 +93,7 @@ namespace AutoClicker.Views
             SettingsUtils.HotKeyChangedEvent -= SettingsUtils_HotKeyChangedEvent;
             UnregisterHotkey(Constants.START_HOTKEY_ID);
             UnregisterHotkey(Constants.STOP_HOTKEY_ID);
+            UnregisterHotkey(Constants.TOGGLE_HOTKEY_ID);
 
             systemTrayIcon.Click -= SystemTrayIcon_Click;
             systemTrayIcon.Dispose();
@@ -137,6 +142,19 @@ namespace AutoClicker.Views
         private void StopCommand_CanExecute(object sender, CanExecuteRoutedEventArgs e)
         {
             e.CanExecute = clickTimer.Enabled;
+        }
+
+        private void ToggleCommand_Execute(object sender, ExecutedRoutedEventArgs e)
+        {
+            if (clickTimer.Enabled)
+                StopCommand_Execute(sender, e);
+            else
+                StartCommand_Execute(sender, e);
+        }
+        
+        private void ToggleCommand_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = CanStartOperation() | clickTimer.Enabled;
         }
 
         private void SaveSettingsCommand_Execute(object sender, ExecutedRoutedEventArgs e)
@@ -324,7 +342,7 @@ namespace AutoClicker.Views
         private IntPtr StartStopHooks(IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled)
         {
             int hotkeyId = wParam.ToInt32();
-            if (msg == Constants.WM_HOTKEY && hotkeyId == Constants.START_HOTKEY_ID || hotkeyId == Constants.STOP_HOTKEY_ID)
+            if (msg == Constants.WM_HOTKEY && hotkeyId == Constants.START_HOTKEY_ID || hotkeyId == Constants.STOP_HOTKEY_ID || hotkeyId == Constants.TOGGLE_HOTKEY_ID)
             {
                 int virtualKey = ((int)lParam >> 16) & 0xFFFF;
                 if (virtualKey == SettingsUtils.CurrentSettings.HotkeySettings.StartHotkey.VirtualKeyCode && CanStartOperation())
@@ -334,6 +352,10 @@ namespace AutoClicker.Views
                 if (virtualKey == SettingsUtils.CurrentSettings.HotkeySettings.StopHotkey.VirtualKeyCode && clickTimer.Enabled)
                 {
                     StopCommand_Execute(null, null);
+                }
+                if (virtualKey == SettingsUtils.CurrentSettings.HotkeySettings.ToggleHotkey.VirtualKeyCode && CanStartOperation() | clickTimer.Enabled)
+                {
+                    ToggleCommand_Execute(null, null);
                 }
                 handled = true;
             }
@@ -352,6 +374,10 @@ namespace AutoClicker.Views
                 case Operation.Stop:
                     ReRegisterHotkey(Constants.STOP_HOTKEY_ID, e.Hotkey);
                     stopButton.Content = $"{Constants.MAIN_WINDOW_STOP_BUTTON_CONTENT} ({e.Hotkey.DisplayName})";
+                    break;
+                case Operation.Toogle:
+                    ReRegisterHotkey(Constants.TOGGLE_HOTKEY_ID, e.Hotkey);
+                    toggleButton.Content = $"{Constants.MAIN_WINDOW_TOGGLE_BUTTON_CONTENT} ({e.Hotkey.DisplayName})";
                     break;
                 default:
                     Log.Warning("Operation {Operation} not supported!", e.Operation);

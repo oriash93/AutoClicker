@@ -4,7 +4,7 @@
         xmlns:commands="clr-namespace:AutoClicker.Commands"
         Topmost="true"
         ResizeMode="CanMinimize"
-        Height="150" Width="350"
+        Height="180" Width="350"
         Icon="{StaticResource SettingsIcon}">
     <Window.CommandBindings>
         <CommandBinding Command="commands:SettingsWindowCommands.Save"
@@ -16,6 +16,7 @@
     <Grid Name="settingsGrid"
           HorizontalAlignment="Center" VerticalAlignment="Center">
         <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
@@ -42,13 +43,21 @@
                  KeyDown="StopKeyTextBox_KeyDown"
                  HorizontalAlignment="Stretch"
                  VerticalContentAlignment="Center" HorizontalContentAlignment="Center"/>
+        <Label Grid.Row="2" Grid.Column="0"  Margin="5, 5, 5, 5"
+               Content="Toggle Hotkey: "/>
+        <TextBox Name="toggleKeyTextBox"
+                 Grid.Row="2" Grid.Column="1" Margin="5, 5, 5, 5"
+                 Text="{Binding Path=SelectedToggleKey.DisplayName, Mode=OneWay}"
+                 KeyDown="toggleKeyTextBox_KeyDown"
+                 HorizontalAlignment="Stretch"
+                 VerticalContentAlignment="Center" HorizontalContentAlignment="Center"/>
 
         <Button Name="saveSettingsButton"
-                Content="Save" Grid.Row="2" Grid.Column="0" Margin="5, 5, 5, 5"
+                Content="Save" Grid.Row="3" Grid.Column="0" Margin="5, 5, 5, 5"
                 Command="commands:SettingsWindowCommands.Save"/>
 
         <Button Name="resetSettingsButton"
-                Content="Reset" Grid.Row="2" Grid.Column="1" Margin="5, 5, 5, 5"
+                Content="Reset" Grid.Row="3" Grid.Column="1" Margin="5, 5, 5, 5"
                 Command="commands:SettingsWindowCommands.Reset"/>
     </Grid>
 </Window>

@@ -30,6 +30,15 @@ namespace AutoClicker.Views
         public static readonly DependencyProperty SelectedStopKeyProperty =
             DependencyProperty.Register(nameof(SelectedStopKey), typeof(KeyMapping), typeof(SettingsWindow));
 
+        public KeyMapping SelectedToggleKey
+        {
+            get => (KeyMapping)GetValue(SelectedToggleKeyProperty);
+            set => SetValue(SelectedToggleKeyProperty, value);
+        }
+
+        public static readonly DependencyProperty SelectedToggleKeyProperty =
+            DependencyProperty.Register(nameof(SelectedToggleKey), typeof(KeyMapping), typeof(SettingsWindow));
+
         public List<KeyMapping> KeyMapping { get; set; }
 
         #endregion Dependency Properties
@@ -44,6 +53,7 @@ namespace AutoClicker.Views
             Title = Constants.SETTINGS_WINDOW_TITLE;
             SelectedStartKey = SettingsUtils.CurrentSettings.HotkeySettings.StartHotkey;
             SelectedStopKey = SettingsUtils.CurrentSettings.HotkeySettings.StopHotkey;
+            SelectedToggleKey = SettingsUtils.CurrentSettings.HotkeySettings.ToggleHotkey;
 
             InitializeComponent();
         }
@@ -62,6 +72,10 @@ namespace AutoClicker.Views
             {
                 SettingsUtils.SetStopHotKey(SelectedStopKey);
             }
+            if (SelectedStopKey != SettingsUtils.CurrentSettings.HotkeySettings.ToggleHotkey)
+            {
+                SettingsUtils.SetToggleHotKey(SelectedToggleKey);
+            }
         }
 
         private void ResetCommand_Execute(object sender, ExecutedRoutedEventArgs e)
@@ -69,6 +83,7 @@ namespace AutoClicker.Views
             SettingsUtils.Reset();
             SelectedStartKey = SettingsUtils.CurrentSettings.HotkeySettings.StartHotkey;
             SelectedStopKey = SettingsUtils.CurrentSettings.HotkeySettings.StopHotkey;
+            SelectedToggleKey = SettingsUtils.CurrentSettings.HotkeySettings.ToggleHotkey;
         }
 
         #endregion Commands
@@ -99,6 +114,18 @@ namespace AutoClicker.Views
 
             e.Handled = true;
             SelectedStopKey = newKeyMapping;
+        }
+        private void toggleKeyTextBox_KeyDown(object sender, KeyEventArgs e)
+        {
+            KeyMapping newKeyMapping = GetNewKeyMapping(e.Key);
+            if (newKeyMapping == null)
+            {
+                Log.Error("No Matching key for {Key}", e.Key);
+                return;
+            }
+
+            e.Handled = true;
+            SelectedToggleKey = newKeyMapping;
         }
 
         private KeyMapping GetNewKeyMapping(Key key)
