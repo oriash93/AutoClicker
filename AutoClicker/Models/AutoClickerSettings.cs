@@ -27,5 +27,7 @@ namespace AutoClicker.Models
         public int SelectedTimesToRepeat { get; set; }
 
         public bool StopOnMouseMove { get; set; }
+        
+        public int MouseMoveTolerance { get; set; }
     }
 }

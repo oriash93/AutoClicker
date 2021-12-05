@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
+using System.Drawing;
+using Serilog;
 
 namespace AutoClicker.Utils
 {
@@ -10,10 +12,22 @@ namespace AutoClicker.Utils
     /// </summary>
     public static class GloablMouseHook
     {
+        public static bool IsActive { get; private set; }
+
         public static event EventHandler MouseAction = delegate { };
 
-        public static void Start() => _hookID = SetHook(_proc);
-        public static void stop() => UnhookWindowsHookEx(_hookID);
+        public static void Start()
+        {
+            _hookID = SetHook(_proc);
+            IsActive = true;
+            Log.Information("GloablMouseHook started");
+        }
+        public static void stop()
+        {
+            UnhookWindowsHookEx(_hookID);
+            IsActive = false;
+            Log.Information("GloablMouseHook stopped");
+        }
 
         private static LowLevelMouseProc _proc = HookCallback;
         private static IntPtr _hookID = IntPtr.Zero;
@@ -56,11 +70,20 @@ namespace AutoClicker.Utils
             WM_RBUTTONUP = 0x0205
         }
 
+        /// <summary>
+        /// Struct representing a point.
+        /// Thanks StackOverflow again :)
+        /// </summary>
         [StructLayout(LayoutKind.Sequential)]
-        private struct POINT
+        public struct POINT
         {
-            public int x;
-            public int y;
+            public int X;
+            public int Y;
+
+            public static implicit operator Point(POINT point)
+            {
+                return new Point(point.X, point.Y);
+            }
         }
 
         [StructLayout(LayoutKind.Sequential)]
@@ -83,5 +106,23 @@ namespace AutoClicker.Utils
 
         [DllImport("kernel32.dll", CharSet = CharSet.Auto, SetLastError = true)]
         private static extern IntPtr GetModuleHandle(string lpModuleName);
+
+        /// <summary>
+        /// Retrieves the cursor's position, in screen coordinates.
+        /// </summary>
+        /// <see>See MSDN documentation for further information.</see>
+        [DllImport("user32.dll")]
+        public static extern bool GetCursorPos(out POINT lpPoint);
+
+        public static Point GetCursorPosition()
+        {
+            POINT lpPoint;
+            GetCursorPos(out lpPoint);
+            // NOTE: If you need error handling
+            // bool success = GetCursorPos(out lpPoint);
+            // if (!success)
+
+            return lpPoint;
+        }
     }
 }

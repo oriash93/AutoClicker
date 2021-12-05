@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics;
 using System.Timers;
 using System.Windows;
 using System.Windows.Input;
@@ -46,6 +45,8 @@ namespace AutoClicker.Views
         private IntPtr _mainWindowHandle;
         private HwndSource _source;
 
+        private Point _lastMousePosition;
+
         #region Life Cycle
 
         public MainWindow()
@@ -90,7 +91,9 @@ namespace AutoClicker.Views
 
         protected override void OnClosed(EventArgs e)
         {
-            GloablMouseHook.stop();
+            if (GloablMouseHook.IsActive)
+                GloablMouseHook.stop();
+            
             _source.RemoveHook(StartStopHooks);
 
             SettingsUtils.HotKeyChangedEvent -= SettingsUtils_HotKeyChangedEvent;
@@ -120,7 +123,10 @@ namespace AutoClicker.Views
             Log.Information("Starting operation, interval={Interval}ms", interval);
             
             if (AutoClickerSettings.StopOnMouseMove)
+            {
+                _lastMousePosition = GloablMouseHook.GetCursorPosition();
                 GloablMouseHook.Start();
+            }
 
             timesRepeated = 0;
             clickTimer.Interval = interval;
@@ -140,7 +146,8 @@ namespace AutoClicker.Views
         {
             Log.Information("Stopping operation");
             clickTimer.Stop();
-            GloablMouseHook.stop();
+            if (GloablMouseHook.IsActive)
+                GloablMouseHook.stop();
 
             ResetTitle();
             Icon = _defaultIcon;
@@ -305,7 +312,16 @@ namespace AutoClicker.Views
 
         private void GloablMouseHook_MouseAction(object sender, EventArgs e)
         {
-            this.StopCommand_Execute(null, null);
+            Point newMousePosition = GloablMouseHook.GetCursorPosition();
+            
+            // Use the Pythagorean Theorem to calculate the amount of pixels the mouse has moved
+            int moveX = newMousePosition.X - _lastMousePosition.X;
+            int moveY = newMousePosition.Y - _lastMousePosition.Y;
+            int mouseTravel = (int)Math.Sqrt(moveX * moveX + moveY * moveY);
+
+            _lastMousePosition = newMousePosition;
+            if (mouseTravel > AutoClickerSettings.MouseMoveTolerance)
+                StopCommand_Execute(null, null);
         }
 
         private void OnClickTimerElapsed(object sender, ElapsedEventArgs e)
