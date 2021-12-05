@@ -32,4 +32,11 @@
             <x:Type TypeName="enums:LocationMode"/>
         </ObjectDataProvider.MethodParameters>
     </ObjectDataProvider>
+    <ObjectDataProvider x:Key="toleranceModeValues"
+                        MethodName="GetValues"
+                        ObjectType="{x:Type system:Enum}">
+        <ObjectDataProvider.MethodParameters>
+            <x:Type TypeName="enums:ToleranceMode"/>
+        </ObjectDataProvider.MethodParameters>
+    </ObjectDataProvider>
 </ResourceDictionary>

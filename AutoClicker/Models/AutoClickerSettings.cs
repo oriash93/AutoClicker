@@ -29,5 +29,7 @@ namespace AutoClicker.Models
         public bool StopOnMouseMove { get; set; }
         
         public int MouseMoveTolerance { get; set; }
+
+        public ToleranceMode ToleranceMode { get; set; }
     }
 }

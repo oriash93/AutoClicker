@@ -38,4 +38,10 @@
         Hide = 1,
         Exit = 2
     }
+
+    public enum ToleranceMode
+    {
+        Absolute = 0,
+        Relative = 1
+    }
 }

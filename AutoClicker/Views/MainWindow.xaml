@@ -4,7 +4,7 @@
         xmlns:commands="clr-namespace:AutoClicker.Commands"
         xmlns:enums="clr-namespace:AutoClicker.Enums"
         ResizeMode="CanMinimize"
-        Height="360" Width="450">
+        Height="380" Width="450">
     <Window.Resources>
         <ResourceDictionary Source="../Resources/MainWindowResources.xaml"/>
     </Window.Resources>
@@ -181,18 +181,32 @@
             <GroupBox Name="behaviourOptionsGroupBox"
                       Header="Behaviour" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="4">
                 <UniformGrid Name="behaviourOptionsGrid"
-                             HorizontalAlignment="Left" VerticalAlignment="Stretch" Rows="1" Columns="3">
+                             HorizontalAlignment="Left" VerticalAlignment="Stretch" Rows="2" Columns="3">
                     <CheckBox Grid.Row="0" Grid.Column="0" Margin="0, 5, 5, 5"
                               Content="Stop on mouse move"
                               VerticalAlignment="Stretch"
                               IsChecked="{Binding AutoClickerSettings.StopOnMouseMove}"/>
+                    
                     <TextBlock Grid.Row="0" Grid.Column="2" Text="Tolerance (px)"
                                Margin="5, 5, 5, 5" VerticalAlignment="Center" TextAlignment="Center"
-                               ToolTip="If the mouse move is smaller than the selected number of pixels the mouse move stop will be bypassed."/>
-                    <Slider Grid.Row="0" Grid.Column="2"
+                               ToolTip="If the mouse cursor is less pixels away from the start position of "/>
+                    <Slider Grid.Row="0" Grid.Column="2" IsEnabled="{Binding AutoClickerSettings.StopOnMouseMove}"
                             Margin="0, 5, 5, 5" VerticalAlignment="Center"
                             AutoToolTipPlacement="TopLeft" AutoToolTipPrecision="0"
                             Minimum="0" Maximum="50" Value="{Binding AutoClickerSettings.MouseMoveTolerance}"/>
+
+                    <TextBlock Grid.Row="1" Grid.Column="0" Text="Tolerance Mode"
+                              Margin="5, 5, 5, 5" VerticalAlignment="Center" TextAlignment="Center"/>
+                    <ComboBox Grid.Row="1" Grid.Column="1" Margin="5, 5, 5, 5" IsEnabled="{Binding AutoClickerSettings.StopOnMouseMove}"
+                              ItemsSource="{Binding Source={StaticResource toleranceModeValues}}"
+                              SelectedIndex="0" SelectedItem="{Binding AutoClickerSettings.ToleranceMode}" HorizontalAlignment="Stretch">
+                        <ComboBox.ToolTip>
+                            <TextBlock>
+                                Absolute: The distance in pixel from the point where the autoclicker was started <LineBreak/>
+                                Relative: How many pixel lay between the current and last mouse position
+                            </TextBlock>
+                        </ComboBox.ToolTip>
+                    </ComboBox>
                 </UniformGrid>
             </GroupBox>
 
