@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Timers;
 using System.Windows;
 using System.Windows.Input;
@@ -49,6 +50,7 @@ namespace AutoClicker.Views
 
         public MainWindow()
         {
+            GloablMouseHook.MouseAction += GloablMouseHook_MouseAction;
             clickTimer = new Timer();
             clickTimer.Elapsed += OnClickTimerElapsed;
 
@@ -88,6 +90,7 @@ namespace AutoClicker.Views
 
         protected override void OnClosed(EventArgs e)
         {
+            GloablMouseHook.stop();
             _source.RemoveHook(StartStopHooks);
 
             SettingsUtils.HotKeyChangedEvent -= SettingsUtils_HotKeyChangedEvent;
@@ -115,6 +118,9 @@ namespace AutoClicker.Views
         {
             int interval = CalculateInterval();
             Log.Information("Starting operation, interval={Interval}ms", interval);
+            
+            if (AutoClickerSettings.StopOnMouseMove)
+                GloablMouseHook.Start();
 
             timesRepeated = 0;
             clickTimer.Interval = interval;
@@ -134,6 +140,7 @@ namespace AutoClicker.Views
         {
             Log.Information("Stopping operation");
             clickTimer.Stop();
+            GloablMouseHook.stop();
 
             ResetTitle();
             Icon = _defaultIcon;
@@ -295,6 +302,11 @@ namespace AutoClicker.Views
         #endregion Helper Methods
 
         #region Event Handlers
+
+        private void GloablMouseHook_MouseAction(object sender, EventArgs e)
+        {
+            this.StopCommand_Execute(null, null);
+        }
 
         private void OnClickTimerElapsed(object sender, ElapsedEventArgs e)
         {

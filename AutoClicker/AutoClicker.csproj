@@ -109,6 +109,7 @@
     <Compile Include="Models\AutoClickerSettings.cs" />
     <Compile Include="Models\HotkeySettings.cs" />
     <Compile Include="Models\SystemTrayMenuActionEventArgs.cs" />
+    <Compile Include="Utils\GloablMouseHook.cs" />
     <Compile Include="Utils\JsonUtils.cs" />
     <Compile Include="Utils\KeyMappingUtils.cs" />
     <Compile Include="Models\ApplicationSettings.cs" />
