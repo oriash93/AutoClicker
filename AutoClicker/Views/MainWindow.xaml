@@ -4,7 +4,7 @@
         xmlns:commands="clr-namespace:AutoClicker.Commands"
         xmlns:enums="clr-namespace:AutoClicker.Enums"
         ResizeMode="CanMinimize"
-        Height="320" Width="450">
+        Height="360" Width="450">
     <Window.Resources>
         <ResourceDictionary Source="../Resources/MainWindowResources.xaml"/>
     </Window.Resources>
@@ -48,6 +48,7 @@
 
         <Grid Name="primaryGrid" Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center">
             <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
@@ -177,8 +178,18 @@
                 </UniformGrid>
             </GroupBox>
 
+            <GroupBox Name="behaviourOptionsGroupBox"
+                      Header="Behaviour" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="4">
+                <UniformGrid Name="behaviourOptionsGrid"
+                             HorizontalAlignment="Left" VerticalAlignment="Stretch" Rows="1" Columns="2">
+                    <CheckBox Grid.Row="0" Grid.Column="1" Margin="0, 5, 5, 5"
+                              Content="Stop on mouse move"
+                              IsChecked="{Binding AutoClickerSettings.StopOnMouseMove}"/>
+                </UniformGrid>
+            </GroupBox>
+
             <UniformGrid Name="buttonsGrid"
-                         Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="4" Rows="2" Columns="3">
+                         Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="4" Rows="2" Columns="3">
                 <Button Name="startButton"
                         Grid.Row="0" Grid.Column="0" Margin="5"
                         Content="Start (F6)" Command="commands:MainWindowCommands.Start"/>
