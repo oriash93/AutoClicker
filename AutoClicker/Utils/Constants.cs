@@ -37,5 +37,7 @@
         public const int DEFAULT_START_HOTKEY = 0x75;
         public const int DEFAULT_STOP_HOTKEY = 0x76;
         public const int DEFAULT_TOGGLE_HOTKEY = 0x77;
+
+        public const int MOUSE_HOOK_MIN_EVENT_DELTA_MILIS = 30;
     }
 }

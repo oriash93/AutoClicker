@@ -16,6 +16,15 @@ namespace AutoClicker.Utils
 
         public static event EventHandler MouseAction = delegate { };
 
+        public static int MilisBetweenEvents { get; private set; }
+
+        public static void Start(int milisBetweenEvents)
+        {
+            Start();
+            MilisBetweenEvents = milisBetweenEvents;
+            _timer = new Stopwatch();
+            _timer.Start();
+        }
         public static void Start()
         {
             _hookID = SetHook(_proc);
@@ -26,11 +35,14 @@ namespace AutoClicker.Utils
         {
             UnhookWindowsHookEx(_hookID);
             IsActive = false;
+            if (MilisBetweenEvents > 0)
+                _timer.Stop();
             Log.Information("GloablMouseHook stopped");
         }
 
         private static LowLevelMouseProc _proc = HookCallback;
         private static IntPtr _hookID = IntPtr.Zero;
+        private static Stopwatch _timer = new Stopwatch();
 
         private static IntPtr SetHook(LowLevelMouseProc proc)
         {
@@ -53,7 +65,16 @@ namespace AutoClicker.Utils
             if (nCode >= 0 && MouseMessages.WM_MOUSEMOVE == (MouseMessages)wParam)
             {
                 MSLLHOOKSTRUCT hookStruct = (MSLLHOOKSTRUCT)Marshal.PtrToStructure(lParam, typeof(MSLLHOOKSTRUCT));
-                MouseAction(null, new EventArgs());
+                if (MilisBetweenEvents > 0)
+                {
+                    if (_timer.ElapsedMilliseconds > MilisBetweenEvents)
+                    {
+                        _timer.Restart();
+                        MouseAction(null, new EventArgs());
+                    }
+                }
+                else
+                    MouseAction(null, new EventArgs());
             }
             return CallNextHookEx(_hookID, nCode, wParam, lParam);
         }

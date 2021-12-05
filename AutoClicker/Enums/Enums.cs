@@ -42,6 +42,7 @@
     public enum ToleranceMode
     {
         Absolute = 0,
-        Relative = 1
+        Relative = 1,
+        Intelligent = 2
     }
 }

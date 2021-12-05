@@ -4,7 +4,7 @@
         xmlns:commands="clr-namespace:AutoClicker.Commands"
         xmlns:enums="clr-namespace:AutoClicker.Enums"
         ResizeMode="CanMinimize"
-        Height="380" Width="450">
+        Height="370" Width="450">
     <Window.Resources>
         <ResourceDictionary Source="../Resources/MainWindowResources.xaml"/>
     </Window.Resources>
@@ -180,20 +180,26 @@
 
             <GroupBox Name="behaviourOptionsGroupBox"
                       Header="Behaviour" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="4">
-                <UniformGrid Name="behaviourOptionsGrid"
-                             HorizontalAlignment="Left" VerticalAlignment="Stretch" Rows="2" Columns="3">
+                <Grid Name="behaviourOptionsGrid" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="1*"/>
+                        <ColumnDefinition Width="1*"/>
+                        <ColumnDefinition Width="1*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
                     <CheckBox Grid.Row="0" Grid.Column="0" Margin="0, 5, 5, 5"
                               Content="Stop on mouse move"
-                              VerticalAlignment="Stretch"
+                              VerticalContentAlignment="Center"
                               IsChecked="{Binding AutoClickerSettings.StopOnMouseMove}"/>
                     
-                    <TextBlock Grid.Row="0" Grid.Column="2" Text="Tolerance (px)"
-                               Margin="5, 5, 5, 5" VerticalAlignment="Center" TextAlignment="Center"
+                    <TextBlock Grid.Row="0" Grid.Column="1" Text="Tolerance (px)" HorizontalAlignment="Right"
+                               Margin="5, 5, 5, 5" 
                                ToolTip="If the mouse cursor is less pixels away from the start position of "/>
-                    <Slider Grid.Row="0" Grid.Column="2" IsEnabled="{Binding AutoClickerSettings.StopOnMouseMove}"
-                            Margin="0, 5, 5, 5" VerticalAlignment="Center"
-                            AutoToolTipPlacement="TopLeft" AutoToolTipPrecision="0"
-                            Minimum="0" Maximum="50" Value="{Binding AutoClickerSettings.MouseMoveTolerance}"/>
+                    <TextBox Margin="5,3,5,3" Grid.Row="0" Grid.Column="2"  IsEnabled="{Binding AutoClickerSettings.StopOnMouseMove}"
+                             Text="{Binding AutoClickerSettings.MouseMoveTolerance, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
 
                     <TextBlock Grid.Row="1" Grid.Column="0" Text="Tolerance Mode"
                               Margin="5, 5, 5, 5" VerticalAlignment="Center" TextAlignment="Center"/>
@@ -202,12 +208,14 @@
                               SelectedIndex="0" SelectedItem="{Binding AutoClickerSettings.ToleranceMode}" HorizontalAlignment="Stretch">
                         <ComboBox.ToolTip>
                             <TextBlock>
-                                Absolute: The distance in pixel from the point where the autoclicker was started <LineBreak/>
-                                Relative: How many pixel lay between the current and last mouse position
+                                <Bold>Absolute:</Bold> The distance in pixel from the point where the autoclicker was started <LineBreak/>
+                                <Bold>Relative:</Bold> How many pixel lay between the current and last mouse position <LineBreak/>
+                                <Bold>Inteligent:</Bold> Is a mix from both. The absolute "home" slowly moves to the mouse cursor <LineBreak/>
+                                but if the mouse suddenly moves by a lot it will stop
                             </TextBlock>
                         </ComboBox.ToolTip>
                     </ComboBox>
-                </UniformGrid>
+                </Grid>
             </GroupBox>
 
             <UniformGrid Name="buttonsGrid"
