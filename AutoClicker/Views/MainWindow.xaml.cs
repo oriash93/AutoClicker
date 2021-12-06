@@ -55,7 +55,7 @@ namespace AutoClicker.Views
 
         public MainWindow()
         {
-            GloablMouseHook.MouseAction += GloablMouseHook_MouseAction;
+            GlobalMouseHook.MouseAction += GloablMouseHook_MouseAction;
             clickTimer = new Timer();
             clickTimer.Elapsed += OnClickTimerElapsed;
 
@@ -88,7 +88,7 @@ namespace AutoClicker.Views
             SettingsUtils_HotKeyChangedEvent(this, new HotkeyChangedEventArgs()
             {
                 Hotkey = SettingsUtils.CurrentSettings.HotkeySettings.ToggleHotkey,
-                Operation = Operation.Toogle
+                Operation = Operation.Toggle
             });
             _defaultIcon = Icon;
 
@@ -97,8 +97,8 @@ namespace AutoClicker.Views
 
         protected override void OnClosed(EventArgs e)
         {
-            if (GloablMouseHook.IsActive)
-                GloablMouseHook.stop();
+            if (GlobalMouseHook.IsActive)
+                GlobalMouseHook.stop();
             
             _source.RemoveHook(StartStopHooks);
 
@@ -130,11 +130,11 @@ namespace AutoClicker.Views
             
             if (AutoClickerSettings.StopOnMouseMove)
             {
-                _lastMousePosition = GloablMouseHook.GetCursorPosition();
+                _lastMousePosition = GlobalMouseHook.GetCursorPosition();
                 if (AutoClickerSettings.ToleranceMode == ToleranceMode.Intelligent)
-                    GloablMouseHook.Start(Constants.MOUSE_HOOK_MIN_EVENT_DELTA_MILIS);
+                    GlobalMouseHook.Start(Constants.MOUSE_HOOK_MIN_EVENT_DELTA_MILIS);
                 else
-                    GloablMouseHook.Start();
+                    GlobalMouseHook.Start();
             }
 
             timesRepeated = 0;
@@ -155,8 +155,8 @@ namespace AutoClicker.Views
         {
             Log.Information("Stopping operation");
             clickTimer.Stop();
-            if (GloablMouseHook.IsActive)
-                GloablMouseHook.stop();
+            if (GlobalMouseHook.IsActive)
+                GlobalMouseHook.stop();
 
             ResetTitle();
             Icon = _defaultIcon;
@@ -327,7 +327,7 @@ namespace AutoClicker.Views
 #endif
         private void GloablMouseHook_MouseAction(object sender, EventArgs e)
         {
-            Point newMousePosition = GloablMouseHook.GetCursorPosition();
+            Point newMousePosition = GlobalMouseHook.GetCursorPosition();
             
             // Use the Pythagorean Theorem to calculate the amount of pixels the mouse has moved
             int moveX = newMousePosition.X - _lastMousePosition.X;
@@ -448,7 +448,7 @@ namespace AutoClicker.Views
                     ReRegisterHotkey(Constants.STOP_HOTKEY_ID, e.Hotkey);
                     stopButton.Content = $"{Constants.MAIN_WINDOW_STOP_BUTTON_CONTENT} ({e.Hotkey.DisplayName})";
                     break;
-                case Operation.Toogle:
+                case Operation.Toggle:
                     ReRegisterHotkey(Constants.TOGGLE_HOTKEY_ID, e.Hotkey);
                     toggleButton.Content = $"{Constants.MAIN_WINDOW_TOGGLE_BUTTON_CONTENT} ({e.Hotkey.DisplayName})";
                     break;

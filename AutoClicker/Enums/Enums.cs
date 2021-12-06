@@ -29,7 +29,7 @@
     {
         Start = 0,
         Stop = 1,
-        Toogle = 2
+        Toggle = 2
     }
 
     public enum SystemTrayMenuAction

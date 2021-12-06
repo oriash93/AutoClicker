@@ -10,7 +10,7 @@ namespace AutoClicker.Utils
     /// <summary>
     /// This class has been copied from StackOverflow where the OP copied it form somewhere else...
     /// </summary>
-    public static class GloablMouseHook
+    public static class GlobalMouseHook
     {
         public static bool IsActive { get; private set; }
 

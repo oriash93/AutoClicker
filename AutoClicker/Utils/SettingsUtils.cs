@@ -42,7 +42,7 @@ namespace AutoClicker.Utils
         public static void SetToggleHotKey(KeyMapping key)
         {
             CurrentSettings.HotkeySettings.ToggleHotkey = key;
-            NotifyChanges(CurrentSettings.HotkeySettings.ToggleHotkey, Operation.Toogle);
+            NotifyChanges(CurrentSettings.HotkeySettings.ToggleHotkey, Operation.Toggle);
         }
 
         public static void Reset()
