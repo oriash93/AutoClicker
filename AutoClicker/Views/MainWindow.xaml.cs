@@ -227,6 +227,11 @@ namespace AutoClicker.Views
             return CalculateInterval() > 0;
         }
 
+        private bool IsIntervalValid(int interval)
+        {
+            return interval > 0;
+        }
+
         private bool CanStartOperation()
         {
             return !clickTimer.Enabled && IsRepeatModeValid() && IsIntervalValid();
@@ -315,7 +320,6 @@ namespace AutoClicker.Views
         {
             Dispatcher.Invoke(() =>
             {
-                Debug.WriteLine("Click");
                 InitMouseClick();
                 timesRepeated++;
 
@@ -326,9 +330,8 @@ namespace AutoClicker.Views
                 }
 
                 var interval = CalculateInterval();
-                if (IsIntervalValid())
-                    clickTimer.Interval = CalculateInterval();
-                Debug.WriteLine(clickTimer.Interval);
+                if (IsIntervalValid(interval))
+                    clickTimer.Interval = interval;
             });
         }
 
