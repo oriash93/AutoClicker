@@ -96,6 +96,8 @@ namespace AutoClicker.Utils
             CurrentSettings.AutoClickerSettings.MinimumMinutes = settings.MinimumMinutes;
             CurrentSettings.AutoClickerSettings.MinimumHours = settings.MinimumHours;
 
+            CurrentSettings.AutoClickerSettings.IsRandomizedIntervalEnabled = settings.IsRandomizedIntervalEnabled;
+
             CurrentSettings.AutoClickerSettings.PickedXValue = settings.PickedXValue;
             CurrentSettings.AutoClickerSettings.PickedYValue = settings.PickedYValue;
 

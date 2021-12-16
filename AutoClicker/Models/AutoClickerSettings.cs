@@ -28,6 +28,8 @@ namespace AutoClicker.Models
 
         public int MinimumMilliseconds { get; set; }
 
+        public bool IsRandomizedIntervalEnabled { get; set; }
+
         public MouseButton SelectedMouseButton { get; set; }
 
         public MouseAction SelectedMouseAction { get; set; }

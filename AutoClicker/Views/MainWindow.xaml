@@ -122,16 +122,24 @@
                             </Grid.ColumnDefinitions>
 
                             <TextBox Grid.Column="0" Width="45"
-                                     Text="{Binding AutoClickerSettings.MaximumHours, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+                                     Text="{Binding AutoClickerSettings.MaximumHours, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                                     IsEnabled="{Binding AutoClickerSettings.IsRandomizedIntervalEnabled, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                                     />
                             <TextBlock Grid.Column="1" Margin="5, 0, 5, 5" Text="hours"/>
                             <TextBox Grid.Column="2" Width="45"
-                                     Text="{Binding AutoClickerSettings.MaximumMinutes, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+                                     Text="{Binding AutoClickerSettings.MaximumMinutes, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                                     IsEnabled="{Binding AutoClickerSettings.IsRandomizedIntervalEnabled, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                                     />
                             <TextBlock Grid.Column="3" Margin="5, 0, 5, 5" Text="minutes"/>
                             <TextBox Grid.Column="4" Width="45"
-                                     Text="{Binding AutoClickerSettings.MaximumSeconds, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+                                     Text="{Binding AutoClickerSettings.MaximumSeconds, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                                     IsEnabled="{Binding AutoClickerSettings.IsRandomizedIntervalEnabled, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                                     />
                             <TextBlock Grid.Column="5" Margin="5, 0, 5, 5" Text="seconds"/>
                             <TextBox Grid.Column="6" Width="45"
-                                     Text="{Binding AutoClickerSettings.MaximumMilliseconds, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+                                     Text="{Binding AutoClickerSettings.MaximumMilliseconds, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                                     IsEnabled="{Binding AutoClickerSettings.IsRandomizedIntervalEnabled, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                                     />
                             <TextBlock Grid.Column="7" Margin="5, 0, 5, 5" Text="milliseconds"/>
                         </Grid>
                     </GroupBox>

@@ -218,6 +218,9 @@ namespace AutoClicker.Views
         {
             var fixedInterval = CalculateFixedInterval();
 
+            // Update IsRandomizedIntervalEnabled
+            AutoClickerSettings.IsRandomizedIntervalEnabled = fixedInterval == 0;
+
             // if the fixed click interval is 0, return the randomized click interval
             return fixedInterval == 0 ? CalculateRandomizedInterval() : fixedInterval;
         }
