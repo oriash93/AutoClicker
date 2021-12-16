@@ -12,6 +12,24 @@ namespace AutoClicker.Models
 
         public int Milliseconds { get; set; }
 
+        public int MaximumHours { get; set; }
+
+        public int MaximumMinutes { get; set; }
+
+        public int MaximumSeconds { get; set; }
+
+        public int MaximumMilliseconds { get; set; }
+
+        public int MinimumHours { get; set; }
+
+        public int MinimumMinutes { get; set; }
+
+        public int MinimumSeconds { get; set; }
+
+        public int MinimumMilliseconds { get; set; }
+
+        public bool IsRandomizedIntervalEnabled { get; set; }
+
         public MouseButton SelectedMouseButton { get; set; }
 
         public MouseAction SelectedMouseAction { get; set; }

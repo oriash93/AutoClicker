@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Timers;
 using System.Windows;
 using System.Windows.Input;
@@ -181,17 +182,57 @@ namespace AutoClicker.Views
 
         #region Helper Methods
 
-        private int CalculateInterval()
+        private int CalculateFixedInterval()
         {
             return AutoClickerSettings.Milliseconds
-                + (AutoClickerSettings.Seconds * 1000)
-                + (AutoClickerSettings.Minutes * 60 * 1000)
-                + (AutoClickerSettings.Hours * 60 * 60 * 1000);
+                   + (AutoClickerSettings.Seconds * 1000)
+                   + (AutoClickerSettings.Minutes * 60 * 1000)
+                   + (AutoClickerSettings.Hours * 60 * 60 * 1000);
+        }
+
+        private int CalculateRandomizedInterval()
+        {
+            var clickInterval = 0;
+
+            var maximumRandomizedClickInterval = AutoClickerSettings.MaximumMilliseconds
+                                                 + (AutoClickerSettings.MaximumSeconds * 1000)
+                                                 + (AutoClickerSettings.MaximumMinutes * 60 * 1000)
+                                                 + (AutoClickerSettings.MaximumHours * 60 * 60 * 1000);
+
+            var minimumRandomizedClickInterval = AutoClickerSettings.MinimumMilliseconds
+                                                 + (AutoClickerSettings.MinimumSeconds * 1000)
+                                                 + (AutoClickerSettings.MinimumMinutes * 60 * 1000)
+                                                 + (AutoClickerSettings.MinimumHours * 60 * 60 * 1000);
+
+            // if there is a valid randomizedClickInterval, calculate a random interval in the range
+            if (maximumRandomizedClickInterval - minimumRandomizedClickInterval > 0)
+            {
+                var rng = new Random();
+                clickInterval = rng.Next(minimumRandomizedClickInterval, maximumRandomizedClickInterval);
+            }
+
+            return clickInterval;
+        }
+
+        private int CalculateInterval()
+        {
+            var fixedInterval = CalculateFixedInterval();
+
+            // Update IsRandomizedIntervalEnabled
+            AutoClickerSettings.IsRandomizedIntervalEnabled = fixedInterval == 0;
+
+            // if the fixed click interval is 0, return the randomized click interval
+            return fixedInterval == 0 ? CalculateRandomizedInterval() : fixedInterval;
         }
 
         private bool IsIntervalValid()
         {
             return CalculateInterval() > 0;
+        }
+
+        private bool IsIntervalValid(int interval)
+        {
+            return interval > 0;
         }
 
         private bool CanStartOperation()
@@ -290,6 +331,10 @@ namespace AutoClicker.Views
                     clickTimer.Stop();
                     ResetTitle();
                 }
+
+                var interval = CalculateInterval();
+                if (IsIntervalValid(interval))
+                    clickTimer.Interval = interval;
             });
         }
 

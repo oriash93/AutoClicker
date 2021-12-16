@@ -86,6 +86,18 @@ namespace AutoClicker.Utils
             CurrentSettings.AutoClickerSettings.Minutes = settings.Minutes;
             CurrentSettings.AutoClickerSettings.Hours = settings.Hours;
 
+            CurrentSettings.AutoClickerSettings.MaximumMilliseconds = settings.MaximumMilliseconds;
+            CurrentSettings.AutoClickerSettings.MaximumSeconds = settings.MaximumSeconds;
+            CurrentSettings.AutoClickerSettings.MaximumMinutes = settings.MaximumMinutes;
+            CurrentSettings.AutoClickerSettings.MaximumHours = settings.MaximumHours;
+
+            CurrentSettings.AutoClickerSettings.MinimumMilliseconds = settings.MinimumMilliseconds;
+            CurrentSettings.AutoClickerSettings.MinimumSeconds = settings.MinimumSeconds;
+            CurrentSettings.AutoClickerSettings.MinimumMinutes = settings.MinimumMinutes;
+            CurrentSettings.AutoClickerSettings.MinimumHours = settings.MinimumHours;
+
+            CurrentSettings.AutoClickerSettings.IsRandomizedIntervalEnabled = settings.IsRandomizedIntervalEnabled;
+
             CurrentSettings.AutoClickerSettings.PickedXValue = settings.PickedXValue;
             CurrentSettings.AutoClickerSettings.PickedYValue = settings.PickedYValue;
 
