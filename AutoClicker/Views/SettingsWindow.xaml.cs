@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
 using AutoClicker.Models;
 using AutoClicker.Utils;
@@ -90,44 +91,21 @@ namespace AutoClicker.Views
 
         #region Helper Methods
 
-        private void StartKeyTextBox_KeyDown(object sender, KeyEventArgs e)
+        private void StartKeyTextBox_KeyDown(object sender, KeyEventArgs e) => SelectedStartKey = GenreicKeyDownHandler(e) != null ? GenreicKeyDownHandler(e) : SelectedStartKey;
+        private void StopKeyTextBox_KeyDown(object sender, KeyEventArgs e) => SelectedStopKey = GenreicKeyDownHandler(e) != null ? GenreicKeyDownHandler(e) : SelectedStopKey;
+        private void toggleKeyTextBox_KeyDown(object sender, KeyEventArgs e) => SelectedToggleKey = GenreicKeyDownHandler(e) != null ? GenreicKeyDownHandler(e) : SelectedToggleKey;
+        private KeyMapping GenreicKeyDownHandler(KeyEventArgs e)
         {
             KeyMapping newKeyMapping = GetNewKeyMapping(e.Key);
             if (newKeyMapping == null)
             {
                 Log.Error("No Matching key for {Key}", e.Key);
-                return;
+                return null;
             }
 
             e.Handled = true;
-            SelectedStartKey = newKeyMapping;
+            return newKeyMapping;
         }
-
-        private void StopKeyTextBox_KeyDown(object sender, KeyEventArgs e)
-        {
-            KeyMapping newKeyMapping = GetNewKeyMapping(e.Key);
-            if (newKeyMapping == null)
-            {
-                Log.Error("No Matching key for {Key}", e.Key);
-                return;
-            }
-
-            e.Handled = true;
-            SelectedStopKey = newKeyMapping;
-        }
-        private void toggleKeyTextBox_KeyDown(object sender, KeyEventArgs e)
-        {
-            KeyMapping newKeyMapping = GetNewKeyMapping(e.Key);
-            if (newKeyMapping == null)
-            {
-                Log.Error("No Matching key for {Key}", e.Key);
-                return;
-            }
-
-            e.Handled = true;
-            SelectedToggleKey = newKeyMapping;
-        }
-
         private KeyMapping GetNewKeyMapping(Key key)
         {
             int virtualKeyCode = KeyInterop.VirtualKeyFromKey(key);
