@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Input;
 using AutoClicker.Models;
 using AutoClicker.Utils;
@@ -91,10 +90,22 @@ namespace AutoClicker.Views
 
         #region Helper Methods
 
-        private void StartKeyTextBox_KeyDown(object sender, KeyEventArgs e) => SelectedStartKey = GenreicKeyDownHandler(e) != null ? GenreicKeyDownHandler(e) : SelectedStartKey;
-        private void StopKeyTextBox_KeyDown(object sender, KeyEventArgs e) => SelectedStopKey = GenreicKeyDownHandler(e) != null ? GenreicKeyDownHandler(e) : SelectedStopKey;
-        private void toggleKeyTextBox_KeyDown(object sender, KeyEventArgs e) => SelectedToggleKey = GenreicKeyDownHandler(e) != null ? GenreicKeyDownHandler(e) : SelectedToggleKey;
-        private KeyMapping GenreicKeyDownHandler(KeyEventArgs e)
+        private void StartKeyTextBox_KeyDown(object sender, KeyEventArgs e)
+        {
+            SelectedStartKey = GenericKeyDownHandler(e) ?? SelectedStartKey;
+        }
+
+        private void StopKeyTextBox_KeyDown(object sender, KeyEventArgs e)
+        {
+            SelectedStopKey = GenericKeyDownHandler(e) ?? SelectedStopKey;
+        }
+
+        private void ToggleKeyTextBox_KeyDown(object sender, KeyEventArgs e)
+        {
+            SelectedToggleKey = GenericKeyDownHandler(e) ?? SelectedToggleKey;
+        }
+
+        private KeyMapping GenericKeyDownHandler(KeyEventArgs e)
         {
             KeyMapping newKeyMapping = GetNewKeyMapping(e.Key);
             if (newKeyMapping == null)
@@ -106,6 +117,7 @@ namespace AutoClicker.Views
             e.Handled = true;
             return newKeyMapping;
         }
+
         private KeyMapping GetNewKeyMapping(Key key)
         {
             int virtualKeyCode = KeyInterop.VirtualKeyFromKey(key);

@@ -48,7 +48,7 @@
         <TextBox Name="toggleKeyTextBox"
                  Grid.Row="2" Grid.Column="1" Margin="5, 5, 5, 5"
                  Text="{Binding Path=SelectedToggleKey.DisplayName, Mode=OneWay}"
-                 KeyDown="toggleKeyTextBox_KeyDown"
+                 KeyDown="ToggleKeyTextBox_KeyDown"
                  HorizontalAlignment="Stretch"
                  VerticalContentAlignment="Center" HorizontalContentAlignment="Center"/>
 

@@ -90,6 +90,7 @@ namespace AutoClicker.Views
                 Hotkey = SettingsUtils.CurrentSettings.HotkeySettings.ToggleHotkey,
                 Operation = Operation.Toggle
             });
+
             _defaultIcon = Icon;
 
             InitializeSystemTrayMenu();
