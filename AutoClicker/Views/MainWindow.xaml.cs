@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Diagnostics;
-using System.Drawing;
-using System.Runtime.InteropServices;
 using System.Timers;
 using System.Windows;
 using System.Windows.Input;
@@ -48,18 +45,12 @@ namespace AutoClicker.Views
         private IntPtr _mainWindowHandle;
         private HwndSource _source;
 
-        private Point _lastMousePosition;
-        private Stopwatch _mouseMoveDelta;
-
         #region Life Cycle
 
         public MainWindow()
         {
-            GlobalMouseHook.MouseAction += GloablMouseHook_MouseAction;
             clickTimer = new Timer();
             clickTimer.Elapsed += OnClickTimerElapsed;
-
-            _mouseMoveDelta = new Stopwatch();
 
             DataContext = this;
             ResetTitle();
@@ -98,9 +89,6 @@ namespace AutoClicker.Views
 
         protected override void OnClosed(EventArgs e)
         {
-            if (GlobalMouseHook.IsActive)
-                GlobalMouseHook.stop();
-            
             _source.RemoveHook(StartStopHooks);
 
             SettingsUtils.HotKeyChangedEvent -= SettingsUtils_HotKeyChangedEvent;
@@ -128,15 +116,6 @@ namespace AutoClicker.Views
         {
             int interval = CalculateInterval();
             Log.Information("Starting operation, interval={Interval}ms", interval);
-            
-            if (AutoClickerSettings.StopOnMouseMove)
-            {
-                _lastMousePosition = GlobalMouseHook.GetCursorPosition();
-                if (AutoClickerSettings.ToleranceMode == ToleranceMode.Intelligent)
-                    GlobalMouseHook.Start(Constants.MOUSE_HOOK_MIN_EVENT_DELTA_MILIS);
-                else
-                    GlobalMouseHook.Start();
-            }
 
             timesRepeated = 0;
             clickTimer.Interval = interval;
@@ -156,8 +135,6 @@ namespace AutoClicker.Views
         {
             Log.Information("Stopping operation");
             clickTimer.Stop();
-            if (GlobalMouseHook.IsActive)
-                GlobalMouseHook.stop();
 
             ResetTitle();
             Icon = _defaultIcon;
@@ -175,7 +152,7 @@ namespace AutoClicker.Views
             else
                 StartCommand_Execute(sender, e);
         }
-        
+
         private void ToggleCommand_CanExecute(object sender, CanExecuteRoutedEventArgs e)
         {
             e.CanExecute = CanStartOperation() | clickTimer.Enabled;
@@ -319,56 +296,6 @@ namespace AutoClicker.Views
         #endregion Helper Methods
 
         #region Event Handlers
-
-#if DEBUG
-        [DllImport("User32.dll")]
-        public static extern IntPtr GetDC(IntPtr hwnd);
-        [DllImport("User32.dll")]
-        public static extern void ReleaseDC(IntPtr hwnd, IntPtr dc);
-#endif
-        private void GloablMouseHook_MouseAction(object sender, EventArgs e)
-        {
-            Point newMousePosition = GlobalMouseHook.GetCursorPosition();
-            
-            // Use the Pythagorean Theorem to calculate the amount of pixels the mouse has moved
-            int moveX = newMousePosition.X - _lastMousePosition.X;
-            int moveY = newMousePosition.Y - _lastMousePosition.Y;
-            int mouseTravel = (int)Math.Sqrt(moveX * moveX + moveY * moveY);
-
-            switch (AutoClickerSettings.ToleranceMode)
-            {
-                case ToleranceMode.Absolute:
-                    break;
-                case ToleranceMode.Relative:
-                    _lastMousePosition = newMousePosition;
-                    break;
-                case ToleranceMode.Intelligent:
-                    _mouseMoveDelta.Stop();
-                    // If the mouse doesn't move for one second this is it's new home. The faster the mouse moves the lower gets the cathing up of the home-point. 
-                    double deltaMouseMoveSeconds = Math.Min(_mouseMoveDelta.ElapsedMilliseconds / (1000 / Constants.MOUSE_HOOK_MIN_EVENT_DELTA_MILIS), 1.0);
-                    _lastMousePosition.X += (int)(moveX * deltaMouseMoveSeconds);
-                    _lastMousePosition.Y += (int)(moveY * deltaMouseMoveSeconds);
-/*                    
-#if DEBUG
-                    //Directly draw to the screen to debug
-                    IntPtr desktopPtr = GetDC(IntPtr.Zero);
-                    Graphics g = Graphics.FromHdc(desktopPtr);
-
-                    SolidBrush b = new SolidBrush(System.Drawing.Color.Red);
-                    g.FillRectangle(b, new Rectangle(
-                        _lastMousePosition.X - 5, _lastMousePosition.Y - 5, 5, 5));
-
-                    g.Dispose();
-                    ReleaseDC(IntPtr.Zero, desktopPtr);
-#endif
-*/
-                    _mouseMoveDelta.Restart();
-                    break;
-            }
-
-            if (mouseTravel > AutoClickerSettings.MouseMoveTolerance)
-                StopCommand_Execute(null, null);
-        }
 
         private void OnClickTimerElapsed(object sender, ElapsedEventArgs e)
         {

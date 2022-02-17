@@ -99,9 +99,6 @@ namespace AutoClicker.Utils
             CurrentSettings.AutoClickerSettings.SelectedMouseButton = settings.SelectedMouseButton;
             CurrentSettings.AutoClickerSettings.SelectedRepeatMode = settings.SelectedRepeatMode;
             CurrentSettings.AutoClickerSettings.SelectedTimesToRepeat = settings.SelectedTimesToRepeat;
-            CurrentSettings.AutoClickerSettings.StopOnMouseMove = settings.StopOnMouseMove;
-            CurrentSettings.AutoClickerSettings.MouseMoveTolerance = settings.MouseMoveTolerance;
-            CurrentSettings.AutoClickerSettings.ToleranceMode = settings.ToleranceMode;
 
             SaveSettingsToFile();
         }

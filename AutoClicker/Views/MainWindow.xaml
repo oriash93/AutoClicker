@@ -4,7 +4,7 @@
         xmlns:commands="clr-namespace:AutoClicker.Commands"
         xmlns:enums="clr-namespace:AutoClicker.Enums"
         ResizeMode="CanMinimize"
-        Height="400" Width="450">
+        Height="320" Width="450">
     <Window.Resources>
         <ResourceDictionary Source="../Resources/MainWindowResources.xaml"/>
     </Window.Resources>
@@ -48,7 +48,6 @@
 
         <Grid Name="primaryGrid" Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center">
             <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
@@ -175,42 +174,6 @@
                     <ComboBox Grid.Row="0" Grid.Column="3" Margin="0, 5, 5, 5"
                               ItemsSource="{Binding Source={StaticResource mouseActionValues}}"
                               SelectedIndex="0" SelectedItem="{Binding AutoClickerSettings.SelectedMouseAction}" HorizontalAlignment="Stretch"/>
-                </UniformGrid>
-            </GroupBox>
-
-            <GroupBox Name="advancedOptionsGroupBox"
-                      Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="4">
-                <GroupBox.Header>
-                    <CheckBox Grid.Row="0" Grid.Column="0" Margin="0, 5, 5, 5"
-                              Content="Stop on mouse move"
-                              VerticalContentAlignment="Center"
-                              IsChecked="{Binding AutoClickerSettings.StopOnMouseMove}"/>
-                </GroupBox.Header>
-
-                <UniformGrid Name="advancedOptionsInnerGrid"
-                             HorizontalAlignment="Center" VerticalAlignment="Stretch" Rows="1" Columns="4">
-                    <TextBlock Grid.Row="0" Grid.Column="0" Text="Tolerance (pixels)"
-                               Margin="5, 5, 5, 5" VerticalAlignment="Center" TextAlignment="Center"
-                               ToolTip="If the mouse cursor is less pixels away from the start position of "/>
-                    <TextBox  Grid.Row="0" Grid.Column="1" Margin="5, 5, 5, 5" Width="50"
-                              IsEnabled="{Binding AutoClickerSettings.StopOnMouseMove}"
-                              Text="{Binding AutoClickerSettings.MouseMoveTolerance, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
-
-                    <TextBlock Grid.Row="0" Grid.Column="2" Margin="5, 5, 5, 5"
-                               Text="Tolerance Mode"  VerticalAlignment="Center" TextAlignment="Center"/>
-                    <ComboBox Grid.Row="0" Grid.Column="3" Margin="0, 5, 5, 5"
-                              IsEnabled="{Binding AutoClickerSettings.StopOnMouseMove}"
-                              ItemsSource="{Binding Source={StaticResource toleranceModeValues}}"
-                              SelectedIndex="0" SelectedItem="{Binding AutoClickerSettings.ToleranceMode}" HorizontalAlignment="Stretch">
-                        <ComboBox.ToolTip>
-                            <TextBlock>
-                                <Bold>Absolute:</Bold> The distance in pixel from the point where the autoclicker was started <LineBreak/>
-                                <Bold>Relative:</Bold> How many pixel lay between the current and last mouse position <LineBreak/>
-                                <Bold>Inteligent:</Bold> Is a mix from both. The absolute "home" slowly moves to the mouse cursor <LineBreak/>
-                                    but if the mouse suddenly moves by a lot it will stop
-                            </TextBlock>
-                        </ComboBox.ToolTip>
-                    </ComboBox>
                 </UniformGrid>
             </GroupBox>
 
