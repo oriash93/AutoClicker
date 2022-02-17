@@ -10,6 +10,9 @@ namespace AutoClicker.Commands
 
         public static readonly RoutedUICommand Stop =
             AssemblyUtils.CreateCommand(typeof(MainWindowCommands), nameof(Stop));
+        
+        public static readonly RoutedUICommand Toggle =
+            AssemblyUtils.CreateCommand(typeof(MainWindowCommands), nameof(Toggle));
 
         public static readonly RoutedUICommand SaveSettings =
             AssemblyUtils.CreateCommand(typeof(MainWindowCommands), nameof(SaveSettings));

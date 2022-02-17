@@ -39,6 +39,11 @@ namespace AutoClicker.Utils
             CurrentSettings.HotkeySettings.StopHotkey = key;
             NotifyChanges(CurrentSettings.HotkeySettings.StopHotkey, Operation.Stop);
         }
+        public static void SetToggleHotKey(KeyMapping key)
+        {
+            CurrentSettings.HotkeySettings.ToggleHotkey = key;
+            NotifyChanges(CurrentSettings.HotkeySettings.ToggleHotkey, Operation.Toggle);
+        }
 
         public static void Reset()
         {

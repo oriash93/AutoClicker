@@ -5,6 +5,7 @@
         public const string MAIN_WINDOW_TITLE_DEFAULT = "AutoClicker";
         public const string MAIN_WINDOW_TITLE_RUNNING = " - Running...";
         public const string MAIN_WINDOW_START_BUTTON_CONTENT = "Start";
+        public const string MAIN_WINDOW_TOGGLE_BUTTON_CONTENT = "Toggle";
         public const string MAIN_WINDOW_STOP_BUTTON_CONTENT = "Stop";
 
         public const string ABOUT_WINDOW_TITLE = "About";
@@ -30,9 +31,11 @@
         public const int MOD_NONE = 0x0;
         public const int START_HOTKEY_ID = 9000;
         public const int STOP_HOTKEY_ID = 9001;
+        public const int TOGGLE_HOTKEY_ID = 9002;
         public const int WM_HOTKEY = 0x0312;
 
         public const int DEFAULT_START_HOTKEY = 0x75;
         public const int DEFAULT_STOP_HOTKEY = 0x76;
+        public const int DEFAULT_TOGGLE_HOTKEY = 0x77;
     }
 }
