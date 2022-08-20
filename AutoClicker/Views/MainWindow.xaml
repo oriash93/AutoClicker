@@ -194,6 +194,11 @@
                 <Button Name="hotkeysButton"
                         Grid.Row="1" Grid.Column="1" Margin="5"
                         Content="Hotkeys" Command="commands:MainWindowCommands.HotkeySettings"/>
+                <CheckBox Name="topMostCheckBox"
+                          Grid.Row="1" Grid.Column="1" Margin="5"
+                          VerticalAlignment="Center" HorizontalAlignment="Center"
+                          Content="Top most window"
+                          Checked="TopMostCheckBox_CheckedChanged" Unchecked="TopMostCheckBox_CheckedChanged"/>
             </UniformGrid>
         </Grid>
     </Grid>
