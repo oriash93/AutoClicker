@@ -9,11 +9,11 @@ using AutoClicker.Enums;
 using AutoClicker.Models;
 using AutoClicker.Utils;
 using Serilog;
+using CheckBox = System.Windows.Controls.CheckBox;
 using MouseAction = AutoClicker.Enums.MouseAction;
 using MouseButton = AutoClicker.Enums.MouseButton;
 using MouseCursor = System.Windows.Forms.Cursor;
 using NotifyIcon = System.Windows.Forms.NotifyIcon;
-
 using Point = System.Drawing.Point;
 using Timer = System.Timers.Timer;
 
@@ -434,5 +434,11 @@ namespace AutoClicker.Views
         }
 
         #endregion Event Handlers
+
+        private void TopMostCheckBox_CheckedChanged(object sender, RoutedEventArgs e)
+        {
+            CheckBox checkbox = (CheckBox)sender;
+            Topmost = checkbox.IsChecked.Value;
+        }
     }
 }
