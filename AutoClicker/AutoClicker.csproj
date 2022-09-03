@@ -116,11 +116,18 @@
     <Compile Include="Utils\SettingsUtils.cs" />
     <Compile Include="Models\HotkeyChangedEventArgs.cs" />
     <Compile Include="Utils\User32ApiUtils.cs" />
+    <Compile Include="Views\CaptureMouseScreenCoordinatesWindow.xaml.cs">
+      <DependentUpon>CaptureMouseScreenCoordinatesWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\SettingsWindow.xaml.cs">
       <DependentUpon>SettingsWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\SystemTrayMenu.cs" />
     <Page Include="Views\AboutWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\CaptureMouseScreenCoordinatesWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -195,6 +202,7 @@
     <Content Include="Resources\Icons\icon.ico">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Resource Include="Resources\Icons\location-crosshairs-solid.ico" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Resources\Icons\icon_running.ico">

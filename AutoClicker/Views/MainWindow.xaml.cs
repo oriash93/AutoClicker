@@ -40,6 +40,7 @@ namespace AutoClicker.Views
         private SystemTrayMenu systemTrayMenu;
         private AboutWindow aboutWindow = null;
         private SettingsWindow settingsWindow = null;
+        private CaptureMouseScreenCoordinatesWindow captureMouseCoordinatesWindow;
 
         private ImageSource _defaultIcon;
         private IntPtr _mainWindowHandle;
@@ -194,6 +195,25 @@ namespace AutoClicker.Views
             }
 
             aboutWindow.Show();
+        }
+
+        private void CaptureMouseScreenCoordinatesCommand_Execute(
+            object sender, 
+            ExecutedRoutedEventArgs e
+        )
+        {
+            if (captureMouseCoordinatesWindow == null)
+            {
+                captureMouseCoordinatesWindow = new CaptureMouseScreenCoordinatesWindow();
+                captureMouseCoordinatesWindow.Closed += (o, args) => captureMouseCoordinatesWindow = null;
+                captureMouseCoordinatesWindow.OnCoordinatesCaptured += (o, point) =>
+                {
+                    TextBoxPickedXValue.Text = point.X.ToString();
+                    TextBoxPickedYValue.Text = point.Y.ToString();
+                };
+            }
+
+            captureMouseCoordinatesWindow.Show();
         }
 
         #endregion Commands

@@ -25,5 +25,11 @@ namespace AutoClicker.Commands
 
         public static readonly RoutedUICommand About =
             AssemblyUtils.CreateCommand(typeof(MainWindowCommands), nameof(About), new KeyGesture(Key.F1));
+
+        public static readonly RoutedUICommand CaptureMouseScreenCoordinates =
+            AssemblyUtils.CreateCommand(
+                typeof(MainWindowCommands), 
+                nameof(CaptureMouseScreenCoordinates)
+            );
     }
 }
