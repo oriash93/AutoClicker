@@ -32,6 +32,7 @@ namespace AutoClicker.Views
             WindowStyle = WindowStyle.None;
             WindowStartupLocation = WindowStartupLocation.Manual;
             ResizeMode = ResizeMode.NoResize;
+            Topmost = true;
 
             var screens = Screen.AllScreens;
             Log.Debug($"Total screens detected: {screens.Length}");
