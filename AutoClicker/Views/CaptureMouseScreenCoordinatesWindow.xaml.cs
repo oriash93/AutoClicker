@@ -47,7 +47,7 @@ namespace AutoClicker.Views
             // This tells us the total maximum number of Y pixels for the multi-monitor setup.
             var minY = screens.Min(s => s.Bounds.Y);
             var maxY = screens.Max(s => s.Bounds.Y);
-            Height = maxY + screens.First(s => s.Bounds.Y == maxY).Bounds.Height;
+            Height = Math.Abs(minY) + maxY + screens.First(s => s.Bounds.Y == maxY).Bounds.Height;
             Log.Information($"Min Screen Y: {minY}");
             Log.Information($"Max Screen Y: {maxY}");
 
