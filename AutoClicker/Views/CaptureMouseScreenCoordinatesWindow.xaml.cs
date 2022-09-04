@@ -1,14 +1,12 @@
 ﻿using AutoClicker.Utils;
 using System;
 using System.ComponentModel;
-using System.Linq;
 using System.Windows;
 using System.Windows.Forms;
 using System.Windows.Input;
 using Serilog;
 using KeyEventArgs = System.Windows.Input.KeyEventArgs;
 using MouseEventArgs = System.Windows.Input.MouseEventArgs;
-using Point = System.Drawing.Point;
 
 namespace AutoClicker.Views
 {
