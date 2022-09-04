@@ -12,11 +12,15 @@
     </Window.Background>
 
     <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
         <DockPanel Background="White"
                    Opacity="1"
                    VerticalAlignment="Top" 
                    HorizontalAlignment="Left"
-                   Width="250">
+                   Width="250"
+                   Grid.Column="0">
             <StackPanel Orientation="Vertical">
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                     <StackPanel.Resources>
