@@ -204,8 +204,6 @@ namespace AutoClicker.Views
             ExecutedRoutedEventArgs e
         )
         {
-            RadioButtonSelectedLocationMode_PickedLocation.IsChecked = true;
-
             if (captureMouseCoordinatesWindow == null)
             {
                 captureMouseCoordinatesWindow = new CaptureMouseScreenCoordinatesWindow();
@@ -214,6 +212,7 @@ namespace AutoClicker.Views
                 {
                     TextBoxPickedXValue.Text =  point.X.ToString();
                     TextBoxPickedYValue.Text = point.Y.ToString();
+                    RadioButtonSelectedLocationMode_PickedLocation.IsChecked = true;
                 };
             }
 
