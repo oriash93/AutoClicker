@@ -27,40 +27,42 @@ namespace AutoClicker.Views
             Log.Information("Opening window to capture mouse coordinates.");
             
             Title = Constants.CAPTURE_MOUSE_COORDINATES_WINDOW_TITLE;
+            Width = 0;
+            Height = 0;
+            WindowStyle = WindowStyle.None;
+            WindowStartupLocation = WindowStartupLocation.Manual;
+            ResizeMode = ResizeMode.NoResize;
+
             var screens = Screen.AllScreens;
             Log.Debug($"Total screens detected: {screens.Length}");
-
+            
             // Need to do some special screen dimension calculation here to accomodate multiple monitors.
             // This works with horizontal, vertical and a combination of horizontal & vertical.
             // (e.g. 3 monitors total, 2 are side by side horizontally and the 3rd
             // is above/below the others) and vise versa.
 
-            // Find the screen that has the largest X offset and then add the screen width to that.
-            // This tells us the total maximum number of X pixels for the multi-monitor setup.
-            var minX = screens.Min(s => s.Bounds.X);
-            var maxX = screens.Max(s => s.Bounds.X);
-            Width = Math.Abs(minX) + maxX + screens.First(s => s.Bounds.X == maxX).Bounds.Width;
+            var minX = 0;
+            var minY = 0;
+            foreach (var screen in screens)
+            {
+                Log.Information(screen.ToString());
+
+                // Find the lowest X & Y screen values, it's possible for screens to have negative
+                // values depending on how the multi monitor setup is configured
+                minX = screen.Bounds.X < minX ? screen.Bounds.X : minX;
+                minY = screen.Bounds.Y < minY ? screen.Bounds.Y : minY;
+
+                Width += screen.Bounds.Width;
+                Height += screen.Bounds.Height;
+            }
             Log.Information($"Min Screen X: {minX}");
-            Log.Information($"Max Screen X: {maxX}");
-
-            // Find the screen that has the largest Y offset and then add the screen height to that.
-            // This tells us the total maximum number of Y pixels for the multi-monitor setup.
-            var minY = screens.Min(s => s.Bounds.Y);
-            var maxY = screens.Max(s => s.Bounds.Y);
-            Height = Math.Abs(minY) + maxY + screens.First(s => s.Bounds.Y == maxY).Bounds.Height;
             Log.Information($"Min Screen Y: {minY}");
-            Log.Information($"Max Screen Y: {maxY}");
-
             Log.Information($"Set window size. Width: {Width}, Height: {Height}");
 
-            WindowStyle = WindowStyle.None;
-            WindowStartupLocation = WindowStartupLocation.Manual;
             Top = minY;
             Left = minX;
-            ResizeMode = ResizeMode.NoResize;
-
-            Log.Information($"Setting mouse capture window position.");
-            Log.Information($"Left: {Left}, Top: {Top}");
+            
+            Log.Information($"Set window position. Left: {Left}, Top: {Top}");
 
             Log.Information("Opened window to capture mouse coordinates.");
         }
@@ -95,6 +97,13 @@ namespace AutoClicker.Views
             {
                 Close();
             }
+        }
+
+        protected override void OnContentRendered(EventArgs e)
+        {
+            base.OnContentRendered(e);
+            Log.Information($"Rendered window size: Width: {RenderSize.Width}, Height: {RenderSize.Height}");
+            Log.Information($"Rendered window position: Left:{Left}, Height: {Height}");
         }
 
         protected override void OnClosing(CancelEventArgs e)
