@@ -44,8 +44,6 @@ namespace AutoClicker.Views
             // (e.g. 3 monitors total, 2 are side by side horizontally and the 3rd
             // is above/below the others) and vise versa.
 
-            //var minX = 0;
-            //var minY = 0;
             foreach (var screen in screens)
             {
                 Log.Information(screen.ToString());
@@ -57,35 +55,17 @@ namespace AutoClicker.Views
 
                 if (screen.Bounds.Y < Top)
                     Top = screen.Bounds.Y;
-                //minX = screen.Bounds.X < minX ? screen.Bounds.X : minX;
-                //minY = screen.Bounds.Y < minY ? screen.Bounds.Y : minY;
 
                 Width += screen.Bounds.Width;
                 Height += screen.Bounds.Height;
             }
-            //Log.Information($"Min Screen X: {minX}");
-            //Log.Information($"Min Screen Y: {minY}");
-            //Width = Screen.PrimaryScreen.Bounds.Width;
-            //Height = Screen.PrimaryScreen.Bounds.Height;
-            //Top = Screen.PrimaryScreen.Bounds.Top;
-            //Left = Screen.PrimaryScreen.Bounds.Left;
+
             Log.Information($"Set window size. Width: {Width}, Height: {Height}");
-
-            //Top = minY;
-            //Left = minX;
-
             Log.Information($"Set window position. Left: {Left}, Top: {Top}");
-
             Log.Information("Opened window to capture mouse coordinates.");
         }
 
         #endregion
-
-        //public System.Windows.Point GetMousePosition()
-        //{
-        //    var point = Control.MousePosition;
-        //    return new System.Windows.Point(point.X, point.Y);
-        //}
 
         #region Event Handlers
 
@@ -101,13 +81,7 @@ namespace AutoClicker.Views
         {
             base.OnMouseDown(e);
 
-            //var transform = PresentationSource.FromVisual(this).CompositionTarget.TransformFromDevice;
-            //var transformedPoint = transform.Transform(GetMousePosition());
-            //var position = new System.Windows.Point(Math.Round(transformedPoint.X), Math.Round(transformedPoint.Y));
-
             var position = System.Windows.Forms.Cursor.Position;
-            //System.Windows.Forms.Cursor.Current.Handle
-            //System.Windows.Forms.Cursor.
             OnCoordinatesCaptured?.Invoke(this, position);
             Log.Information($"Captured mouse position: {position.X}, {position.Y}");
             Close();
