@@ -141,15 +141,25 @@
                         <ColumnDefinition Width="Auto"/>
                     </Grid.ColumnDefinitions>
 
-                    <RadioButton Grid.Row="0" Grid.Column="0" Margin="0, 0, 0, 5"
-                                 Content="Current Cursor Position"
-                                 IsChecked="{Binding AutoClickerSettings.SelectedLocationMode,
-                                                     Converter={StaticResource EnumToBooleanConverter},
-                                                     ConverterParameter={x:Static enums:LocationMode.CurrentLocation}}"/>
-                    <RadioButton Grid.Row="1" Grid.ColumnSpan="2" Margin="0, 0, 0, 5"
-                                 IsChecked="{Binding AutoClickerSettings.SelectedLocationMode,
-                                                     Converter={StaticResource EnumToBooleanConverter},
-                                                     ConverterParameter={x:Static enums:LocationMode.PickedLocation}}">
+                    <RadioButton 
+                        GroupName="SelectedLocationMode"
+                        Name="RadioButtonSelectedLocationMode_CurrentLocation"
+                        Grid.Row="0" 
+                        Grid.Column="0" 
+                        Margin="0, 0, 0, 5"
+                        Content="Current Cursor Position"
+                        IsChecked="{Binding AutoClickerSettings.SelectedLocationMode,
+                                 Converter={StaticResource EnumToBooleanConverter},
+                                 ConverterParameter={x:Static enums:LocationMode.CurrentLocation}}"/>
+                    <RadioButton
+                        GroupName="SelectedLocationMode"
+                        Name="RadioButtonSelectedLocationMode_PickedLocation"
+                        Grid.Row="1" 
+                        Grid.ColumnSpan="2" 
+                        Margin="0, 0, 0, 5"
+                        IsChecked="{Binding AutoClickerSettings.SelectedLocationMode,
+                                 Converter={StaticResource EnumToBooleanConverter},
+                                 ConverterParameter={x:Static enums:LocationMode.PickedLocation}}">
                         <StackPanel Orientation="Horizontal">
                             <TextBlock Text="X" Margin="5, 0, 0, 0"/>
                             <TextBox Width="50" Margin="5, 0, 0, 0"
