@@ -7,6 +7,8 @@ using System.Windows.Input;
 using Serilog;
 using KeyEventArgs = System.Windows.Input.KeyEventArgs;
 using MouseEventArgs = System.Windows.Input.MouseEventArgs;
+using DrawingPoint = System.Drawing.Point;
+using FormsCursor = System.Windows.Forms.Cursor;
 
 namespace AutoClicker.Views
 {
@@ -70,7 +72,7 @@ namespace AutoClicker.Views
         protected override void OnMouseMove(MouseEventArgs e)
         {
             base.OnMouseMove(e);
-            var position = System.Windows.Forms.Cursor.Position;
+            var position = FormsCursor.Position;
             LabelXCoordinate.Content = position.X;
             LabelYCoordinate.Content = position.Y;
         }
@@ -79,13 +81,13 @@ namespace AutoClicker.Views
         {
             base.OnMouseDown(e);
 
-            var position = System.Windows.Forms.Cursor.Position;
+            var position = FormsCursor.Position;
             OnCoordinatesCaptured?.Invoke(this, position);
             Log.Information($"Captured mouse position: {position.X}, {position.Y}");
             Close();
         }
 
-        public event EventHandler<System.Drawing.Point> OnCoordinatesCaptured;
+        public event EventHandler<DrawingPoint> OnCoordinatesCaptured;
 
         protected override void OnKeyDown(KeyEventArgs e)
         {

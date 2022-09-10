@@ -1,6 +1,4 @@
-﻿using System.Drawing;
-
-namespace AutoClicker.Utils
+﻿namespace AutoClicker.Utils
 {
     public static class Constants
     {
