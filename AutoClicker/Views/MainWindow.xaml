@@ -24,6 +24,8 @@
                         Executed="ExitCommand_Execute"/>
         <CommandBinding Command="commands:MainWindowCommands.About"
                         Executed="AboutCommand_Execute"/>
+        <CommandBinding Command="commands:MainWindowCommands.CaptureMouseScreenCoordinates"
+                        Executed="CaptureMouseScreenCoordinatesCommand_Execute"/>
     </Window.CommandBindings>
 
     <Grid Name="mainWindowGrid">
@@ -139,22 +141,42 @@
                         <ColumnDefinition Width="Auto"/>
                     </Grid.ColumnDefinitions>
 
-                    <RadioButton Grid.Row="0" Grid.Column="0" Margin="0, 0, 0, 5"
-                                 Content="Current Cursor Position"
-                                 IsChecked="{Binding AutoClickerSettings.SelectedLocationMode,
-                                                     Converter={StaticResource EnumToBooleanConverter},
-                                                     ConverterParameter={x:Static enums:LocationMode.CurrentLocation}}"/>
-                    <RadioButton Grid.Row="1" Grid.ColumnSpan="2" Margin="0, 0, 0, 5"
-                                 IsChecked="{Binding AutoClickerSettings.SelectedLocationMode,
-                                                     Converter={StaticResource EnumToBooleanConverter},
-                                                     ConverterParameter={x:Static enums:LocationMode.PickedLocation}}">
+                    <RadioButton 
+                        GroupName="SelectedLocationMode"
+                        Name="RadioButtonSelectedLocationMode_CurrentLocation"
+                        Grid.Row="0" 
+                        Grid.Column="0" 
+                        Margin="0, 0, 0, 5"
+                        Content="Current Cursor Position"
+                        IsChecked="{Binding AutoClickerSettings.SelectedLocationMode,
+                                 Converter={StaticResource EnumToBooleanConverter},
+                                 ConverterParameter={x:Static enums:LocationMode.CurrentLocation}}"/>
+                    <RadioButton
+                        GroupName="SelectedLocationMode"
+                        Name="RadioButtonSelectedLocationMode_PickedLocation"
+                        Grid.Row="1" 
+                        Grid.ColumnSpan="2" 
+                        Margin="0, 0, 0, 5"
+                        IsChecked="{Binding AutoClickerSettings.SelectedLocationMode,
+                                 Converter={StaticResource EnumToBooleanConverter},
+                                 ConverterParameter={x:Static enums:LocationMode.PickedLocation}}">
                         <StackPanel Orientation="Horizontal">
                             <TextBlock Text="X" Margin="5, 0, 0, 0"/>
                             <TextBox Width="50" Margin="5, 0, 0, 0"
+                                     Name="TextBoxPickedXValue"
                                      Text="{Binding AutoClickerSettings.PickedXValue, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
                             <TextBlock Text="Y" Margin="5, 0, 0, 0"/>
                             <TextBox Width="50" Margin="5, 0, 0, 0"
+                                     Name="TextBoxPickedYValue"
                                      Text="{Binding AutoClickerSettings.PickedYValue, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+                            <Button Name="captureMouseScreenCoordinatesButton"
+                                    Margin="5, 0, 0, 0" 
+                                    Width="25" 
+                                    Padding="2"
+                                    ToolTip="Use the mouse to capture coordinates on the screen where you want to autoclick."
+                                    Command="commands:MainWindowCommands.CaptureMouseScreenCoordinates">
+                                <Image Source="../Resources/Icons/location-crosshairs-solid.ico"></Image>
+                            </Button>
                         </StackPanel>
                     </RadioButton>
                 </Grid>

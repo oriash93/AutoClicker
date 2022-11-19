@@ -40,6 +40,7 @@ namespace AutoClicker.Views
         private SystemTrayMenu systemTrayMenu;
         private AboutWindow aboutWindow = null;
         private SettingsWindow settingsWindow = null;
+        private CaptureMouseScreenCoordinatesWindow captureMouseCoordinatesWindow;
 
         private ImageSource _defaultIcon;
         private IntPtr _mainWindowHandle;
@@ -83,6 +84,8 @@ namespace AutoClicker.Views
             });
 
             _defaultIcon = Icon;
+            
+            RadioButtonSelectedLocationMode_CurrentLocation.Checked += RadioButtonSelectedLocationMode_CurrentLocationOnChecked;
 
             InitializeSystemTrayMenu();
         }
@@ -194,6 +197,26 @@ namespace AutoClicker.Views
             }
 
             aboutWindow.Show();
+        }
+
+        private void CaptureMouseScreenCoordinatesCommand_Execute(
+            object sender, 
+            ExecutedRoutedEventArgs e
+        )
+        {
+            if (captureMouseCoordinatesWindow == null)
+            {
+                captureMouseCoordinatesWindow = new CaptureMouseScreenCoordinatesWindow();
+                captureMouseCoordinatesWindow.Closed += (o, args) => captureMouseCoordinatesWindow = null;
+                captureMouseCoordinatesWindow.OnCoordinatesCaptured += (o, point) =>
+                {
+                    TextBoxPickedXValue.Text =  point.X.ToString();
+                    TextBoxPickedYValue.Text = point.Y.ToString();
+                    RadioButtonSelectedLocationMode_PickedLocation.IsChecked = true;
+                };
+            }
+
+            captureMouseCoordinatesWindow.Show();
         }
 
         #endregion Commands
@@ -335,7 +358,12 @@ namespace AutoClicker.Views
         {
             for (int i = 0; i < GetNumberOfMouseActions(); ++i)
             {
-                User32ApiUtils.SetCursorPosition(xPos, yPos);
+                var setCursorPos = User32ApiUtils.SetCursorPosition(xPos, yPos);
+                if (!setCursorPos)
+                {
+                    Log.Error($"Could not set the mouse cursor.");
+                }
+
                 User32ApiUtils.ExecuteMouseEvent(mouseDownAction | mouseUpAction, xPos, yPos, 0, 0);
             }
         }
@@ -431,6 +459,15 @@ namespace AutoClicker.Views
         private void ExitMenuItem_Click(object sender, RoutedEventArgs e)
         {
             Exit();
+        }
+
+        private void RadioButtonSelectedLocationMode_CurrentLocationOnChecked(
+            object sender, 
+            RoutedEventArgs e
+        )
+        {
+            TextBoxPickedXValue.Text =  string.Empty;
+            TextBoxPickedYValue.Text = string.Empty;
         }
 
         #endregion Event Handlers
