@@ -9,8 +9,8 @@
         public const string MAIN_WINDOW_STOP_BUTTON_CONTENT = "Stop";
 
         public const string ABOUT_WINDOW_TITLE = "About";
-        public const string CAPTURE_MOUSE_COORDINATES_WINDOW_TITLE = "Capture Mouse Coordinates";
         public const string SETTINGS_WINDOW_TITLE = "Hotkey Settings";
+        public const string CAPTURE_MOUSE_COORDINATES_WINDOW_TITLE = "Capture Mouse Coordinates";
 
         public const string SYSTEM_TRAY_MENU_MINIMIZE = "Minimize to tray";
         public const string SYSTEM_TRAY_MENU_SHOW = "Show AutoClicker";
