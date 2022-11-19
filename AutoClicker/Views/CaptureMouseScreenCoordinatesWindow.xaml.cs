@@ -1,20 +1,17 @@
-﻿using AutoClicker.Utils;
-using System;
+﻿using System;
 using System.ComponentModel;
 using System.Windows;
 using System.Windows.Forms;
 using System.Windows.Input;
+using AutoClicker.Utils;
 using Serilog;
 using KeyEventArgs = System.Windows.Input.KeyEventArgs;
 using MouseEventArgs = System.Windows.Input.MouseEventArgs;
-using DrawingPoint = System.Drawing.Point;
-using FormsCursor = System.Windows.Forms.Cursor;
+using Point = System.Drawing.Point;
+using WPFCursor = System.Windows.Forms.Cursor;
 
 namespace AutoClicker.Views
 {
-    /// <summary>
-    /// Interaction logic for CaptureMouseScreenCoordinatesWindow.xaml
-    /// </summary>
     public partial class CaptureMouseScreenCoordinatesWindow : Window
     {
         #region Life Cycle
@@ -25,7 +22,7 @@ namespace AutoClicker.Views
             InitializeComponent();
 
             Log.Information("Opening window to capture mouse coordinates.");
-            
+
             Title = Constants.CAPTURE_MOUSE_COORDINATES_WINDOW_TITLE;
             Width = 0;
             Height = 0;
@@ -44,17 +41,21 @@ namespace AutoClicker.Views
             // (e.g. 3 monitors total, 2 are side by side horizontally and the 3rd
             // is above/below the others) and vise versa.
 
-            foreach (var screen in screens)
+            foreach (Screen screen in screens)
             {
                 Log.Information(screen.ToString());
 
                 // Find the lowest X & Y screen values, it's possible for screens to have negative
                 // values depending on how the multi monitor setup is configured
                 if (screen.Bounds.X < Left)
+                {
                     Left = screen.Bounds.X;
+                }
 
                 if (screen.Bounds.Y < Top)
+                {
                     Top = screen.Bounds.Y;
+                }
 
                 Width += screen.Bounds.Width;
                 Height += screen.Bounds.Height;
@@ -72,7 +73,7 @@ namespace AutoClicker.Views
         protected override void OnMouseMove(MouseEventArgs e)
         {
             base.OnMouseMove(e);
-            var position = FormsCursor.Position;
+            Point position = WPFCursor.Position;
             LabelXCoordinate.Content = position.X;
             LabelYCoordinate.Content = position.Y;
         }
@@ -81,13 +82,13 @@ namespace AutoClicker.Views
         {
             base.OnMouseDown(e);
 
-            var position = FormsCursor.Position;
+            Point position = WPFCursor.Position;
             OnCoordinatesCaptured?.Invoke(this, position);
             Log.Information($"Captured mouse position: {position.X}, {position.Y}");
             Close();
         }
 
-        public event EventHandler<DrawingPoint> OnCoordinatesCaptured;
+        public event EventHandler<Point> OnCoordinatesCaptured;
 
         protected override void OnKeyDown(KeyEventArgs e)
         {

@@ -84,7 +84,7 @@ namespace AutoClicker.Views
             });
 
             _defaultIcon = Icon;
-            
+
             RadioButtonSelectedLocationMode_CurrentLocation.Checked += RadioButtonSelectedLocationMode_CurrentLocationOnChecked;
 
             InitializeSystemTrayMenu();
@@ -200,7 +200,7 @@ namespace AutoClicker.Views
         }
 
         private void CaptureMouseScreenCoordinatesCommand_Execute(
-            object sender, 
+            object sender,
             ExecutedRoutedEventArgs e
         )
         {
@@ -210,7 +210,7 @@ namespace AutoClicker.Views
                 captureMouseCoordinatesWindow.Closed += (o, args) => captureMouseCoordinatesWindow = null;
                 captureMouseCoordinatesWindow.OnCoordinatesCaptured += (o, point) =>
                 {
-                    TextBoxPickedXValue.Text =  point.X.ToString();
+                    TextBoxPickedXValue.Text = point.X.ToString();
                     TextBoxPickedYValue.Text = point.Y.ToString();
                     RadioButtonSelectedLocationMode_PickedLocation.IsChecked = true;
                 };
@@ -462,11 +462,11 @@ namespace AutoClicker.Views
         }
 
         private void RadioButtonSelectedLocationMode_CurrentLocationOnChecked(
-            object sender, 
+            object sender,
             RoutedEventArgs e
         )
         {
-            TextBoxPickedXValue.Text =  string.Empty;
+            TextBoxPickedXValue.Text = string.Empty;
             TextBoxPickedYValue.Text = string.Empty;
         }
 

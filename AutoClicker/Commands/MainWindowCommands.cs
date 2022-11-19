@@ -10,7 +10,7 @@ namespace AutoClicker.Commands
 
         public static readonly RoutedUICommand Stop =
             AssemblyUtils.CreateCommand(typeof(MainWindowCommands), nameof(Stop));
-        
+
         public static readonly RoutedUICommand Toggle =
             AssemblyUtils.CreateCommand(typeof(MainWindowCommands), nameof(Toggle));
 
@@ -28,7 +28,7 @@ namespace AutoClicker.Commands
 
         public static readonly RoutedUICommand CaptureMouseScreenCoordinates =
             AssemblyUtils.CreateCommand(
-                typeof(MainWindowCommands), 
+                typeof(MainWindowCommands),
                 nameof(CaptureMouseScreenCoordinates)
             );
     }
