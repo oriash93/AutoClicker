@@ -9,6 +9,7 @@ using AutoClicker.Enums;
 using AutoClicker.Models;
 using AutoClicker.Utils;
 using Serilog;
+using MathNet.Numerics.Distributions;
 using CheckBox = System.Windows.Controls.CheckBox;
 using MouseAction = AutoClicker.Enums.MouseAction;
 using MouseButton = AutoClicker.Enums.MouseButton;
@@ -32,7 +33,11 @@ namespace AutoClicker.Views
                new UIPropertyMetadata(SettingsUtils.CurrentSettings.AutoClickerSettings));
 
         private int timesRepeated = 0;
-        private readonly Timer clickTimer;
+        private Timer clickTimer;
+        private int intervalMean = 0;
+        private double intervalSDev = 5.0;
+        private MathNet.Numerics.Distributions.Normal intervalDistribution;
+
         private readonly Uri runningIconUri =
             new Uri(Constants.RUNNING_ICON_RESOURCE_PATH, UriKind.Relative);
 
@@ -117,11 +122,13 @@ namespace AutoClicker.Views
 
         private void StartCommand_Execute(object sender, ExecutedRoutedEventArgs e)
         {
-            int interval = CalculateInterval();
-            Log.Information("Starting operation, interval={Interval}ms", interval);
+            intervalMean = CalculateInterval();
+            Log.Information("Starting operation, avg_interval={Interval}ms, std_dev_interval={dev}ms avg_cps={cps}", 
+                             clickTimer.Interval, intervalSDev, 1000.0/ intervalMean);
 
             timesRepeated = 0;
-            clickTimer.Interval = interval;
+            intervalDistribution = new Normal( intervalMean, intervalSDev );
+            clickTimer.Interval = (int)Math.Round( intervalDistribution.Sample() );
             clickTimer.Start();
 
             Icon = new BitmapImage(runningIconUri);
@@ -326,6 +333,7 @@ namespace AutoClicker.Views
             {
                 InitMouseClick();
                 timesRepeated++;
+                clickTimer.Interval = (int)Math.Round( intervalDistribution.Sample() ); 
 
                 if (timesRepeated == GetTimesToRepeat())
                 {
