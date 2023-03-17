@@ -9,6 +9,7 @@ using AutoClicker.Enums;
 using AutoClicker.Models;
 using AutoClicker.Utils;
 using Serilog;
+using MathNet.Numerics.Distributions;
 using CheckBox = System.Windows.Controls.CheckBox;
 using MouseAction = AutoClicker.Enums.MouseAction;
 using MouseButton = AutoClicker.Enums.MouseButton;
@@ -32,7 +33,11 @@ namespace AutoClicker.Views
                new UIPropertyMetadata(SettingsUtils.CurrentSettings.AutoClickerSettings));
 
         private int timesRepeated = 0;
-        private readonly Timer clickTimer;
+        private Timer clickTimer;
+        private double cpsMean = 1.0;
+        private double cpsSDev = 0.25;
+        private MathNet.Numerics.Distributions.Normal cpsDistribution;
+
         private readonly Uri runningIconUri =
             new Uri(Constants.RUNNING_ICON_RESOURCE_PATH, UriKind.Relative);
 
@@ -118,10 +123,12 @@ namespace AutoClicker.Views
         private void StartCommand_Execute(object sender, ExecutedRoutedEventArgs e)
         {
             int interval = CalculateInterval();
-            Log.Information("Starting operation, interval={Interval}ms", interval);
-
+            cpsMean = (interval <= 0) ? 0.5 : 1000 / (double)interval;
+            cpsDistribution = new Normal(cpsMean, cpsSDev);
+            clickTimer.Interval = (int)Math.Round(1000 / cpsDistribution.Sample());
             timesRepeated = 0;
-            clickTimer.Interval = interval;
+
+            Log.Information("Starting operation, cps_avg={cps}, cps_std_dev={dev}, interval={interval}ms", cpsMean, cpsSDev, clickTimer.Interval);
             clickTimer.Start();
 
             Icon = new BitmapImage(runningIconUri);
@@ -236,6 +243,13 @@ namespace AutoClicker.Views
             return CalculateInterval() > 0;
         }
 
+        private int DistributedInterval()
+        {
+            /* Instead of constant if/else checking to avoid zero division, just always skew my 1 ms.
+             * Shouldn't affect CPS meaningfully in practice. */
+            return 1 + (int)Math.Round(1000 / cpsDistribution.Sample());
+        }
+
         private bool CanStartOperation()
         {
             return !clickTimer.Enabled && IsRepeatModeValid() && IsIntervalValid();
@@ -326,6 +340,7 @@ namespace AutoClicker.Views
             {
                 InitMouseClick();
                 timesRepeated++;
+                clickTimer.Interval = DistributedInterval();
 
                 if (timesRepeated == GetTimesToRepeat())
                 {
