@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Timers;
 using System.Windows;
 using System.Windows.Input;
@@ -95,9 +97,11 @@ namespace AutoClicker.Views
             _source.RemoveHook(StartStopHooks);
 
             SettingsUtils.HotKeyChangedEvent -= SettingsUtils_HotKeyChangedEvent;
-            UnregisterHotkey(Constants.START_HOTKEY_ID);
-            UnregisterHotkey(Constants.STOP_HOTKEY_ID);
-            UnregisterHotkey(Constants.TOGGLE_HOTKEY_ID);
+
+            foreach (int hotkeyId in Constants.ALL_HOTKEY_IDS)
+            {
+                DeregisterHotKey(hotkeyId);
+            }
 
             systemTrayIcon.Click -= SystemTrayIcon_Click;
             systemTrayIcon.Dispose();
@@ -200,10 +204,7 @@ namespace AutoClicker.Views
             aboutWindow.Show();
         }
 
-        private void CaptureMouseScreenCoordinatesCommand_Execute(
-            object sender,
-            ExecutedRoutedEventArgs e
-        )
+        private void CaptureMouseScreenCoordinatesCommand_Execute(object sender, ExecutedRoutedEventArgs e)
         {
             if (captureMouseCoordinatesWindow == null)
             {
@@ -297,24 +298,38 @@ namespace AutoClicker.Views
             systemTrayMenu.SystemTrayMenuActionEvent += SystemTrayMenu_SystemTrayMenuActionEvent;
         }
 
-        private void ReRegisterHotkey(int hotkeyId, KeyMapping hotkey)
+        private void ReRegisterHotkey(IEnumerable<int> hotkeyIds, KeyMapping hotkey, bool includeModifiers)
         {
-            UnregisterHotkey(hotkeyId);
-            RegisterHotkey(hotkeyId, hotkey);
+            foreach (int hotkeyId in hotkeyIds)
+            {
+                DeregisterHotKey(hotkeyId);
+            }
+            RegisterHotkey(hotkeyIds, hotkey, includeModifiers);
         }
 
-        private void RegisterHotkey(int hotkeyId, KeyMapping hotkey)
+        private void RegisterHotkey(IEnumerable<int> hotkeyIds, KeyMapping hotkey, bool includeModifiers)
         {
-            Log.Information("RegisterHotkey with hotkeyId {HotkeyId} and hotkey {Hotkey}", hotkeyId, hotkey.DisplayName);
-            User32ApiUtils.RegisterHotKey(_mainWindowHandle, hotkeyId, Constants.MOD_NONE, hotkey.VirtualKeyCode);
+            Log.Information("RegisterHotkey with hotkey={Hotkey}, includeModifiers={IncludeModifiers}", hotkey.DisplayName, includeModifiers);
+            IEnumerable<(int, int)> hotkeyIdsToModifiers = Enumerable.Zip(hotkeyIds, Constants.MODIFIERS, (first, second) => ValueTuple.Create(first, second));
+            if (includeModifiers)
+            {
+                foreach ((int, int) item in hotkeyIdsToModifiers)
+                {
+                    User32ApiUtils.RegisterHotKey(_mainWindowHandle, item.Item1, item.Item2, hotkey.VirtualKeyCode);
+                }
+            }
+            else
+            {
+                User32ApiUtils.RegisterHotKey(_mainWindowHandle, hotkeyIdsToModifiers.ElementAt(0).Item1, hotkeyIdsToModifiers.ElementAt(0).Item2, hotkey.VirtualKeyCode);
+            }
         }
 
-        private void UnregisterHotkey(int hotkeyId)
+        private void DeregisterHotKey(int hotkeyId)
         {
-            Log.Information("UnregisterHotkey with hotkeyId {HotkeyId}", hotkeyId);
-            if (User32ApiUtils.UnregisterHotKey(_mainWindowHandle, hotkeyId))
+            Log.Information("DeregisterHotKey with hotkeyId={HotkeyId}", hotkeyId);
+            if (User32ApiUtils.DeregisterHotKey(_mainWindowHandle, hotkeyId))
                 return;
-            Log.Warning("No hotkey registered on {HotkeyId}", hotkeyId);
+            Log.Debug("No hotkey registered on {HotkeyId}", hotkeyId);
         }
 
         #endregion Helper Methods
@@ -359,7 +374,7 @@ namespace AutoClicker.Views
         {
             for (int i = 0; i < GetNumberOfMouseActions(); ++i)
             {
-                var setCursorPos = User32ApiUtils.SetCursorPosition(xPos, yPos);
+                bool setCursorPos = User32ApiUtils.SetCursorPosition(xPos, yPos);
                 if (!setCursorPos)
                 {
                     Log.Error($"Could not set the mouse cursor.");
@@ -372,7 +387,7 @@ namespace AutoClicker.Views
         private IntPtr StartStopHooks(IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled)
         {
             int hotkeyId = wParam.ToInt32();
-            if (msg == Constants.WM_HOTKEY && hotkeyId == Constants.START_HOTKEY_ID || hotkeyId == Constants.STOP_HOTKEY_ID || hotkeyId == Constants.TOGGLE_HOTKEY_ID)
+            if (msg == Constants.WM_HOTKEY && Constants.ALL_HOTKEY_IDS.Contains(hotkeyId))
             {
                 int virtualKey = ((int)lParam >> 16) & 0xFFFF;
                 if (virtualKey == SettingsUtils.CurrentSettings.HotkeySettings.StartHotkey.VirtualKeyCode && CanStartOperation())
@@ -394,19 +409,19 @@ namespace AutoClicker.Views
 
         private void SettingsUtils_HotKeyChangedEvent(object sender, HotkeyChangedEventArgs e)
         {
-            Log.Information("HotKeyChangedEvent with operation {Operation} and hotkey {Hotkey}", e.Operation, e.Hotkey.DisplayName);
+            Log.Information("HotKeyChangedEvent with operation={Operation}, hotkey={Hotkey}, includeModifiers={IncludeModifiers}", e.Operation, e.Hotkey.DisplayName, e.IncludeModifiers);
             switch (e.Operation)
             {
                 case Operation.Start:
-                    ReRegisterHotkey(Constants.START_HOTKEY_ID, e.Hotkey);
+                    ReRegisterHotkey(Constants.START_HOTKEY_IDS, e.Hotkey, e.IncludeModifiers);
                     startButton.Content = $"{Constants.MAIN_WINDOW_START_BUTTON_CONTENT} ({e.Hotkey.DisplayName})";
                     break;
                 case Operation.Stop:
-                    ReRegisterHotkey(Constants.STOP_HOTKEY_ID, e.Hotkey);
+                    ReRegisterHotkey(Constants.STOP_HOTKEY_IDS, e.Hotkey, e.IncludeModifiers);
                     stopButton.Content = $"{Constants.MAIN_WINDOW_STOP_BUTTON_CONTENT} ({e.Hotkey.DisplayName})";
                     break;
                 case Operation.Toggle:
-                    ReRegisterHotkey(Constants.TOGGLE_HOTKEY_ID, e.Hotkey);
+                    ReRegisterHotkey(Constants.TOGGLE_HOTKEY_IDS, e.Hotkey, e.IncludeModifiers);
                     toggleButton.Content = $"{Constants.MAIN_WINDOW_TOGGLE_BUTTON_CONTENT} ({e.Hotkey.DisplayName})";
                     break;
                 default:
