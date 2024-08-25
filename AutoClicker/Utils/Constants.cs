@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 
 namespace AutoClicker.Utils
@@ -36,7 +37,7 @@ namespace AutoClicker.Utils
         public const int MOD_ALT = 0x0001;
         public const int MOD_CONTROL = 0x0002;
         public const int MOD_SHIFT = 0x0004;
-        public static readonly List<int> MODIFIERS = new List<int> { MOD_NONE, MOD_ALT, MOD_CONTROL, MOD_SHIFT };
+        public static readonly ImmutableList<int> MODIFIERS = ImmutableList.Create(MOD_NONE, MOD_ALT, MOD_CONTROL, MOD_SHIFT);
 
         public const int START_HOTKEY_ID = 9000;
         public const int STOP_HOTKEY_ID = 9004;

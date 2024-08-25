@@ -32,7 +32,7 @@ namespace AutoClicker.Views
             WindowStartupLocation = WindowStartupLocation.Manual;
             ResizeMode = ResizeMode.NoResize;
 
-            var screens = Screen.AllScreens;
+            Screen[] screens = Screen.AllScreens;
             Log.Debug($"Total number of screens detected={screens.Length}");
 
             // Need to do some special screen dimension calculation here to accomodate multiple monitors.

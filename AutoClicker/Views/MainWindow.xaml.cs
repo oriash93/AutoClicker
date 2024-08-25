@@ -477,10 +477,7 @@ namespace AutoClicker.Views
             Exit();
         }
 
-        private void RadioButtonSelectedLocationMode_CurrentLocationOnChecked(
-            object sender,
-            RoutedEventArgs e
-        )
+        private void RadioButtonSelectedLocationMode_CurrentLocationOnChecked(object sender, RoutedEventArgs e)
         {
             TextBoxPickedXValue.Text = string.Empty;
             TextBoxPickedYValue.Text = string.Empty;

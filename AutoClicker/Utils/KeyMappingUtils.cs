@@ -19,10 +19,9 @@ namespace AutoClicker.Utils
 
         private static void LoadMapping()
         {
-            if (KeyMapping == null)
-            {
-                ReadMapping();
-            }
+            if (KeyMapping != null)
+                return;
+            ReadMapping();
         }
 
         public static KeyMapping GetKeyMappingByCode(int virtualKeyCode)

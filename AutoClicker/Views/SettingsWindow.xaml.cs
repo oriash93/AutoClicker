@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using System.Windows;
 using System.Windows.Input;
 using AutoClicker.Models;
@@ -145,7 +144,7 @@ namespace AutoClicker.Views
         {
             int virtualKeyCode = KeyInterop.VirtualKeyFromKey(key);
             Log.Debug($"GetNewKeyMapping with virtualKeyCode={virtualKeyCode}");
-            return KeyMapping.FirstOrDefault(keyMapping => keyMapping.VirtualKeyCode == virtualKeyCode);
+            return KeyMapping.Find(keyMapping => keyMapping.VirtualKeyCode == virtualKeyCode);
         }
 
         #endregion Helper Methods
