@@ -60,7 +60,7 @@ namespace AutoClicker.Views
                 Height += screen.Bounds.Height;
             }
 
-            Log.Debug("Set window size: width={Width}, height={Height}. Window position: left={Left}, top={Top}", Width, Height, Left, Top);
+            Log.Debug("Set window size: width={Width:F0}, height={Height:F0}. Window position: left={Left}, top={Top}", Width, Height, Left, Top);
         }
 
         #endregion
@@ -99,7 +99,7 @@ namespace AutoClicker.Views
         protected override void OnContentRendered(EventArgs e)
         {
             base.OnContentRendered(e);
-            Log.Debug("Rendered window size: width={Width}, height={Height}. Window position: left={Left}, top={Top}", RenderSize.Width, RenderSize.Height, Left, Top);
+            Log.Debug("Rendered window size: width={Width:F0}, height={Height:F0}. Window position: left={Left}, top={Top}", RenderSize.Width, RenderSize.Height, Left, Top);
         }
 
         protected override void OnClosing(CancelEventArgs e)
