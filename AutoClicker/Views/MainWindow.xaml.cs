@@ -107,6 +107,7 @@ namespace AutoClicker.Views
 
             Log.Information("Application closing");
             Log.Debug("==================================================");
+            Log.CloseAndFlush();
 
             base.OnClosed(e);
         }
