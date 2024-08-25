@@ -28,19 +28,19 @@ namespace AutoClicker.Utils
             LoadSettingsFromFile();
         }
 
-        public static void SetStartHotKey(KeyMapping key)
+        public static void SetStartHotkey(KeyMapping key)
         {
             CurrentSettings.HotkeySettings.StartHotkey = key;
             NotifyChanges(CurrentSettings.HotkeySettings.StartHotkey, Operation.Start);
         }
 
-        public static void SetStopHotKey(KeyMapping key)
+        public static void SetStopHotkey(KeyMapping key)
         {
             CurrentSettings.HotkeySettings.StopHotkey = key;
             NotifyChanges(CurrentSettings.HotkeySettings.StopHotkey, Operation.Stop);
         }
 
-        public static void SetToggleHotKey(KeyMapping key)
+        public static void SetToggleHotkey(KeyMapping key)
         {
             CurrentSettings.HotkeySettings.ToggleHotkey = key;
             NotifyChanges(CurrentSettings.HotkeySettings.ToggleHotkey, Operation.Toggle);
@@ -57,9 +57,9 @@ namespace AutoClicker.Utils
         public static void Reset()
         {
             Log.Information("Reset hotkey settings to default");
-            SetStartHotKey(HotkeySettings.defaultStartKeyMapping);
-            SetStopHotKey(HotkeySettings.defaultStopKeyMapping);
-            SetToggleHotKey(HotkeySettings.defaultToggleKeyMapping);
+            SetStartHotkey(HotkeySettings.defaultStartKeyMapping);
+            SetStopHotkey(HotkeySettings.defaultStopKeyMapping);
+            SetToggleHotkey(HotkeySettings.defaultToggleKeyMapping);
             SetIncludeModifiers(HotkeySettings.defaultIncludeModifiers);
         }
 
@@ -71,12 +71,12 @@ namespace AutoClicker.Utils
                 Operation = operation,
                 IncludeModifiers = CurrentSettings.HotkeySettings.IncludeModifiers
             };
-            HotKeyChangedEvent.Invoke(null, args);
+            HotkeyChangedEvent.Invoke(null, args);
 
             SaveSettingsToFile();
         }
 
-        public static event EventHandler<HotkeyChangedEventArgs> HotKeyChangedEvent;
+        public static event EventHandler<HotkeyChangedEventArgs> HotkeyChangedEvent;
 
         private static void SaveSettingsToFile()
         {

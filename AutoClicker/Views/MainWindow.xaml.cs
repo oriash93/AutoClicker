@@ -68,18 +68,18 @@ namespace AutoClicker.Views
             _source = HwndSource.FromHwnd(_mainWindowHandle);
             _source.AddHook(StartStopHooks);
 
-            SettingsUtils.HotKeyChangedEvent += SettingsUtils_HotKeyChangedEvent;
-            SettingsUtils_HotKeyChangedEvent(this, new HotkeyChangedEventArgs()
+            SettingsUtils.HotkeyChangedEvent += SettingsUtils_HotkeyChangedEvent;
+            SettingsUtils_HotkeyChangedEvent(this, new HotkeyChangedEventArgs()
             {
                 Hotkey = SettingsUtils.CurrentSettings.HotkeySettings.StartHotkey,
                 Operation = Operation.Start
             });
-            SettingsUtils_HotKeyChangedEvent(this, new HotkeyChangedEventArgs()
+            SettingsUtils_HotkeyChangedEvent(this, new HotkeyChangedEventArgs()
             {
                 Hotkey = SettingsUtils.CurrentSettings.HotkeySettings.StopHotkey,
                 Operation = Operation.Stop
             });
-            SettingsUtils_HotKeyChangedEvent(this, new HotkeyChangedEventArgs()
+            SettingsUtils_HotkeyChangedEvent(this, new HotkeyChangedEventArgs()
             {
                 Hotkey = SettingsUtils.CurrentSettings.HotkeySettings.ToggleHotkey,
                 Operation = Operation.Toggle
@@ -96,11 +96,11 @@ namespace AutoClicker.Views
         {
             _source.RemoveHook(StartStopHooks);
 
-            SettingsUtils.HotKeyChangedEvent -= SettingsUtils_HotKeyChangedEvent;
+            SettingsUtils.HotkeyChangedEvent -= SettingsUtils_HotkeyChangedEvent;
 
             foreach (int hotkeyId in Constants.ALL_HOTKEY_IDS)
             {
-                DeregisterHotKey(hotkeyId);
+                DeregisterHotkey(hotkeyId);
             }
 
             systemTrayIcon.Click -= SystemTrayIcon_Click;
@@ -302,7 +302,7 @@ namespace AutoClicker.Views
         {
             foreach (int hotkeyId in hotkeyIds)
             {
-                DeregisterHotKey(hotkeyId);
+                DeregisterHotkey(hotkeyId);
             }
             RegisterHotkey(hotkeyIds, hotkey, includeModifiers);
         }
@@ -315,19 +315,19 @@ namespace AutoClicker.Views
             {
                 foreach ((int, int) item in hotkeyIdsToModifiers)
                 {
-                    User32ApiUtils.RegisterHotKey(_mainWindowHandle, item.Item1, item.Item2, hotkey.VirtualKeyCode);
+                    User32ApiUtils.RegisterHotkey(_mainWindowHandle, item.Item1, item.Item2, hotkey.VirtualKeyCode);
                 }
             }
             else
             {
-                User32ApiUtils.RegisterHotKey(_mainWindowHandle, hotkeyIdsToModifiers.ElementAt(0).Item1, hotkeyIdsToModifiers.ElementAt(0).Item2, hotkey.VirtualKeyCode);
+                User32ApiUtils.RegisterHotkey(_mainWindowHandle, hotkeyIdsToModifiers.ElementAt(0).Item1, hotkeyIdsToModifiers.ElementAt(0).Item2, hotkey.VirtualKeyCode);
             }
         }
 
-        private void DeregisterHotKey(int hotkeyId)
+        private void DeregisterHotkey(int hotkeyId)
         {
-            Log.Information("DeregisterHotKey with hotkeyId={HotkeyId}", hotkeyId);
-            if (User32ApiUtils.DeregisterHotKey(_mainWindowHandle, hotkeyId))
+            Log.Information("DeregisterHotkey with hotkeyId={HotkeyId}", hotkeyId);
+            if (User32ApiUtils.DeregisterHotkey(_mainWindowHandle, hotkeyId))
                 return;
             Log.Debug("No hotkey registered on {HotkeyId}", hotkeyId);
         }
@@ -377,7 +377,7 @@ namespace AutoClicker.Views
                 bool setCursorPos = User32ApiUtils.SetCursorPosition(xPos, yPos);
                 if (!setCursorPos)
                 {
-                    Log.Error($"Could not set the mouse cursor.");
+                    Log.Error("Failed to set the mouse cursor!");
                 }
 
                 User32ApiUtils.ExecuteMouseEvent(mouseDownAction | mouseUpAction, xPos, yPos, 0, 0);
@@ -407,9 +407,9 @@ namespace AutoClicker.Views
             return IntPtr.Zero;
         }
 
-        private void SettingsUtils_HotKeyChangedEvent(object sender, HotkeyChangedEventArgs e)
+        private void SettingsUtils_HotkeyChangedEvent(object sender, HotkeyChangedEventArgs e)
         {
-            Log.Information("HotKeyChangedEvent with operation={Operation}, hotkey={Hotkey}, includeModifiers={IncludeModifiers}", e.Operation, e.Hotkey.DisplayName, e.IncludeModifiers);
+            Log.Information("HotkeyChangedEvent with operation={Operation}, hotkey={Hotkey}, includeModifiers={IncludeModifiers}", e.Operation, e.Hotkey.DisplayName, e.IncludeModifiers);
             switch (e.Operation)
             {
                 case Operation.Start:
@@ -477,10 +477,7 @@ namespace AutoClicker.Views
             Exit();
         }
 
-        private void RadioButtonSelectedLocationMode_CurrentLocationOnChecked(
-            object sender,
-            RoutedEventArgs e
-        )
+        private void RadioButtonSelectedLocationMode_CurrentLocationOnChecked(object sender, RoutedEventArgs e)
         {
             TextBoxPickedXValue.Text = string.Empty;
             TextBoxPickedYValue.Text = string.Empty;
