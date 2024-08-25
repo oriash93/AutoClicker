@@ -77,15 +77,15 @@ namespace AutoClicker.Views
         {
             if (SelectedStartKey != SettingsUtils.CurrentSettings.HotkeySettings.StartHotkey)
             {
-                SettingsUtils.SetStartHotKey(SelectedStartKey);
+                SettingsUtils.SetStartHotkey(SelectedStartKey);
             }
             if (SelectedStopKey != SettingsUtils.CurrentSettings.HotkeySettings.StopHotkey)
             {
-                SettingsUtils.SetStopHotKey(SelectedStopKey);
+                SettingsUtils.SetStopHotkey(SelectedStopKey);
             }
             if (SelectedToggleKey != SettingsUtils.CurrentSettings.HotkeySettings.ToggleHotkey)
             {
-                SettingsUtils.SetToggleHotKey(SelectedToggleKey);
+                SettingsUtils.SetToggleHotkey(SelectedToggleKey);
             }
             if (IncludeModifiers != SettingsUtils.CurrentSettings.HotkeySettings.IncludeModifiers)
             {
