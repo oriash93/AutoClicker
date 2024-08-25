@@ -33,7 +33,7 @@ namespace AutoClicker.Views
             ResizeMode = ResizeMode.NoResize;
 
             Screen[] screens = Screen.AllScreens;
-            Log.Debug($"Total number of screens detected={screens.Length}");
+            Log.Debug("Total number of screens detected={Screens}", screens.Length);
 
             // Need to do some special screen dimension calculation here to accomodate multiple monitors.
             // This works with horizontal, vertical and a combination of horizontal & vertical.
@@ -60,8 +60,7 @@ namespace AutoClicker.Views
                 Height += screen.Bounds.Height;
             }
 
-            Log.Information($"Set window size, Width={Width}, Height={Height}");
-            Log.Information($"Set window position, Left={Left}, Top={Top}");
+            Log.Debug("Set window size: width={Width}, height={Height}. Window position: left={Left}, top={Top}", Width, Height, Left, Top);
         }
 
         #endregion
@@ -82,7 +81,7 @@ namespace AutoClicker.Views
 
             Point position = WPFCursor.Position;
             OnCoordinatesCaptured?.Invoke(this, position);
-            Log.Information($"Captured mouse position at {position.X}, {position.Y}");
+            Log.Information("Captured mouse position: {PositionX}, {PositionY}", position.X, position.Y);
             Close();
         }
 
@@ -100,8 +99,7 @@ namespace AutoClicker.Views
         protected override void OnContentRendered(EventArgs e)
         {
             base.OnContentRendered(e);
-            Log.Debug($"Rendered window size, width={RenderSize.Width}, height={RenderSize.Height}");
-            Log.Debug($"Rendered window position, left={Left}, top={Top}");
+            Log.Debug("Rendered window size: width={Width}, height={Height}. Window position: left={Left}, top={Top}", RenderSize.Width, RenderSize.Height, Left, Top);
         }
 
         protected override void OnClosing(CancelEventArgs e)

@@ -12,21 +12,21 @@ namespace AutoClicker.Utils
             {
                 if (File.Exists(filePath))
                 {
-                    Log.Debug($"Reading file = {filePath}");
+                    Log.Debug("Reading file = {FilePath}", filePath);
                     string jsonString = File.ReadAllText(filePath);
                     T result = JsonSerializer.Deserialize<T>(jsonString);
-                    Log.Debug($"Read from file {filePath} successfully");
+                    Log.Debug("Read from file {FilePath} successfully", filePath);
                     return result;
                 }
                 else
                 {
-                    Log.Warning($"File {filePath} is missing");
+                    Log.Warning("File {FilePath} is missing", filePath);
                     return default;
                 }
             }
             catch (JsonException)
             {
-                Log.Error($"Failed parsing object of type {typeof(T)}");
+                Log.Error("Failed parsing object of type {Type}", typeof(T));
                 throw;
             }
         }
@@ -41,7 +41,7 @@ namespace AutoClicker.Utils
             using (StreamWriter streamWriter = File.CreateText(filePath))
             {
                 streamWriter.Write(jsonString);
-                Log.Debug($"Write to file {filePath} successfully");
+                Log.Debug("Write to file {FilePath} successfully", filePath);
             }
         }
     }

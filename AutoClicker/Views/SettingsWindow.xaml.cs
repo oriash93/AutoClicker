@@ -132,7 +132,7 @@ namespace AutoClicker.Views
             KeyMapping newKeyMapping = GetNewKeyMapping(e.Key);
             if (newKeyMapping == null)
             {
-                Log.Error($"No Matching key for {e.Key}!");
+                Log.Error("No Matching key for {Key}!", e.Key);
                 return null;
             }
 
@@ -143,7 +143,7 @@ namespace AutoClicker.Views
         private KeyMapping GetNewKeyMapping(Key key)
         {
             int virtualKeyCode = KeyInterop.VirtualKeyFromKey(key);
-            Log.Debug($"GetNewKeyMapping with virtualKeyCode={virtualKeyCode}");
+            Log.Debug("GetNewKeyMapping with virtualKeyCode={VirtualKeyCode}", virtualKeyCode);
             return KeyMapping.Find(keyMapping => keyMapping.VirtualKeyCode == virtualKeyCode);
         }
 
