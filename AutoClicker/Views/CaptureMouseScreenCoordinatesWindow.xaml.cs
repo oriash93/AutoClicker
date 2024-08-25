@@ -21,7 +21,7 @@ namespace AutoClicker.Views
             DataContext = this;
             InitializeComponent();
 
-            Log.Information("Opening window to capture mouse coordinates.");
+            Log.Information("Opening capture mouse coordinates window");
 
             Title = Constants.CAPTURE_MOUSE_COORDINATES_WINDOW_TITLE;
             Width = 0;
@@ -31,10 +31,9 @@ namespace AutoClicker.Views
             WindowStyle = WindowStyle.None;
             WindowStartupLocation = WindowStartupLocation.Manual;
             ResizeMode = ResizeMode.NoResize;
-            //Topmost = true;
 
             var screens = Screen.AllScreens;
-            Log.Debug($"Total screens detected: {screens.Length}");
+            Log.Debug($"Total number of screens detected={screens.Length}");
 
             // Need to do some special screen dimension calculation here to accomodate multiple monitors.
             // This works with horizontal, vertical and a combination of horizontal & vertical.
@@ -43,7 +42,7 @@ namespace AutoClicker.Views
 
             foreach (Screen screen in screens)
             {
-                Log.Information(screen.ToString());
+                Log.Debug(screen.ToString());
 
                 // Find the lowest X & Y screen values, it's possible for screens to have negative
                 // values depending on how the multi monitor setup is configured
@@ -61,9 +60,8 @@ namespace AutoClicker.Views
                 Height += screen.Bounds.Height;
             }
 
-            Log.Information($"Set window size. Width: {Width}, Height: {Height}");
-            Log.Information($"Set window position. Left: {Left}, Top: {Top}");
-            Log.Information("Opened window to capture mouse coordinates.");
+            Log.Information($"Set window size, Width={Width}, Height={Height}");
+            Log.Information($"Set window position, Left={Left}, Top={Top}");
         }
 
         #endregion
@@ -84,7 +82,7 @@ namespace AutoClicker.Views
 
             Point position = WPFCursor.Position;
             OnCoordinatesCaptured?.Invoke(this, position);
-            Log.Information($"Captured mouse position: {position.X}, {position.Y}");
+            Log.Information($"Captured mouse position at {position.X}, {position.Y}");
             Close();
         }
 
@@ -102,14 +100,14 @@ namespace AutoClicker.Views
         protected override void OnContentRendered(EventArgs e)
         {
             base.OnContentRendered(e);
-            Log.Information($"Rendered window size: Width: {RenderSize.Width}, Height: {RenderSize.Height}");
-            Log.Information($"Rendered window position: Left:{Left}, Height: {Height}");
+            Log.Debug($"Rendered window size, width={RenderSize.Width}, height={RenderSize.Height}");
+            Log.Debug($"Rendered window position, left={Left}, top={Top}");
         }
 
         protected override void OnClosing(CancelEventArgs e)
         {
             base.OnClosing(e);
-            Log.Information("Closing window to capture mouse coordinates.");
+            Log.Information("Closing capture mouse coordinates window");
         }
 
         #endregion

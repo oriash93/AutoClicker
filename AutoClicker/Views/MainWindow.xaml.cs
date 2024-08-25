@@ -123,7 +123,7 @@ namespace AutoClicker.Views
         private void StartCommand_Execute(object sender, ExecutedRoutedEventArgs e)
         {
             int interval = CalculateInterval();
-            Log.Information("Starting operation, interval={Interval}ms", interval);
+            Log.Information($"Starting operation with interval={interval}ms");
 
             timesRepeated = 0;
             clickTimer.Interval = interval;
@@ -309,7 +309,7 @@ namespace AutoClicker.Views
 
         private void RegisterHotkey(IEnumerable<int> hotkeyIds, KeyMapping hotkey, bool includeModifiers)
         {
-            Log.Information("RegisterHotkey with hotkey={Hotkey}, includeModifiers={IncludeModifiers}", hotkey.DisplayName, includeModifiers);
+            Log.Information($"RegisterHotkey with hotkey={hotkey.DisplayName}, includeModifiers={includeModifiers}");
             IEnumerable<(int, int)> hotkeyIdsToModifiers = Enumerable.Zip(hotkeyIds, Constants.MODIFIERS, (first, second) => ValueTuple.Create(first, second));
             if (includeModifiers)
             {
@@ -329,7 +329,7 @@ namespace AutoClicker.Views
             Log.Information("DeregisterHotKey with hotkeyId={HotkeyId}", hotkeyId);
             if (User32ApiUtils.DeregisterHotKey(_mainWindowHandle, hotkeyId))
                 return;
-            Log.Debug("No hotkey registered on {HotkeyId}", hotkeyId);
+            Log.Debug($"No hotkey registered on {hotkeyId}");
         }
 
         #endregion Helper Methods
@@ -377,7 +377,7 @@ namespace AutoClicker.Views
                 bool setCursorPos = User32ApiUtils.SetCursorPosition(xPos, yPos);
                 if (!setCursorPos)
                 {
-                    Log.Error($"Could not set the mouse cursor.");
+                    Log.Error("Could not set the mouse cursor!");
                 }
 
                 User32ApiUtils.ExecuteMouseEvent(mouseDownAction | mouseUpAction, xPos, yPos, 0, 0);
@@ -409,7 +409,7 @@ namespace AutoClicker.Views
 
         private void SettingsUtils_HotKeyChangedEvent(object sender, HotkeyChangedEventArgs e)
         {
-            Log.Information("HotKeyChangedEvent with operation={Operation}, hotkey={Hotkey}, includeModifiers={IncludeModifiers}", e.Operation, e.Hotkey.DisplayName, e.IncludeModifiers);
+            Log.Information($"HotkeyChangedEvent with operation={e.Operation}, hotkey={e.Hotkey.DisplayName}, includeModifiers={e.Hotkey.DisplayName}");
             switch (e.Operation)
             {
                 case Operation.Start:
@@ -425,8 +425,8 @@ namespace AutoClicker.Views
                     toggleButton.Content = $"{Constants.MAIN_WINDOW_TOGGLE_BUTTON_CONTENT} ({e.Hotkey.DisplayName})";
                     break;
                 default:
-                    Log.Warning("Operation {Operation} not supported!", e.Operation);
-                    throw new NotSupportedException($"Operation {e.Operation} not supported!");
+                    Log.Warning($"Operation {e.Operation} is not supported!");
+                    throw new NotSupportedException($"Operation {e.Operation} is not supported!");
             }
         }
 
@@ -450,8 +450,8 @@ namespace AutoClicker.Views
                     Exit();
                     break;
                 default:
-                    Log.Warning("Action {Action} not supported!", e.Action);
-                    throw new NotSupportedException($"Action {e.Action} not supported!");
+                    Log.Warning($"Action {e.Action} is not supported!");
+                    throw new NotSupportedException($"Action {e.Action} is not supported!");
             }
         }
 
