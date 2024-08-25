@@ -7,5 +7,6 @@ namespace AutoClicker.Models
     {
         public KeyMapping Hotkey { get; set; }
         public Operation Operation { get; set; }
+        public bool IncludeModifiers { get; set; }
     }
 }

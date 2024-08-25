@@ -39,9 +39,18 @@ namespace AutoClicker.Utils
             CurrentSettings.HotkeySettings.StopHotkey = key;
             NotifyChanges(CurrentSettings.HotkeySettings.StopHotkey, Operation.Stop);
         }
+
         public static void SetToggleHotKey(KeyMapping key)
         {
             CurrentSettings.HotkeySettings.ToggleHotkey = key;
+            NotifyChanges(CurrentSettings.HotkeySettings.ToggleHotkey, Operation.Toggle);
+        }
+
+        public static void SetIncludeModifiers(bool includeModifiers)
+        {
+            CurrentSettings.HotkeySettings.IncludeModifiers = includeModifiers;
+            NotifyChanges(CurrentSettings.HotkeySettings.StartHotkey, Operation.Start);
+            NotifyChanges(CurrentSettings.HotkeySettings.StopHotkey, Operation.Stop);
             NotifyChanges(CurrentSettings.HotkeySettings.ToggleHotkey, Operation.Toggle);
         }
 
@@ -50,6 +59,8 @@ namespace AutoClicker.Utils
             Log.Information("Reset hotkey settings to default");
             SetStartHotKey(HotkeySettings.defaultStartKeyMapping);
             SetStopHotKey(HotkeySettings.defaultStopKeyMapping);
+            SetToggleHotKey(HotkeySettings.defaultToggleKeyMapping);
+            SetIncludeModifiers(HotkeySettings.defaultIncludeModifiers);
         }
 
         private static void NotifyChanges(KeyMapping hotkey, Operation operation)
@@ -57,7 +68,8 @@ namespace AutoClicker.Utils
             HotkeyChangedEventArgs args = new HotkeyChangedEventArgs
             {
                 Hotkey = hotkey,
-                Operation = operation
+                Operation = operation,
+                IncludeModifiers = CurrentSettings.HotkeySettings.IncludeModifiers
             };
             HotKeyChangedEvent.Invoke(null, args);
 

@@ -4,7 +4,7 @@
         xmlns:commands="clr-namespace:AutoClicker.Commands"
         Topmost="true"
         ResizeMode="CanMinimize"
-        Height="180" Width="350"
+        Height="200" Width="350"
         Icon="{StaticResource SettingsIcon}">
     <Window.CommandBindings>
         <CommandBinding Command="commands:SettingsWindowCommands.Save"
@@ -16,6 +16,7 @@
     <Grid Name="settingsGrid"
           HorizontalAlignment="Center" VerticalAlignment="Center">
         <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
@@ -43,6 +44,7 @@
                  KeyDown="StopKeyTextBox_KeyDown"
                  HorizontalAlignment="Stretch"
                  VerticalContentAlignment="Center" HorizontalContentAlignment="Center"/>
+
         <Label Grid.Row="2" Grid.Column="0"  Margin="5, 5, 5, 5"
                Content="Toggle Hotkey: "/>
         <TextBox Name="toggleKeyTextBox"
@@ -52,12 +54,20 @@
                  HorizontalAlignment="Stretch"
                  VerticalContentAlignment="Center" HorizontalContentAlignment="Center"/>
 
+        <CheckBox Name="includeModifiersCheckBox"
+                  Grid.Row="3" Grid.Column="0" Margin="5, 5, 5, 5"
+                  VerticalAlignment="Center"
+                  Content="Include modifiers"
+                  IsChecked="{Binding Path=IncludeModifiers, Mode=OneWay}"
+                  Checked="IncludeModifiersCheckBox_CheckedChanged"
+                  Unchecked="IncludeModifiersCheckBox_CheckedChanged"/>
+
         <Button Name="saveSettingsButton"
-                Content="Save" Grid.Row="3" Grid.Column="0" Margin="5, 5, 5, 5"
+                Content="Save" Grid.Row="4" Grid.Column="0" Margin="5, 5, 5, 5"
                 Command="commands:SettingsWindowCommands.Save"/>
 
         <Button Name="resetSettingsButton"
-                Content="Reset" Grid.Row="3" Grid.Column="1" Margin="5, 5, 5, 5"
+                Content="Reset" Grid.Row="4" Grid.Column="1" Margin="5, 5, 5, 5"
                 Command="commands:SettingsWindowCommands.Reset"/>
     </Grid>
 </Window>

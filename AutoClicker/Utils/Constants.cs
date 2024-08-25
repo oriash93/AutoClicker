@@ -1,4 +1,7 @@
-﻿namespace AutoClicker.Utils
+﻿using System.Collections.Generic;
+using System.Linq;
+
+namespace AutoClicker.Utils
 {
     public static class Constants
     {
@@ -30,13 +33,23 @@
         public const int MOUSEEVENTF_MIDDLEUP = 0x0040;
 
         public const int MOD_NONE = 0x0;
+        public const int MOD_ALT = 0x0001;
+        public const int MOD_CONTROL = 0x0002;
+        public const int MOD_SHIFT = 0x0004;
+        public static readonly List<int> MODIFIERS = new List<int> { MOD_NONE, MOD_ALT, MOD_CONTROL, MOD_SHIFT };
+
         public const int START_HOTKEY_ID = 9000;
-        public const int STOP_HOTKEY_ID = 9001;
-        public const int TOGGLE_HOTKEY_ID = 9002;
+        public const int STOP_HOTKEY_ID = 9004;
+        public const int TOGGLE_HOTKEY_ID = 9008;
         public const int WM_HOTKEY = 0x0312;
 
-        public const int DEFAULT_START_HOTKEY = 0x75;
-        public const int DEFAULT_STOP_HOTKEY = 0x76;
-        public const int DEFAULT_TOGGLE_HOTKEY = 0x77;
+        public static readonly IEnumerable<int> START_HOTKEY_IDS = Enumerable.Range(START_HOTKEY_ID, MODIFIERS.Count);
+        public static readonly IEnumerable<int> STOP_HOTKEY_IDS = Enumerable.Range(STOP_HOTKEY_ID, MODIFIERS.Count);
+        public static readonly IEnumerable<int> TOGGLE_HOTKEY_IDS = Enumerable.Range(TOGGLE_HOTKEY_ID, MODIFIERS.Count);
+        public static readonly IEnumerable<int> ALL_HOTKEY_IDS = Enumerable.Union(START_HOTKEY_IDS, STOP_HOTKEY_IDS).Union(TOGGLE_HOTKEY_IDS);
+
+        public const int DEFAULT_START_HOTKEY = 0x75;   // F6
+        public const int DEFAULT_STOP_HOTKEY = 0x76;    // F7
+        public const int DEFAULT_TOGGLE_HOTKEY = 0x77;  // F8
     }
 }

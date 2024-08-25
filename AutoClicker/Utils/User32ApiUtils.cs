@@ -14,7 +14,7 @@ namespace AutoClicker.Utils
         [DllImport("user32.dll")]
         internal static extern bool RegisterHotKey(IntPtr hWnd, int id, int fsModifiers, int vk);
 
-        [DllImport("user32.dll")]
-        internal static extern bool UnregisterHotKey(IntPtr hWnd, int id);
+        [DllImport("user32.dll", EntryPoint = "UnregisterHotKey")]
+        internal static extern bool DeregisterHotKey(IntPtr hWnd, int id);
     }
 }
