@@ -67,6 +67,7 @@ namespace AutoClicker.Views
             _mainWindowHandle = new WindowInteropHelper(this).Handle;
             _source = HwndSource.FromHwnd(_mainWindowHandle);
             _source.AddHook(StartStopHooks);
+            _defaultIcon = Icon;
 
             SettingsUtils.HotkeyChangedEvent += SettingsUtils_HotkeyChangedEvent;
             SettingsUtils_HotkeyChangedEvent(this, new HotkeyChangedEventArgs()
@@ -84,8 +85,6 @@ namespace AutoClicker.Views
                 Hotkey = SettingsUtils.CurrentSettings.HotkeySettings.ToggleHotkey,
                 Operation = Operation.Toggle
             });
-
-            _defaultIcon = Icon;
 
             RadioButtonSelectedLocationMode_CurrentLocation.Checked += RadioButtonSelectedLocationMode_CurrentLocationOnChecked;
 
@@ -132,6 +131,8 @@ namespace AutoClicker.Views
             Icon = new BitmapImage(runningIconUri);
             Title += Constants.MAIN_WINDOW_TITLE_RUNNING;
             systemTrayIcon.Text += Constants.MAIN_WINDOW_TITLE_RUNNING;
+
+            CommandManager.InvalidateRequerySuggested();
         }
 
         private void StartCommand_CanExecute(object sender, CanExecuteRoutedEventArgs e)
@@ -146,6 +147,8 @@ namespace AutoClicker.Views
 
             ResetTitle();
             Icon = _defaultIcon;
+
+            CommandManager.InvalidateRequerySuggested();
         }
 
         private void StopCommand_CanExecute(object sender, CanExecuteRoutedEventArgs e)
@@ -210,7 +213,7 @@ namespace AutoClicker.Views
             {
                 captureMouseCoordinatesWindow = new CaptureMouseScreenCoordinatesWindow();
                 captureMouseCoordinatesWindow.Closed += (o, args) => captureMouseCoordinatesWindow = null;
-                captureMouseCoordinatesWindow.OnCoordinatesCaptured += (o, point) =>
+                captureMouseCoordinatesWindow.OnCoordinatesCaptured += (o, point) => // TODO: deregister this event somehow
                 {
                     TextBoxPickedXValue.Text = point.X.ToString();
                     TextBoxPickedYValue.Text = point.Y.ToString();
