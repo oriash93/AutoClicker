@@ -67,6 +67,7 @@ namespace AutoClicker.Views
             _mainWindowHandle = new WindowInteropHelper(this).Handle;
             _source = HwndSource.FromHwnd(_mainWindowHandle);
             _source.AddHook(StartStopHooks);
+            _defaultIcon = Icon;
 
             SettingsUtils.HotkeyChangedEvent += SettingsUtils_HotkeyChangedEvent;
             SettingsUtils_HotkeyChangedEvent(this, new HotkeyChangedEventArgs()
@@ -85,8 +86,6 @@ namespace AutoClicker.Views
                 Operation = Operation.Toggle
             });
 
-            _defaultIcon = Icon;
-
             RadioButtonSelectedLocationMode_CurrentLocation.Checked += RadioButtonSelectedLocationMode_CurrentLocationOnChecked;
 
             InitializeSystemTrayMenu();
@@ -103,11 +102,9 @@ namespace AutoClicker.Views
                 DeregisterHotkey(hotkeyId);
             }
 
-            systemTrayIcon.Click -= SystemTrayIcon_Click;
-            systemTrayIcon.Dispose();
+            RadioButtonSelectedLocationMode_CurrentLocation.Checked -= RadioButtonSelectedLocationMode_CurrentLocationOnChecked;
 
-            systemTrayMenu.SystemTrayMenuActionEvent -= SystemTrayMenu_SystemTrayMenuActionEvent;
-            systemTrayMenu.Dispose();
+            DisposeSystemTrayMenu();
 
             Log.Information("Application closing");
             Log.Debug("==================================================");
@@ -132,6 +129,8 @@ namespace AutoClicker.Views
             Icon = new BitmapImage(runningIconUri);
             Title += Constants.MAIN_WINDOW_TITLE_RUNNING;
             systemTrayIcon.Text += Constants.MAIN_WINDOW_TITLE_RUNNING;
+
+            CommandManager.InvalidateRequerySuggested();
         }
 
         private void StartCommand_CanExecute(object sender, CanExecuteRoutedEventArgs e)
@@ -146,6 +145,8 @@ namespace AutoClicker.Views
 
             ResetTitle();
             Icon = _defaultIcon;
+
+            CommandManager.InvalidateRequerySuggested();
         }
 
         private void StopCommand_CanExecute(object sender, CanExecuteRoutedEventArgs e)
@@ -209,16 +210,22 @@ namespace AutoClicker.Views
             if (captureMouseCoordinatesWindow == null)
             {
                 captureMouseCoordinatesWindow = new CaptureMouseScreenCoordinatesWindow();
-                captureMouseCoordinatesWindow.Closed += (o, args) => captureMouseCoordinatesWindow = null;
-                captureMouseCoordinatesWindow.OnCoordinatesCaptured += (o, point) =>
+                captureMouseCoordinatesWindow.OnCoordinatesCaptured += CaptureMouseCoordinatesWindow_OnCoordinatesCaptured;
+                captureMouseCoordinatesWindow.Closed += (o, args) =>
                 {
-                    TextBoxPickedXValue.Text = point.X.ToString();
-                    TextBoxPickedYValue.Text = point.Y.ToString();
-                    RadioButtonSelectedLocationMode_PickedLocation.IsChecked = true;
+                    captureMouseCoordinatesWindow.OnCoordinatesCaptured -= CaptureMouseCoordinatesWindow_OnCoordinatesCaptured;
+                    captureMouseCoordinatesWindow = null;
                 };
             }
 
             captureMouseCoordinatesWindow.Show();
+        }
+
+        private void CaptureMouseCoordinatesWindow_OnCoordinatesCaptured(object sender, Point point)
+        {
+            TextBoxPickedXValue.Text = point.X.ToString();
+            TextBoxPickedYValue.Text = point.Y.ToString();
+            RadioButtonSelectedLocationMode_PickedLocation.IsChecked = true;
         }
 
         #endregion Commands
@@ -289,13 +296,22 @@ namespace AutoClicker.Views
             systemTrayIcon = new NotifyIcon
             {
                 Visible = true,
-                Icon = AssemblyUtils.GetApplicationIcon()
+                Icon = AssemblyUtils.GetApplicationIcon(),
+                Text = Constants.MAIN_WINDOW_TITLE_DEFAULT
             };
-
             systemTrayIcon.Click += SystemTrayIcon_Click;
-            systemTrayIcon.Text = Constants.MAIN_WINDOW_TITLE_DEFAULT;
+
             systemTrayMenu = new SystemTrayMenu();
             systemTrayMenu.SystemTrayMenuActionEvent += SystemTrayMenu_SystemTrayMenuActionEvent;
+        }
+
+        private void DisposeSystemTrayMenu()
+        {
+            systemTrayIcon.Click -= SystemTrayIcon_Click;
+            systemTrayIcon.Dispose();
+
+            systemTrayMenu.SystemTrayMenuActionEvent -= SystemTrayMenu_SystemTrayMenuActionEvent;
+            systemTrayMenu.Dispose();
         }
 
         private void ReRegisterHotkey(IEnumerable<int> hotkeyIds, KeyMapping hotkey, bool includeModifiers)
