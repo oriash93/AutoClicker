@@ -81,6 +81,7 @@ namespace AutoClicker.Views
 
             Point position = WPFCursor.Position;
             OnCoordinatesCaptured?.Invoke(this, position);
+
             Log.Information("Captured mouse position: {PositionX}, {PositionY}", position.X, position.Y);
             Close();
         }
