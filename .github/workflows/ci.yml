@@ -17,8 +17,8 @@ jobs:
       with:
         dotnet-version: 5.0.x
     - name: Restore dependencies
-      run: dotnet restore
+      run: dotnet restore AutoClicker/AutoClicker.csproj
     - name: Build
-      run: dotnet build --no-restore AutoClicker
+      run: dotnet build --no-restore AutoClicker/AutoClicker.csproj
     - name: Test
-      run: dotnet test --no-build --verbosity normal AutoClicker
+      run: dotnet test --no-build --verbosity normal AutoClicker/AutoClicker.csproj
