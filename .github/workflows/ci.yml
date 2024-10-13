@@ -17,8 +17,8 @@ jobs:
       with:
         dotnet-version: 8.0.x
     - name: Restore dependencies
-      run: dotnet restore AutoClicker/AutoClicker.csproj
+      run: dotnet restore AutoClicker/AutoClicker.csproj /p:EnableWindowsTargeting=true
     - name: Build
-      run: dotnet build --no-restore AutoClicker/AutoClicker.csproj
+      run: dotnet build --no-restore AutoClicker/AutoClicker.csproj /p:EnableWindowsTargeting=true
     - name: Test
-      run: dotnet test --no-build --verbosity normal AutoClicker/AutoClicker.csproj
+      run: dotnet test --no-build --verbosity normal AutoClicker/AutoClicker.csproj /p:EnableWindowsTargeting=true
