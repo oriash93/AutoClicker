@@ -45,7 +45,7 @@ namespace AutoClicker.Views
         private CaptureMouseScreenCoordinatesWindow captureMouseCoordinatesWindow;
 
         private ImageSource _defaultIcon;
-        private IntPtr _mainWindowHandle;
+        private nint _mainWindowHandle;
         private HwndSource _source;
 
         #region Life Cycle
@@ -331,19 +331,19 @@ namespace AutoClicker.Views
             {
                 foreach ((int, int) item in hotkeyIdsToModifiers)
                 {
-                    User32ApiUtils.RegisterHotkey(_mainWindowHandle, item.Item1, item.Item2, hotkey.VirtualKeyCode);
+                    Win32ApiUtils.RegisterHotkey(_mainWindowHandle, item.Item1, item.Item2, hotkey.VirtualKeyCode);
                 }
             }
             else
             {
-                User32ApiUtils.RegisterHotkey(_mainWindowHandle, hotkeyIdsToModifiers.ElementAt(0).Item1, hotkeyIdsToModifiers.ElementAt(0).Item2, hotkey.VirtualKeyCode);
+                Win32ApiUtils.RegisterHotkey(_mainWindowHandle, hotkeyIdsToModifiers.ElementAt(0).Item1, hotkeyIdsToModifiers.ElementAt(0).Item2, hotkey.VirtualKeyCode);
             }
         }
 
         private void DeregisterHotkey(int hotkeyId)
         {
             Log.Information("DeregisterHotkey with hotkeyId={HotkeyId}", hotkeyId);
-            if (User32ApiUtils.DeregisterHotkey(_mainWindowHandle, hotkeyId))
+            if (Win32ApiUtils.DeregisterHotkey(_mainWindowHandle, hotkeyId))
                 return;
             Log.Debug("No hotkey registered on {HotkeyId}", hotkeyId);
         }
@@ -390,20 +390,18 @@ namespace AutoClicker.Views
         {
             for (int i = 0; i < GetNumberOfMouseActions(); ++i)
             {
-                bool setCursorPos = User32ApiUtils.SetCursorPosition(xPos, yPos);
-                if (!setCursorPos)
+                if (!Win32ApiUtils.SetCursorPosition(xPos, yPos))
                 {
                     Log.Error("Failed to set the mouse cursor!");
                 }
 
-                User32ApiUtils.ExecuteMouseEvent(mouseDownAction | mouseUpAction, xPos, yPos, 0, 0);
+                Win32ApiUtils.ExecuteMouseEvent(mouseDownAction | mouseUpAction, xPos, yPos, 0, 0);
             }
         }
 
-        private IntPtr StartStopHooks(IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled)
+        private nint StartStopHooks(nint hwnd, int msg, nint wParam, nint lParam, ref bool handled)
         {
-            int hotkeyId = wParam.ToInt32();
-            if (msg == Constants.WM_HOTKEY && Constants.ALL_HOTKEY_IDS.Contains(hotkeyId))
+            if (msg == Constants.WM_HOTKEY && Constants.ALL_HOTKEY_IDS.Contains(wParam.ToInt32()))
             {
                 int virtualKey = ((int)lParam >> 16) & 0xFFFF;
                 if (virtualKey == SettingsUtils.CurrentSettings.HotkeySettings.StartHotkey.VirtualKeyCode && CanStartOperation())
@@ -420,7 +418,7 @@ namespace AutoClicker.Views
                 }
                 handled = true;
             }
-            return IntPtr.Zero;
+            return nint.Zero;
         }
 
         private void SettingsUtils_HotkeyChangedEvent(object sender, HotkeyChangedEventArgs e)

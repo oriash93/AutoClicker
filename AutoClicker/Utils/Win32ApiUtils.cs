@@ -3,7 +3,7 @@ using System.Runtime.InteropServices;
 
 namespace AutoClicker.Utils
 {
-    public static class User32ApiUtils
+    public static class Win32ApiUtils
     {
         [DllImport("user32.dll", EntryPoint = "SetCursorPos")]
         internal static extern bool SetCursorPosition(int x, int y);
@@ -12,9 +12,9 @@ namespace AutoClicker.Utils
         internal static extern void ExecuteMouseEvent(int dwFlags, int dx, int dy, int cButtons, int dwExtraInfo);
 
         [DllImport("user32.dll", EntryPoint = "RegisterHotKey")]
-        internal static extern bool RegisterHotkey(IntPtr hWnd, int id, int fsModifiers, int vk);
+        internal static extern bool RegisterHotkey(nint hWnd, int id, int fsModifiers, int vk);
 
         [DllImport("user32.dll", EntryPoint = "UnregisterHotKey")]
-        internal static extern bool DeregisterHotkey(IntPtr hWnd, int id);
+        internal static extern bool DeregisterHotkey(nint hWnd, int id);
     }
 }
