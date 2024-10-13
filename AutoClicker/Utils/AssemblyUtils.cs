@@ -15,15 +15,12 @@ namespace AutoClicker.Utils
         public static Icon GetApplicationIcon()
             => Icon.ExtractAssociatedIcon(assembly.Location);
 
-        public static string GetProjectURL()
-            => assembly.GetCustomAttribute<AssemblyDescriptionAttribute>().Description;
-
         public static Uri GetProjectUri()
-            => new Uri(GetProjectURL());
+            => new(assembly.GetCustomAttribute<AssemblyMetadataAttribute>().Value);
 
         public static RoutedUICommand CreateCommand(Type windowType, string commandName, KeyGesture keyGesture = null)
             => keyGesture == null
                 ? new RoutedUICommand(commandName, commandName, windowType)
-                : new RoutedUICommand(commandName, commandName, windowType, new InputGestureCollection() { keyGesture });
+                : new RoutedUICommand(commandName, commandName, windowType, [keyGesture]);
     }
 }
