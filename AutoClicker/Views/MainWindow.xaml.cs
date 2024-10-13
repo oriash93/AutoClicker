@@ -120,10 +120,11 @@ namespace AutoClicker.Views
         private void StartCommand_Execute(object sender, ExecutedRoutedEventArgs e)
         {
             int interval = CalculateInterval();
-            Log.Information("Starting operation, interval={Interval}ms", interval);
-
-            timesRepeated = 0;
             clickTimer.Interval = interval;
+
+            Log.Information("Starting operation, interval={Interval}ms", interval);
+            InitMouseClick();
+            timesRepeated = 1;
             clickTimer.Start();
 
             Icon = new BitmapImage(runningIconUri);
