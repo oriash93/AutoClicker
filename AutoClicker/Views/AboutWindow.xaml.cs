@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
 using System.Reflection;
 using System.Windows;
 using System.Windows.Navigation;
@@ -18,9 +19,10 @@ namespace AutoClicker.Views
             InitializeComponent();
 
             AssemblyName assemblyInfo = AssemblyUtils.GetAssemblyInfo();
-            AboutInformationText.Text = $"{assemblyInfo.Name} v{assemblyInfo.Version.Major}.{assemblyInfo.Version.Minor}.{assemblyInfo.Version.Build}";
-            UrlHyperlink.NavigateUri = AssemblyUtils.GetProjectUri();
-            UrlHyperlink.Inlines.Add(AssemblyUtils.GetProjectURL());
+            AboutInformationText.Text = $"{assemblyInfo.Name} v{assemblyInfo.Version}";
+            Uri uri = AssemblyUtils.GetProjectUri();
+            UrlHyperlink.NavigateUri = uri;
+            UrlHyperlink.Inlines.Add(uri.OriginalString);
         }
 
         #endregion Life Cycle
@@ -29,7 +31,11 @@ namespace AutoClicker.Views
 
         private void Hyperlink_RequestNavigate(object sender, RequestNavigateEventArgs e)
         {
-            Process.Start(new ProcessStartInfo(e.Uri.AbsoluteUri));
+            Process.Start(new ProcessStartInfo
+            {
+                FileName = e.Uri.OriginalString,
+                UseShellExecute = true
+            });
             e.Handled = true;
         }
 

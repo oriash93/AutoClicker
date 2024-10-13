@@ -17,7 +17,7 @@
     <IsWebBootstrapper>false</IsWebBootstrapper>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
-    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <GenerateAssemblyInfo>true</GenerateAssemblyInfo>
     <UseWindowsForms>true</UseWindowsForms>
     <UseWPF>true</UseWPF>
     <ImportWindowsDesktopTargets>true</ImportWindowsDesktopTargets>
@@ -27,6 +27,12 @@
   </PropertyGroup>
   <PropertyGroup>
     <StartupObject>AutoClicker.App</StartupObject>
+    <PackageProjectUrl>https://github.com/oriash93/AutoClicker</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/oriash93/AutoClicker</RepositoryUrl>
+    <AssemblyVersion>3.3.0.0</AssemblyVersion>
+    <FileVersion>3.3.0.0</FileVersion>
+    <NeutralLanguage>en</NeutralLanguage>
+    <Copyright>Copyright © 2024</Copyright>
   </PropertyGroup>
   <ItemGroup>
     <None Update="Resources\keyMappings.json">
