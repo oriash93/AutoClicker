@@ -25,3 +25,6 @@ Download the latest version from the [releases](https://github.com/oriash93/Auto
 
 ## Build ##
 Open the solution via Visual Studio, build and run.
+
+## Screenshots
+![image](https://github.com/user-attachments/assets/0631abbe-8c6c-4d17-9e95-e9efabbbfd1d)
