@@ -19,7 +19,6 @@ AutoClicker is a desktop application for automating mouse clicks.
 ## Platform
 Currently available only for Windows OS.
 
-
 ## Download ##
 Download the latest version from the [releases](https://github.com/oriash93/AutoClicker/releases) page, unzip and run AutoClicker.exe.
 
@@ -27,4 +26,5 @@ Download the latest version from the [releases](https://github.com/oriash93/Auto
 Open the solution via Visual Studio, build and run.
 
 ## Screenshots
-![image](https://github.com/user-attachments/assets/0631abbe-8c6c-4d17-9e95-e9efabbbfd1d)
+![image](https://github.com/user-attachments/assets/45e1266c-ca78-4027-89f1-6323b926e135)
+
