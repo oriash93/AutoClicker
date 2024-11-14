@@ -1,0 +1,35 @@
+name: "Feature request"
+about: "Suggest an idea for this project"
+labels: ["area/enhancements"]
+type: "enhancement"
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for suggesting a new feature! Please use this template to describe your idea clearly.
+
+  - type: textarea
+    attributes:
+      label: "Describe the feature you’re missing or the problem you want to solve."
+      description: "Provide a clear description of what the problem is or what kind of feature you're missing."
+    validations:
+      required: true
+
+  - type: textarea
+    attributes:
+      label: "Describe the solution you'd like"
+      description: "A clear description of what you want to happen with this feature."
+    validations:
+      required: true
+
+  - type: textarea
+    attributes:
+      label: "Describe alternatives you've considered"
+      description: "A clear description of any alternative solutions or features you've considered."
+
+  - type: textarea
+    id: additional-context
+    attributes:
+      label: "Additional context"
+      description: "Add any other context or screenshots about the feature request here."

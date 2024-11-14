@@ -1,0 +1,49 @@
+name: "Bug report"
+about: "Create a report to help us improve"
+labels: ["bug/triage"]
+type: "bug"
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to report an issue with AutoClicker.
+        Use this template to notify us if you found a bug.
+
+  - type: textarea
+    attributes:
+      label: "Describe the bug"
+      description: "A clear description of what the bug is"
+    validations:
+      required: true
+
+  - type: textarea
+    attributes:
+      label: "Steps to Reproduce"
+      description: "Detailed steps to reproduce the bug."
+      value: |
+        1. Go to '...'
+        2. Click on '....'
+        3. Scroll down to '....'
+        4. See error
+    validations:
+      required: true
+
+  - type: textarea
+    attributes:
+      label: "Expected behavior"
+      description: "A clear description of what you expected to happen."
+    validations:
+      required: true
+
+  - type: textarea
+    attributes:
+      label: "Actual behavior"
+      description: "A clear description of what actually happens."
+    validations:
+      required: true
+
+  - type: textarea
+    attributes:
+      label: "Screenshots"
+      description: "If applicable, add screenshots to help explain your problem."
