@@ -56,7 +56,8 @@ namespace AutoClicker.Utils
         public const int VK_OEM_1 = 0xBA;   // ;
         public const int VK_OEM_3 = 0xC0;   // `
         public const int VK_OEM_4 = 0xDB;   // [
-        public const int VK_OEM_7 = 0xDE;   // '
+        public const int VK_OEM_8 = 0xDF;   // ! on AZERTY
+        public const int VK_OEM_102 = 0xE2; // < on AZERTY
 
         public const int DEFAULT_START_HOTKEY = 0x75;   // F6
         public const int DEFAULT_STOP_HOTKEY = 0x76;    // F7

@@ -46,7 +46,8 @@ namespace AutoClicker.Utils
         {
             return (virtualKeyCode >= Constants.VK_0 && virtualKeyCode <= Constants.VK_9)
                 || (virtualKeyCode >= Constants.VK_OEM_1 && virtualKeyCode <= Constants.VK_OEM_3)
-                || (virtualKeyCode >= Constants.VK_OEM_4 && virtualKeyCode <= Constants.VK_OEM_7);
+                || (virtualKeyCode >= Constants.VK_OEM_4 && virtualKeyCode <= Constants.VK_OEM_8)
+                || virtualKeyCode == Constants.VK_OEM_102;
         }
 
         private static void ReadMapping()
