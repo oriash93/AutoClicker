@@ -49,6 +49,15 @@ namespace AutoClicker.Utils
         public static readonly IEnumerable<int> TOGGLE_HOTKEY_IDS = Enumerable.Range(TOGGLE_HOTKEY_ID, MODIFIERS.Count);
         public static readonly IEnumerable<int> ALL_HOTKEY_IDS = Enumerable.Union(START_HOTKEY_IDS, STOP_HOTKEY_IDS).Union(TOGGLE_HOTKEY_IDS);
 
+        public const uint MAPVK_VK_TO_CHAR = 0x2;
+
+        public const int VK_0 = 0x30;
+        public const int VK_9 = 0x39;
+        public const int VK_OEM_1 = 0xBA;   // ;
+        public const int VK_OEM_3 = 0xC0;   // `
+        public const int VK_OEM_4 = 0xDB;   // [
+        public const int VK_OEM_7 = 0xDE;   // '
+
         public const int DEFAULT_START_HOTKEY = 0x75;   // F6
         public const int DEFAULT_STOP_HOTKEY = 0x76;    // F7
         public const int DEFAULT_TOGGLE_HOTKEY = 0x77;  // F8

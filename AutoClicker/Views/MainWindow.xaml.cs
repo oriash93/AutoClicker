@@ -459,15 +459,15 @@ namespace AutoClicker.Views
             {
                 case Operation.Start:
                     ReRegisterHotkey(Constants.START_HOTKEY_IDS, e.Hotkey, e.IncludeModifiers);
-                    startButton.Content = $"{Constants.MAIN_WINDOW_START_BUTTON_CONTENT} ({e.Hotkey.DisplayName})";
+                    startButton.Content = $"{Constants.MAIN_WINDOW_START_BUTTON_CONTENT} ({e.Hotkey.LayoutDisplayName})";
                     break;
                 case Operation.Stop:
                     ReRegisterHotkey(Constants.STOP_HOTKEY_IDS, e.Hotkey, e.IncludeModifiers);
-                    stopButton.Content = $"{Constants.MAIN_WINDOW_STOP_BUTTON_CONTENT} ({e.Hotkey.DisplayName})";
+                    stopButton.Content = $"{Constants.MAIN_WINDOW_STOP_BUTTON_CONTENT} ({e.Hotkey.LayoutDisplayName})";
                     break;
                 case Operation.Toggle:
                     ReRegisterHotkey(Constants.TOGGLE_HOTKEY_IDS, e.Hotkey, e.IncludeModifiers);
-                    toggleButton.Content = $"{Constants.MAIN_WINDOW_TOGGLE_BUTTON_CONTENT} ({e.Hotkey.DisplayName})";
+                    toggleButton.Content = $"{Constants.MAIN_WINDOW_TOGGLE_BUTTON_CONTENT} ({e.Hotkey.LayoutDisplayName})";
                     break;
                 default:
                     Log.Warning("Operation {Operation} not supported!", e.Operation);
