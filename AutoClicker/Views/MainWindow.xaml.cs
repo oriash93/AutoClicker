@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Timers;
 using System.Windows;
@@ -12,11 +13,13 @@ using AutoClicker.Models;
 using AutoClicker.Utils;
 using Serilog;
 using CheckBox = System.Windows.Controls.CheckBox;
+using DrawingIcon = System.Drawing.Icon;
 using MouseAction = AutoClicker.Enums.MouseAction;
 using MouseButton = AutoClicker.Enums.MouseButton;
 using MouseCursor = System.Windows.Forms.Cursor;
 using NotifyIcon = System.Windows.Forms.NotifyIcon;
 using Point = System.Drawing.Point;
+using SystemInformation = System.Windows.Forms.SystemInformation;
 using Timer = System.Timers.Timer;
 
 namespace AutoClicker.Views
@@ -39,6 +42,8 @@ namespace AutoClicker.Views
             new Uri(Constants.RUNNING_ICON_RESOURCE_PATH, UriKind.Relative);
 
         private NotifyIcon systemTrayIcon;
+        private DrawingIcon defaultTrayIcon;
+        private DrawingIcon runningTrayIcon;
         private SystemTrayMenu systemTrayMenu;
         private AboutWindow aboutWindow = null;
         private SettingsWindow settingsWindow = null;
@@ -123,13 +128,15 @@ namespace AutoClicker.Views
             clickTimer.Interval = interval;
 
             Log.Information("Starting operation, interval={Interval}ms", interval);
-            InitMouseClick();
-            timesRepeated = 1;
+            timesRepeated = 0;
             clickTimer.Start();
 
             Icon = new BitmapImage(runningIconUri);
             Title += Constants.MAIN_WINDOW_TITLE_RUNNING;
             systemTrayIcon.Text += Constants.MAIN_WINDOW_TITLE_RUNNING;
+            systemTrayIcon.Icon = runningTrayIcon;
+
+            PerformRepeatedClick();
 
             CommandManager.InvalidateRequerySuggested();
         }
@@ -141,13 +148,7 @@ namespace AutoClicker.Views
 
         private void StopCommand_Execute(object sender, ExecutedRoutedEventArgs e)
         {
-            Log.Information("Stopping operation");
-            clickTimer.Stop();
-
-            ResetTitle();
-            Icon = _defaultIcon;
-
-            CommandManager.InvalidateRequerySuggested();
+            StopOperation();
         }
 
         private void StopCommand_CanExecute(object sender, CanExecuteRoutedEventArgs e)
@@ -283,6 +284,31 @@ namespace AutoClicker.Views
                 || (AutoClickerSettings.SelectedRepeatMode == RepeatMode.Count && AutoClickerSettings.SelectedTimesToRepeat > 0);
         }
 
+        private void PerformRepeatedClick()
+        {
+            InitMouseClick();
+            timesRepeated++;
+
+            int timesToRepeat = GetTimesToRepeat();
+            if (timesToRepeat > 0 && timesRepeated >= timesToRepeat)
+            {
+                Log.Information("Completed {TimesRepeated} repetitions", timesRepeated);
+                StopOperation();
+            }
+        }
+
+        private void StopOperation()
+        {
+            Log.Information("Stopping operation");
+            clickTimer.Stop();
+
+            ResetTitle();
+            Icon = _defaultIcon;
+            systemTrayIcon.Icon = defaultTrayIcon;
+
+            CommandManager.InvalidateRequerySuggested();
+        }
+
         private void ResetTitle()
         {
             Title = Constants.MAIN_WINDOW_TITLE_DEFAULT;
@@ -294,10 +320,15 @@ namespace AutoClicker.Views
 
         private void InitializeSystemTrayMenu()
         {
+            defaultTrayIcon = AssemblyUtils.GetApplicationIcon();
+            runningTrayIcon = new DrawingIcon(
+                Path.Combine(AppContext.BaseDirectory, Constants.RUNNING_ICON_RESOURCE_PATH),
+                SystemInformation.SmallIconSize);
+
             systemTrayIcon = new NotifyIcon
             {
                 Visible = true,
-                Icon = AssemblyUtils.GetApplicationIcon(),
+                Icon = defaultTrayIcon,
                 Text = Constants.MAIN_WINDOW_TITLE_DEFAULT
             };
             systemTrayIcon.Click += SystemTrayIcon_Click;
@@ -310,6 +341,8 @@ namespace AutoClicker.Views
         {
             systemTrayIcon.Click -= SystemTrayIcon_Click;
             systemTrayIcon.Dispose();
+            defaultTrayIcon.Dispose();
+            runningTrayIcon.Dispose();
 
             systemTrayMenu.SystemTrayMenuActionEvent -= SystemTrayMenu_SystemTrayMenuActionEvent;
             systemTrayMenu.Dispose();
@@ -357,14 +390,11 @@ namespace AutoClicker.Views
         {
             Dispatcher.Invoke(() =>
             {
-                InitMouseClick();
-                timesRepeated++;
+                // A tick may already be queued when the operation stops
+                if (!clickTimer.Enabled)
+                    return;
 
-                if (timesRepeated == GetTimesToRepeat())
-                {
-                    clickTimer.Stop();
-                    ResetTitle();
-                }
+                PerformRepeatedClick();
             });
         }
 
