@@ -39,7 +39,7 @@ namespace AutoClicker.Views
         private int timesRepeated = 0;
         private readonly Timer clickTimer;
         private readonly Uri runningIconUri =
-            new Uri(Constants.RUNNING_ICON_RESOURCE_PATH, UriKind.Relative);
+            new Uri(Path.Combine(AppContext.BaseDirectory, Constants.RUNNING_ICON_RESOURCE_PATH), UriKind.Absolute);
 
         private NotifyIcon systemTrayIcon;
         private DrawingIcon defaultTrayIcon;
