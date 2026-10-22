@@ -93,8 +93,6 @@ namespace AutoClicker.Views
                 Operation = Operation.Toggle
             });
 
-            RadioButtonSelectedLocationMode_CurrentLocation.Checked += RadioButtonSelectedLocationMode_CurrentLocationOnChecked;
-
             InitializeSystemTrayMenu();
         }
 
@@ -108,8 +106,6 @@ namespace AutoClicker.Views
             {
                 DeregisterHotkey(hotkeyId);
             }
-
-            RadioButtonSelectedLocationMode_CurrentLocation.Checked -= RadioButtonSelectedLocationMode_CurrentLocationOnChecked;
 
             DisposeSystemTrayMenu();
 
@@ -533,12 +529,6 @@ namespace AutoClicker.Views
         private void ExitMenuItem_Click(object sender, RoutedEventArgs e)
         {
             Exit();
-        }
-
-        private void RadioButtonSelectedLocationMode_CurrentLocationOnChecked(object sender, RoutedEventArgs e)
-        {
-            TextBoxPickedXValue.Text = string.Empty;
-            TextBoxPickedYValue.Text = string.Empty;
         }
 
         #endregion Event Handlers
