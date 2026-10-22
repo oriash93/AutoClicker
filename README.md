@@ -26,6 +26,7 @@ Download the latest version from the [releases](https://github.com/oriash93/Auto
 
 ## Build ##
 Requires the [.NET 10 SDK](https://dotnet.microsoft.com/download/dotnet/10.0). Open the solution via Visual Studio 2026, build and run.
+<br>Run the tests with `dotnet test --project AutoClicker.Tests/AutoClicker.Tests.csproj`.
 
 ## Screenshots
 ![image](https://github.com/user-attachments/assets/45e1266c-ca78-4027-89f1-6323b926e135)
