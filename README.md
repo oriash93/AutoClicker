@@ -21,9 +21,11 @@ Currently available only for Windows OS.
 
 ## Download ##
 Download the latest version from the [releases](https://github.com/oriash93/AutoClicker/releases) page, unzip and run AutoClicker.exe.
+* `win-x64` - includes everything needed to run.
+* `win-x64-framework-dependent` - smaller, requires the [.NET 10 Desktop Runtime](https://dotnet.microsoft.com/download/dotnet/10.0).
 
 ## Build ##
-Open the solution via Visual Studio, build and run.
+Requires the [.NET 10 SDK](https://dotnet.microsoft.com/download/dotnet/10.0). Open the solution via Visual Studio 2026, build and run.
 
 ## Screenshots
 ![image](https://github.com/user-attachments/assets/45e1266c-ca78-4027-89f1-6323b926e135)

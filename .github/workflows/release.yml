@@ -1,0 +1,75 @@
+name: AutoClicker Release
+
+on:
+  push:
+    tags:
+      - "v*"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  release:
+    runs-on: windows-latest
+    permissions:
+      contents: write
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v7
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v6
+      with:
+        dotnet-version: 10.0.x
+    - name: Set version
+      id: version
+      shell: pwsh
+      env:
+        REF_TYPE: ${{ github.ref_type }}
+        REF_NAME: ${{ github.ref_name }}
+        SHA: ${{ github.sha }}
+      run: |
+        if ($env:REF_TYPE -eq 'tag') {
+          if ($env:REF_NAME -notmatch '^v(\d+\.\d+\.\d+)$') {
+            throw "Tag '$env:REF_NAME' does not match the vX.Y.Z format"
+          }
+          "version=$($Matches[1])" >> $env:GITHUB_OUTPUT
+          "label=$env:REF_NAME" >> $env:GITHUB_OUTPUT
+        } else {
+          "label=dev-$($env:SHA.Substring(0, 7))" >> $env:GITHUB_OUTPUT
+        }
+    - name: Publish
+      shell: pwsh
+      env:
+        VERSION: ${{ steps.version.outputs.version }}
+      run: |
+        $PSNativeCommandUseErrorActionPreference = $true
+        $publishArgs = @('AutoClicker/AutoClicker.csproj', '-c', 'Release', '-r', 'win-x64', '-p:PublishSingleFile=true', '-p:DebugType=none')
+        if ($env:VERSION) { $publishArgs += "-p:Version=$env:VERSION" }
+        dotnet publish @publishArgs --self-contained -p:IncludeNativeLibrariesForSelfExtract=true -p:EnableCompressionInSingleFile=true -o publish/self-contained
+        dotnet publish @publishArgs --no-self-contained -o publish/framework-dependent
+    - name: Package
+      shell: pwsh
+      env:
+        LABEL: ${{ steps.version.outputs.label }}
+      run: |
+        New-Item -ItemType Directory -Force dist | Out-Null
+        Compress-Archive -Path publish/self-contained/* -DestinationPath "dist/AutoClicker-$env:LABEL-win-x64.zip"
+        Compress-Archive -Path publish/framework-dependent/* -DestinationPath "dist/AutoClicker-$env:LABEL-win-x64-framework-dependent.zip"
+        Get-ChildItem dist/*.zip | ForEach-Object { "$((Get-FileHash $_ -Algorithm SHA256).Hash.ToLower())  $($_.Name)" } | Set-Content dist/SHA256SUMS.txt
+    - name: Upload artifact
+      if: github.ref_type != 'tag'
+      uses: actions/upload-artifact@v7
+      with:
+        name: AutoClicker-${{ steps.version.outputs.label }}
+        path: dist/
+    - name: Create draft release
+      if: github.ref_type == 'tag'
+      shell: pwsh
+      env:
+        GH_TOKEN: ${{ github.token }}
+        TAG: ${{ github.ref_name }}
+      run: |
+        $PSNativeCommandUseErrorActionPreference = $true
+        gh release create $env:TAG (Get-ChildItem dist).FullName --draft --generate-notes --title "AutoClicker $env:TAG"

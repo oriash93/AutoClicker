@@ -29,10 +29,10 @@
     <Resource Include="Resources\Icons\about.ico" />
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="Resources\Icons\location-crosshairs-solid.ico" />
+  </ItemGroup>
+  <ItemGroup>
     <Content Include="Resources\Icons\icon.ico">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\Icons\location-crosshairs-solid.ico">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
