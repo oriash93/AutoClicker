@@ -13,7 +13,7 @@ permissions:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
 
     steps:
     - name: Checkout
@@ -23,6 +23,8 @@ jobs:
       with:
         dotnet-version: 10.0.x
     - name: Restore dependencies
-      run: dotnet restore AutoClicker/AutoClicker.csproj /p:EnableWindowsTargeting=true
+      run: dotnet restore AutoClicker.Tests/AutoClicker.Tests.csproj
     - name: Build
-      run: dotnet build --no-restore AutoClicker/AutoClicker.csproj /p:EnableWindowsTargeting=true
+      run: dotnet build --no-restore AutoClicker.Tests/AutoClicker.Tests.csproj
+    - name: Test
+      run: dotnet test --no-build --project AutoClicker.Tests/AutoClicker.Tests.csproj

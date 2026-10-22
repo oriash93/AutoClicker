@@ -12,7 +12,9 @@ updates:
           - "*"
 
   - package-ecosystem: "nuget"
-    directory: "/AutoClicker"
+    directories:
+      - "/AutoClicker"
+      - "/AutoClicker.Tests"
     schedule:
       interval: "monthly"
     labels:
