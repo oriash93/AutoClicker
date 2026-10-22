@@ -103,6 +103,9 @@ namespace AutoClicker.Utils
             CurrentSettings.AutoClickerSettings.Minutes = settings.Minutes;
             CurrentSettings.AutoClickerSettings.Hours = settings.Hours;
 
+            CurrentSettings.AutoClickerSettings.IsRandomOffsetEnabled = settings.IsRandomOffsetEnabled;
+            CurrentSettings.AutoClickerSettings.RandomOffsetMilliseconds = settings.RandomOffsetMilliseconds;
+
             CurrentSettings.AutoClickerSettings.PickedXValue = settings.PickedXValue;
             CurrentSettings.AutoClickerSettings.PickedYValue = settings.PickedYValue;
 

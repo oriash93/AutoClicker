@@ -37,6 +37,8 @@ namespace AutoClicker.Views
                new UIPropertyMetadata(SettingsUtils.CurrentSettings.AutoClickerSettings));
 
         private int timesRepeated = 0;
+        private int clickInterval = 0;
+        private int clickIntervalOffset = 0;
         private readonly Timer clickTimer;
         private readonly Uri runningIconUri =
             new Uri(Path.Combine(AppContext.BaseDirectory, Constants.RUNNING_ICON_RESOURCE_PATH), UriKind.Absolute);
@@ -124,10 +126,11 @@ namespace AutoClicker.Views
 
         private void StartCommand_Execute(object sender, ExecutedRoutedEventArgs e)
         {
-            int interval = CalculateInterval();
-            clickTimer.Interval = interval;
+            clickInterval = CalculateInterval();
+            clickIntervalOffset = AutoClickerSettings.IsRandomOffsetEnabled ? AutoClickerSettings.RandomOffsetMilliseconds : 0;
+            clickTimer.Interval = clickInterval;
 
-            Log.Information("Starting operation, interval={Interval}ms", interval);
+            Log.Information("Starting operation, interval={Interval}ms, offset={Offset}ms", clickInterval, clickIntervalOffset);
             timesRepeated = 0;
             clickTimer.Start();
 
@@ -247,9 +250,15 @@ namespace AutoClicker.Views
             return CalculateInterval() > 0;
         }
 
+        private bool IsRandomOffsetValid()
+        {
+            return !AutoClickerSettings.IsRandomOffsetEnabled
+                || (AutoClickerSettings.RandomOffsetMilliseconds >= 0 && AutoClickerSettings.RandomOffsetMilliseconds < CalculateInterval());
+        }
+
         private bool CanStartOperation()
         {
-            return !clickTimer.Enabled && IsRepeatModeValid() && IsIntervalValid();
+            return !clickTimer.Enabled && IsRepeatModeValid() && IsIntervalValid() && IsRandomOffsetValid();
         }
 
         private int GetTimesToRepeat()
@@ -294,6 +303,10 @@ namespace AutoClicker.Views
             {
                 Log.Information("Completed {TimesRepeated} repetitions", timesRepeated);
                 StopOperation();
+            }
+            else if (clickIntervalOffset > 0)
+            {
+                clickTimer.Interval = IntervalUtils.GetRandomizedInterval(clickInterval, clickIntervalOffset);
             }
         }
 
