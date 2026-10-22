@@ -57,7 +57,6 @@ jobs:
         New-Item -ItemType Directory -Force dist | Out-Null
         Compress-Archive -Path publish/self-contained/* -DestinationPath "dist/AutoClicker-$env:LABEL-win-x64.zip"
         Compress-Archive -Path publish/framework-dependent/* -DestinationPath "dist/AutoClicker-$env:LABEL-win-x64-framework-dependent.zip"
-        Get-ChildItem dist/*.zip | ForEach-Object { "$((Get-FileHash $_ -Algorithm SHA256).Hash.ToLower())  $($_.Name)" } | Set-Content dist/SHA256SUMS.txt
     - name: Upload artifact
       if: github.ref_type != 'tag'
       uses: actions/upload-artifact@v7
