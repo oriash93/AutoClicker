@@ -158,10 +158,12 @@
                             <TextBlock Text="X" Margin="5, 0, 0, 0"/>
                             <TextBox Width="50" Margin="5, 0, 0, 5"
                                      Name="TextBoxPickedXValue"
+                                     IsEnabled="{Binding IsChecked, ElementName=RadioButtonSelectedLocationMode_PickedLocation}"
                                      Text="{Binding AutoClickerSettings.PickedXValue, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
                             <TextBlock Text="Y" Margin="5, 0, 0, 0"/>
                             <TextBox Width="50" Margin="5, 0, 0, 5"
                                      Name="TextBoxPickedYValue"
+                                     IsEnabled="{Binding IsChecked, ElementName=RadioButtonSelectedLocationMode_PickedLocation}"
                                      Text="{Binding AutoClickerSettings.PickedYValue, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
                             <Button Name="CaptureMouseScreenCoordinatesButton"
                                     Margin="5, 0, 0, 0" Width="20" Height="20"
