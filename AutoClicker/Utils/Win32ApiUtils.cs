@@ -16,5 +16,11 @@ namespace AutoClicker.Utils
 
         [DllImport("user32.dll", EntryPoint = "UnregisterHotKey")]
         internal static extern bool DeregisterHotkey(nint hWnd, int id);
+
+        [DllImport("user32.dll", EntryPoint = "GetKeyboardLayout")]
+        internal static extern nint GetKeyboardLayout(uint idThread);
+
+        [DllImport("user32.dll", EntryPoint = "MapVirtualKeyExW")]
+        internal static extern uint MapVirtualKey(uint uCode, uint uMapType, nint dwhkl);
     }
 }

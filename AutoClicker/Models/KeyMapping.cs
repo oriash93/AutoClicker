@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Text.Json.Serialization;
+using AutoClicker.Utils;
 
 namespace AutoClicker.Models
 {
@@ -33,5 +34,8 @@ namespace AutoClicker.Models
 
         [JsonPropertyName("virtual_key_code")]
         public int VirtualKeyCode { get; set; }
+
+        [JsonIgnore]
+        public string LayoutDisplayName => KeyMappingUtils.GetDisplayName(this);
     }
 }

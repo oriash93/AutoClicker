@@ -595,6 +595,16 @@
     "display_name": "'"
   },
   {
+    "virtual_key_name": "VK_OEM_8",
+    "virtual_key_hex_code": "0xDF",
+    "display_name": "OEM 8"
+  },
+  {
+    "virtual_key_name": "VK_OEM_102",
+    "virtual_key_hex_code": "0xE2",
+    "display_name": "OEM 102"
+  },
+  {
     "virtual_key_name": "VK_OEM_CLEAR",
     "virtual_key_hex_code": "0xFE",
     "display_name": "Clear"
