@@ -4,7 +4,7 @@
         xmlns:commands="clr-namespace:AutoClicker.Commands"
         xmlns:enums="clr-namespace:AutoClicker.Enums"
         ResizeMode="CanMinimize"
-        Height="320" Width="450">
+        Height="350" Width="450">
     <Window.Resources>
         <ResourceDictionary Source="../Resources/MainWindowResources.xaml"/>
     </Window.Resources>
@@ -68,6 +68,7 @@
                       HorizontalAlignment="Center" VerticalAlignment="Center">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
@@ -92,6 +93,17 @@
                     <TextBox Grid.Column="6" Width="45"
                              Text="{Binding AutoClickerSettings.Milliseconds, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
                     <TextBlock Grid.Column="7" Margin="5, 0, 5, 5" Text="milliseconds"/>
+
+                    <CheckBox Name="RandomOffsetCheckBox"
+                              Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="6"
+                              Margin="0, 5, 5, 5" HorizontalAlignment="Right" VerticalAlignment="Center"
+                              Content="Random offset ±"
+                              IsChecked="{Binding AutoClickerSettings.IsRandomOffsetEnabled, Mode=TwoWay}"/>
+                    <TextBox Grid.Row="1" Grid.Column="6" Width="45" Margin="0, 5, 0, 0"
+                             IsEnabled="{Binding IsChecked, ElementName=RandomOffsetCheckBox}"
+                             ToolTip="Must be smaller than the click interval"
+                             Text="{Binding AutoClickerSettings.RandomOffsetMilliseconds, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+                    <TextBlock Grid.Row="1" Grid.Column="7" Margin="5, 5, 5, 5" Text="milliseconds"/>
                 </Grid>
             </GroupBox>
 
@@ -164,7 +176,7 @@
                                      Name="TextBoxPickedYValue"
                                      Text="{Binding AutoClickerSettings.PickedYValue, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
                             <Button Name="CaptureMouseScreenCoordinatesButton"
-                                    Margin="5, 0, 0, 0" Width="20" Height="20"
+                                    Margin="5, 0, 0, 5" Width="20" Height="20"
                                     ToolTip="Use the mouse to capture coordinates on the screen where you want to click."
                                     Command="commands:MainWindowCommands.CaptureMouseScreenCoordinates">
                                 <Image Source="../Resources/Icons/location-crosshairs-solid.ico"></Image>

@@ -12,6 +12,10 @@ namespace AutoClicker.Models
 
         public int Milliseconds { get; set; }
 
+        public bool IsRandomOffsetEnabled { get; set; }
+
+        public int RandomOffsetMilliseconds { get; set; }
+
         public MouseButton SelectedMouseButton { get; set; }
 
         public MouseAction SelectedMouseAction { get; set; }
