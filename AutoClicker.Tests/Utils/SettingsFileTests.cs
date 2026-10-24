@@ -38,7 +38,72 @@ namespace AutoClicker.Tests.Utils
 
         public void Dispose()
         {
-            File.Delete(filePath);
+            if (File.Exists(filePath))
+            {
+                File.SetAttributes(filePath, FileAttributes.Normal);
+                File.Delete(filePath);
+            }
+            File.Delete(filePath + ".tmp");
+        }
+
+        [Fact]
+        public void WriteJson_ReplacesExistingFileWithoutLeavingTempFile()
+        {
+            File.WriteAllText(filePath, LegacySettingsJson);
+            ApplicationSettings settings = new ApplicationSettings();
+            settings.AutoClickerSettings.Seconds = 7;
+
+            JsonUtils.WriteJson(filePath, settings);
+
+            Assert.Equal(7, JsonUtils.ReadJson<ApplicationSettings>(filePath).AutoClickerSettings.Seconds);
+            Assert.False(File.Exists(filePath + ".tmp"));
+        }
+
+        [Fact]
+        public void WriteJson_WhenFileCannotBeReplaced_KeepsOriginalFile()
+        {
+            File.WriteAllText(filePath, LegacySettingsJson);
+            File.SetAttributes(filePath, FileAttributes.ReadOnly);
+
+            Assert.ThrowsAny<Exception>(() => JsonUtils.WriteJson(filePath, new ApplicationSettings()));
+
+            Assert.Equal(LegacySettingsJson, File.ReadAllText(filePath));
+            Assert.False(File.Exists(filePath + ".tmp"));
+        }
+
+        [Fact]
+        public void ReadJson_NullSections_AreFilledWithDefaults()
+        {
+            File.WriteAllText(filePath, """{ "HotkeySettings": { "StartHotkey": null, "StopHotkey": null }, "AutoClickerSettings": null }""");
+
+            ApplicationSettings settings = JsonUtils.ReadJson<ApplicationSettings>(filePath);
+            settings.FillMissingValues();
+
+            Assert.NotNull(settings.AutoClickerSettings);
+            Assert.Equal(Constants.DEFAULT_START_HOTKEY, settings.HotkeySettings.StartHotkey.VirtualKeyCode);
+            Assert.Equal(Constants.DEFAULT_STOP_HOTKEY, settings.HotkeySettings.StopHotkey.VirtualKeyCode);
+            Assert.Equal(Constants.DEFAULT_TOGGLE_HOTKEY, settings.HotkeySettings.ToggleHotkey.VirtualKeyCode);
+        }
+
+        [Fact]
+        public void FillMissingValues_KeepsExistingValues()
+        {
+            File.WriteAllText(filePath, LegacySettingsJson);
+            ApplicationSettings settings = JsonUtils.ReadJson<ApplicationSettings>(filePath);
+            settings.HotkeySettings.StartHotkey = KeyMappingUtils.GetKeyMappingByCode(Constants.VK_OEM_8);
+
+            settings.FillMissingValues();
+
+            Assert.Equal(Constants.VK_OEM_8, settings.HotkeySettings.StartHotkey.VirtualKeyCode);
+            Assert.Equal(3, settings.AutoClickerSettings.Seconds);
+        }
+
+        [Fact]
+        public void ReadJson_InvalidFile_ThrowsJsonException()
+        {
+            File.WriteAllText(filePath, """{ "HotkeySettings": { "StartHotkey": { "display_name": "F6",""");
+
+            Assert.ThrowsAny<System.Text.Json.JsonException>(() => JsonUtils.ReadJson<ApplicationSettings>(filePath));
         }
 
         [Fact]

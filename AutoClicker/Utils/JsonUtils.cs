@@ -38,10 +38,18 @@ namespace AutoClicker.Utils
                 WriteIndented = true
             };
             string jsonString = JsonSerializer.Serialize(data, options);
-            using (StreamWriter streamWriter = File.CreateText(filePath))
+
+            string tempFilePath = filePath + ".tmp";
+            try
             {
-                streamWriter.Write(jsonString);
+                File.WriteAllText(tempFilePath, jsonString);
+                File.Move(tempFilePath, filePath, true);
                 Log.Debug("Write to file {FilePath} successfully", filePath);
+            }
+            catch
+            {
+                File.Delete(tempFilePath);
+                throw;
             }
         }
     }
