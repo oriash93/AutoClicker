@@ -1,5 +1,7 @@
 ﻿using System;
 using System.IO;
+using System.Text.Json;
+using System.Windows;
 using AutoClicker.Enums;
 using AutoClicker.Models;
 using Serilog;
@@ -10,6 +12,8 @@ namespace AutoClicker.Utils
     {
         private static readonly string settingsFilePath =
             Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), Constants.SETTINGS_FILE_PATH);
+        private static readonly string invalidSettingsFilePath =
+            Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), Constants.INVALID_SETTINGS_FILE_PATH);
         private static readonly string logFilePath =
             Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), Constants.LOG_FILE_PATH);
 
@@ -80,19 +84,45 @@ namespace AutoClicker.Utils
 
         private static void SaveSettingsToFile()
         {
-            JsonUtils.WriteJson(settingsFilePath, CurrentSettings);
+            try
+            {
+                JsonUtils.WriteJson(settingsFilePath, CurrentSettings);
+            }
+            catch (Exception e) when (e is IOException or UnauthorizedAccessException)
+            {
+                Log.Error(e, "Failed to save settings to {FilePath}", settingsFilePath);
+                MessageBox.Show(string.Format(Constants.SAVE_SETTINGS_FAILED_MESSAGE, settingsFilePath, e.Message),
+                    Constants.MAIN_WINDOW_TITLE_DEFAULT, MessageBoxButton.OK, MessageBoxImage.Warning);
+            }
         }
 
         public static void LoadSettingsFromFile()
         {
-            ApplicationSettings applicationSettings = JsonUtils.ReadJson<ApplicationSettings>(settingsFilePath);
-            if (applicationSettings == null)
+            ApplicationSettings applicationSettings = null;
+            try
             {
-                CurrentSettings = new ApplicationSettings();
+                applicationSettings = JsonUtils.ReadJson<ApplicationSettings>(settingsFilePath);
             }
-            else
+            catch (JsonException)
             {
-                CurrentSettings = applicationSettings;
+                Log.Warning("Settings file {FilePath} is invalid, using default settings", settingsFilePath);
+                MoveInvalidSettingsFile();
+            }
+
+            CurrentSettings = applicationSettings ?? new ApplicationSettings();
+            CurrentSettings.FillMissingValues();
+        }
+
+        private static void MoveInvalidSettingsFile()
+        {
+            try
+            {
+                File.Move(settingsFilePath, invalidSettingsFilePath, true);
+                Log.Information("Moved invalid settings file to {FilePath}", invalidSettingsFilePath);
+            }
+            catch (Exception e) when (e is IOException or UnauthorizedAccessException)
+            {
+                Log.Error(e, "Failed to move invalid settings file {FilePath}", settingsFilePath);
             }
         }
 
