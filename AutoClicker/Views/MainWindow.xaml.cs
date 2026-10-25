@@ -40,8 +40,7 @@ namespace AutoClicker.Views
         private int clickInterval = 0;
         private int clickIntervalOffset = 0;
         private readonly Timer clickTimer;
-        private readonly Uri runningIconUri =
-            new Uri(Path.Combine(AppContext.BaseDirectory, Constants.RUNNING_ICON_RESOURCE_PATH), UriKind.Absolute);
+        private readonly Uri runningIconUri = new Uri(Constants.RUNNING_ICON_RESOURCE_URI);
 
         private NotifyIcon systemTrayIcon;
         private DrawingIcon defaultTrayIcon;
@@ -330,9 +329,10 @@ namespace AutoClicker.Views
         private void InitializeSystemTrayMenu()
         {
             defaultTrayIcon = AssemblyUtils.GetApplicationIcon();
-            runningTrayIcon = new DrawingIcon(
-                Path.Combine(AppContext.BaseDirectory, Constants.RUNNING_ICON_RESOURCE_PATH),
-                SystemInformation.SmallIconSize);
+            using (Stream runningIconStream = Application.GetResourceStream(runningIconUri).Stream)
+            {
+                runningTrayIcon = new DrawingIcon(runningIconStream, SystemInformation.SmallIconSize);
+            }
 
             systemTrayIcon = new NotifyIcon
             {

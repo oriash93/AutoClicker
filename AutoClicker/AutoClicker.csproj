@@ -17,9 +17,7 @@
     <Copyright>Copyright © 2026</Copyright>
   </PropertyGroup>
   <ItemGroup>
-    <None Update="Resources\keyMappings.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
+    <EmbeddedResource Include="Resources\keyMappings.json" LogicalName="keyMappings.json" />
     <AppDesigner Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
@@ -32,14 +30,7 @@
     <Resource Include="Resources\Icons\location-crosshairs-solid.ico" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Resources\Icons\icon.ico">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Resources\Icons\icon_running.ico">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
+    <Resource Include="Resources\Icons\icon_running.ico" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Serilog" Version="4.4.0">

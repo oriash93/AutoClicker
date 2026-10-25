@@ -22,9 +22,8 @@ namespace AutoClicker.Utils
 
         public const string SAVE_SETTINGS_FAILED_MESSAGE = "Couldn't save settings to {0}:\n{1}";
 
-        public const string RESOURCES_DIRECTORY = "Resources";
-        public const string RUNNING_ICON_RESOURCE_PATH = RESOURCES_DIRECTORY + "\\Icons\\icon_running.ico";
-        public const string KEY_MAPPINGS_RESOURCE_PATH = "keyMappings.json";
+        public const string RUNNING_ICON_RESOURCE_URI = "pack://application:,,,/Resources/Icons/icon_running.ico";
+        public const string KEY_MAPPINGS_RESOURCE_NAME = "keyMappings.json";
         public const string SETTINGS_FILE_PATH = "AutoClicker_Settings.json";
         public const string INVALID_SETTINGS_FILE_PATH = "AutoClicker_Settings.invalid.json";
         public const string LOG_FILE_PATH = "AutoClicker_Logs.txt";

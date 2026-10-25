@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Drawing;
+using System.IO;
 using System.Reflection;
 using System.Windows.Input;
 
@@ -17,6 +18,9 @@ namespace AutoClicker.Utils
 
         public static Uri GetProjectUri()
             => new(assembly.GetCustomAttribute<AssemblyMetadataAttribute>().Value);
+
+        public static Stream GetResourceStream(string resourceName)
+            => assembly.GetManifestResourceStream(resourceName);
 
         public static RoutedUICommand CreateCommand(Type windowType, string commandName, KeyGesture keyGesture = null)
             => keyGesture == null
