@@ -493,7 +493,10 @@ namespace AutoClicker.Views
 
         private void SystemTrayIcon_DoubleClick(object sender, EventArgs e)
         {
+            systemTrayMenu.IsOpen = false;
+            systemTrayMenu.ToggleMenuItemsVisibility(false);
             Show();
+            Activate();
         }
 
         private void SystemTrayMenu_SystemTrayMenuActionEvent(object sender, SystemTrayMenuActionEventArgs e)
