@@ -1,15 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
+using System.Text.Json;
 using AutoClicker.Models;
 
 namespace AutoClicker.Utils
 {
     public static class KeyMappingUtils
     {
-        private static readonly string keysMappingPath =
-            Path.Combine(AppContext.BaseDirectory,Constants.RESOURCES_DIRECTORY, Constants.KEY_MAPPINGS_RESOURCE_PATH);
-
         public static List<KeyMapping> KeyMapping { get; set; }
 
         static KeyMappingUtils()
@@ -52,7 +49,10 @@ namespace AutoClicker.Utils
 
         private static void ReadMapping()
         {
-            KeyMapping = JsonUtils.ReadJson<List<KeyMapping>>(keysMappingPath);
+            using (Stream stream = AssemblyUtils.GetResourceStream(Constants.KEY_MAPPINGS_RESOURCE_NAME))
+            {
+                KeyMapping = JsonSerializer.Deserialize<List<KeyMapping>>(stream);
+            }
         }
     }
 }
