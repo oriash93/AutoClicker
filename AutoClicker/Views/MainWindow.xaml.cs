@@ -14,8 +14,10 @@ using AutoClicker.Utils;
 using Serilog;
 using CheckBox = System.Windows.Controls.CheckBox;
 using DrawingIcon = System.Drawing.Icon;
+using FormsMouseEventArgs = System.Windows.Forms.MouseEventArgs;
 using MouseAction = AutoClicker.Enums.MouseAction;
 using MouseButton = AutoClicker.Enums.MouseButton;
+using MouseButtons = System.Windows.Forms.MouseButtons;
 using MouseCursor = System.Windows.Forms.Cursor;
 using NotifyIcon = System.Windows.Forms.NotifyIcon;
 using Point = System.Drawing.Point;
@@ -340,16 +342,16 @@ namespace AutoClicker.Views
                 Icon = defaultTrayIcon,
                 Text = Constants.MAIN_WINDOW_TITLE_DEFAULT
             };
-            systemTrayIcon.Click += SystemTrayIcon_Click;
-            systemTrayIcon.DoubleClick += SystemTrayIcon_DoubleClick;
+            systemTrayIcon.MouseClick += SystemTrayIcon_MouseClick;
+            systemTrayIcon.MouseDoubleClick += SystemTrayIcon_MouseDoubleClick;
             systemTrayMenu = new SystemTrayMenu();
             systemTrayMenu.SystemTrayMenuActionEvent += SystemTrayMenu_SystemTrayMenuActionEvent;
         }
 
         private void DisposeSystemTrayMenu()
         {
-            systemTrayIcon.Click -= SystemTrayIcon_Click;
-            systemTrayIcon.DoubleClick -= SystemTrayIcon_DoubleClick;
+            systemTrayIcon.MouseClick -= SystemTrayIcon_MouseClick;
+            systemTrayIcon.MouseDoubleClick -= SystemTrayIcon_MouseDoubleClick;
             systemTrayIcon.Dispose();
             defaultTrayIcon.Dispose();
             runningTrayIcon.Dispose();
@@ -485,17 +487,24 @@ namespace AutoClicker.Views
             }
         }
 
-        private void SystemTrayIcon_Click(object sender, EventArgs e)
+        private void SystemTrayIcon_MouseClick(object sender, FormsMouseEventArgs e)
         {
+            if (e.Button != MouseButtons.Right)
+                return;
+
             systemTrayMenu.IsOpen = true;
             systemTrayMenu.Focus();
         }
 
-        private void SystemTrayIcon_DoubleClick(object sender, EventArgs e)
+        private void SystemTrayIcon_MouseDoubleClick(object sender, FormsMouseEventArgs e)
         {
-            systemTrayMenu.IsOpen = false;
+            if (e.Button != MouseButtons.Left)
+                return;
+
             systemTrayMenu.ToggleMenuItemsVisibility(false);
             Show();
+            if (WindowState == WindowState.Minimized)
+                WindowState = WindowState.Normal;
             Activate();
         }
 
