@@ -43,6 +43,8 @@ namespace AutoClicker.Views
         private int clickIntervalOffset = 0;
         private readonly Timer clickTimer;
         private readonly Uri runningIconUri = new Uri(Constants.RUNNING_ICON_RESOURCE_URI);
+        // CommandManager only keeps a weak reference to RequerySuggested handlers
+        private readonly EventHandler requerySuggestedHandler;
 
         private NotifyIcon systemTrayIcon;
         private DrawingIcon defaultTrayIcon;
@@ -66,6 +68,10 @@ namespace AutoClicker.Views
             DataContext = this;
             ResetTitle();
             InitializeComponent();
+
+            requerySuggestedHandler = (sender, e) => UpdateIntervalError();
+            CommandManager.RequerySuggested += requerySuggestedHandler;
+            UpdateIntervalError();
         }
 
         protected override void OnSourceInitialized(EventArgs e)
@@ -102,6 +108,7 @@ namespace AutoClicker.Views
             _source.RemoveHook(StartStopHooks);
 
             SettingsUtils.HotkeyChangedEvent -= SettingsUtils_HotkeyChangedEvent;
+            CommandManager.RequerySuggested -= requerySuggestedHandler;
 
             foreach (int hotkeyId in Constants.ALL_HOTKEY_IDS)
             {
@@ -123,7 +130,7 @@ namespace AutoClicker.Views
 
         private void StartCommand_Execute(object sender, ExecutedRoutedEventArgs e)
         {
-            clickInterval = CalculateInterval();
+            clickInterval = (int)IntervalUtils.CalculateInterval(AutoClickerSettings);
             clickIntervalOffset = AutoClickerSettings.IsRandomOffsetEnabled ? AutoClickerSettings.RandomOffsetMilliseconds : 0;
             clickTimer.Interval = clickInterval;
 
@@ -234,28 +241,16 @@ namespace AutoClicker.Views
 
         #region Helper Methods
 
-        private int CalculateInterval()
-        {
-            return AutoClickerSettings.Milliseconds
-                + (AutoClickerSettings.Seconds * 1000)
-                + (AutoClickerSettings.Minutes * 60 * 1000)
-                + (AutoClickerSettings.Hours * 60 * 60 * 1000);
-        }
-
-        private bool IsIntervalValid()
-        {
-            return CalculateInterval() > 0;
-        }
-
-        private bool IsRandomOffsetValid()
-        {
-            return !AutoClickerSettings.IsRandomOffsetEnabled
-                || (AutoClickerSettings.RandomOffsetMilliseconds >= 0 && AutoClickerSettings.RandomOffsetMilliseconds < CalculateInterval());
-        }
-
         private bool CanStartOperation()
         {
-            return !clickTimer.Enabled && IsRepeatModeValid() && IsIntervalValid() && IsRandomOffsetValid();
+            return !clickTimer.Enabled && IsRepeatModeValid() && IntervalUtils.GetIntervalError(AutoClickerSettings) == null;
+        }
+
+        private void UpdateIntervalError()
+        {
+            string error = IntervalUtils.GetIntervalError(AutoClickerSettings);
+            IntervalErrorTextBlock.Text = error;
+            IntervalErrorTextBlock.Visibility = error == null ? Visibility.Hidden : Visibility.Visible;
         }
 
         private int GetTimesToRepeat()

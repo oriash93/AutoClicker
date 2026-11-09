@@ -69,6 +69,7 @@
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
@@ -82,16 +83,20 @@
                     </Grid.ColumnDefinitions>
 
                     <TextBox Grid.Column="0" Width="45"
-                             Text="{Binding AutoClickerSettings.Hours, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+                             ToolTip="1 ms to 24 hours in total"
+                             Text="{Binding AutoClickerSettings.Hours, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, ValidatesOnDataErrors=True}"/>
                     <TextBlock Grid.Column="1" Margin="5, 0, 5, 5" Text="hours"/>
                     <TextBox Grid.Column="2" Width="45"
-                             Text="{Binding AutoClickerSettings.Minutes, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+                             ToolTip="1 ms to 24 hours in total"
+                             Text="{Binding AutoClickerSettings.Minutes, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, ValidatesOnDataErrors=True}"/>
                     <TextBlock Grid.Column="3" Margin="5, 0, 5, 5" Text="minutes"/>
                     <TextBox Grid.Column="4" Width="45"
-                             Text="{Binding AutoClickerSettings.Seconds, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+                             ToolTip="1 ms to 24 hours in total"
+                             Text="{Binding AutoClickerSettings.Seconds, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, ValidatesOnDataErrors=True}"/>
                     <TextBlock Grid.Column="5" Margin="5, 0, 5, 5" Text="seconds"/>
                     <TextBox Grid.Column="6" Width="45"
-                             Text="{Binding AutoClickerSettings.Milliseconds, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+                             ToolTip="1 ms to 24 hours in total"
+                             Text="{Binding AutoClickerSettings.Milliseconds, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, ValidatesOnDataErrors=True}"/>
                     <TextBlock Grid.Column="7" Margin="5, 0, 5, 5" Text="milliseconds"/>
 
                     <CheckBox Name="RandomOffsetCheckBox"
@@ -102,8 +107,12 @@
                     <TextBox Grid.Row="1" Grid.Column="6" Width="45" Margin="0, 5, 0, 0"
                              IsEnabled="{Binding IsChecked, ElementName=RandomOffsetCheckBox}"
                              ToolTip="Must be smaller than the click interval"
-                             Text="{Binding AutoClickerSettings.RandomOffsetMilliseconds, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+                             Text="{Binding AutoClickerSettings.RandomOffsetMilliseconds, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, ValidatesOnDataErrors=True}"/>
                     <TextBlock Grid.Row="1" Grid.Column="7" Margin="5, 5, 5, 5" Text="milliseconds"/>
+
+                    <TextBlock Name="IntervalErrorTextBlock"
+                               Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="8"
+                               HorizontalAlignment="Center" Foreground="Red" Visibility="Hidden"/>
                 </Grid>
             </GroupBox>
 
