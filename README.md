@@ -11,10 +11,12 @@ AutoClicker is a desktop application for automating mouse clicks.
 
 ## Features
 * Choose a custom interval to perform mouse tasks.
+* Add a random offset to the interval.
 * Perform left button, right button or middle button mouse clicks.
 * Perform single click tasks, or double click tasks.
 * Perform clicks infinitely, or choose a limited number of times.
 * Perform clicks at the current cursor position, or choose a custom position. 
+* Minimize to the system tray, and double-click the tray icon to show the window again.
 
 ## Platform
 Currently available only for Windows OS.
@@ -29,5 +31,5 @@ Requires the [.NET 10 SDK](https://dotnet.microsoft.com/download/dotnet/10.0). O
 <br>Run the tests with `dotnet test --project AutoClicker.Tests/AutoClicker.Tests.csproj`.
 
 ## Screenshots
-![image](https://github.com/user-attachments/assets/45e1266c-ca78-4027-89f1-6323b926e135)
+![image](https://github.com/user-attachments/assets/32f7fef7-3bd8-4083-ab5e-891506492919)
 
