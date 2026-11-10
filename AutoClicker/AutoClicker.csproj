@@ -12,7 +12,7 @@
     <StartupObject>AutoClicker.App</StartupObject>
     <PackageProjectUrl>https://github.com/oriash93/AutoClicker</PackageProjectUrl>
     <RepositoryUrl>https://github.com/oriash93/AutoClicker</RepositoryUrl>
-    <Version>3.3.0</Version>
+    <Version>3.5.0</Version>
     <NeutralLanguage>en</NeutralLanguage>
     <Copyright>Copyright © 2026</Copyright>
   </PropertyGroup>
