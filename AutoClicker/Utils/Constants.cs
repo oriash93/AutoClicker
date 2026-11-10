@@ -22,6 +22,11 @@ namespace AutoClicker.Utils
 
         public const string SAVE_SETTINGS_FAILED_MESSAGE = "Couldn't save settings to {0}:\n{1}";
 
+        public const int MAX_INTERVAL_MILLISECONDS = 24 * 60 * 60 * 1000;
+        public const string NEGATIVE_VALUE_ERROR = "Values can't be negative";
+        public const string INTERVAL_OUT_OF_RANGE_ERROR = "Interval must be between 1 ms and 24 hours";
+        public const string OFFSET_TOO_LARGE_ERROR = "Offset must be smaller than the interval";
+
         public const string RUNNING_ICON_RESOURCE_URI = "pack://application:,,,/Resources/Icons/icon_running.ico";
         public const string KEY_MAPPINGS_RESOURCE_NAME = "keyMappings.json";
         public const string SETTINGS_FILE_PATH = "AutoClicker_Settings.json";
