@@ -31,7 +31,11 @@ namespace AutoClicker.Utils
         public const string KEY_MAPPINGS_RESOURCE_NAME = "keyMappings.json";
         public const string SETTINGS_FILE_PATH = "AutoClicker_Settings.json";
         public const string INVALID_SETTINGS_FILE_PATH = "AutoClicker_Settings.invalid.json";
-        public const string LOG_FILE_PATH = "AutoClicker_Logs.txt";
+        public const string LEGACY_LOG_FILE_PATH = "AutoClicker_Logs.txt";
+        public const string LOG_DIRECTORY_PATH = @"AutoClicker\Logs";
+        public const string LOG_FILE_NAME = "AutoClicker_Logs.txt";
+        public const int LOG_RETAINED_FILE_COUNT = 7;
+        public const long LOG_FILE_SIZE_LIMIT_BYTES = 1024 * 1024;
 
         public const int MOUSEEVENTF_LEFTDOWN = 0x02;
         public const int MOUSEEVENTF_LEFTUP = 0x04;

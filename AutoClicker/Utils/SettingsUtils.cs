@@ -14,21 +14,12 @@ namespace AutoClicker.Utils
             Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), Constants.SETTINGS_FILE_PATH);
         private static readonly string invalidSettingsFilePath =
             Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), Constants.INVALID_SETTINGS_FILE_PATH);
-        private static readonly string logFilePath =
-            Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), Constants.LOG_FILE_PATH);
 
         public static ApplicationSettings CurrentSettings { get; set; }
 
         static SettingsUtils()
         {
-            Log.Logger = new LoggerConfiguration()
-                .MinimumLevel.Debug()
-                .WriteTo.Console()
-                .WriteTo.File(logFilePath)
-                .CreateLogger();
-            Log.Debug("==================================================");
-            Log.Information("Logger initialized successfully");
-
+            LogUtils.Initialize();
             LoadSettingsFromFile();
         }
 
