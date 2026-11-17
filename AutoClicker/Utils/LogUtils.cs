@@ -21,10 +21,16 @@ namespace AutoClicker.Utils
         public static void Initialize()
         {
             Log.Logger = CreateLogger(logDirectoryPath, minimumLevel);
-            Log.Information("==================================================");
+            Log.Information(Constants.LOG_SEPARATOR);
             Log.Information("Logger initialized successfully");
 
             DeleteLegacyLogFile(legacyLogFilePath);
+        }
+
+        public static void Close()
+        {
+            Log.Information(Constants.LOG_SEPARATOR);
+            Log.CloseAndFlush();
         }
 
         public static Logger CreateLogger(string directoryPath, LogEventLevel level, long fileSizeLimitBytes = Constants.LOG_FILE_SIZE_LIMIT_BYTES)

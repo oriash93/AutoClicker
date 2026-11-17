@@ -36,6 +36,7 @@ namespace AutoClicker.Utils
         public const string LOG_FILE_NAME = "AutoClicker_Logs.txt";
         public const int LOG_RETAINED_FILE_COUNT = 7;
         public const long LOG_FILE_SIZE_LIMIT_BYTES = 1024 * 1024;
+        public const string LOG_SEPARATOR = "==================================================";
 
         public const int MOUSEEVENTF_LEFTDOWN = 0x02;
         public const int MOUSEEVENTF_LEFTUP = 0x04;
