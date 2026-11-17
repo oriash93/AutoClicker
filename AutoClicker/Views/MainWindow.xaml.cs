@@ -118,8 +118,7 @@ namespace AutoClicker.Views
             DisposeSystemTrayMenu();
 
             Log.Information("Application closing");
-            Log.Debug("==================================================");
-            Log.CloseAndFlush();
+            LogUtils.Close();
 
             base.OnClosed(e);
         }
@@ -383,7 +382,7 @@ namespace AutoClicker.Views
 
         private void DeregisterHotkey(int hotkeyId)
         {
-            Log.Information("DeregisterHotkey with hotkeyId={HotkeyId}", hotkeyId);
+            Log.Debug("DeregisterHotkey with hotkeyId={HotkeyId}", hotkeyId);
             if (Win32ApiUtils.DeregisterHotkey(_mainWindowHandle, hotkeyId))
                 return;
             Log.Debug("No hotkey registered on {HotkeyId}", hotkeyId);
