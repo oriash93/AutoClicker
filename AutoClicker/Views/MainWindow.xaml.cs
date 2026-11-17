@@ -118,7 +118,7 @@ namespace AutoClicker.Views
             DisposeSystemTrayMenu();
 
             Log.Information("Application closing");
-            Log.Debug("==================================================");
+            Log.Information("==================================================");
             Log.CloseAndFlush();
 
             base.OnClosed(e);

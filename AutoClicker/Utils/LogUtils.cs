@@ -21,7 +21,7 @@ namespace AutoClicker.Utils
         public static void Initialize()
         {
             Log.Logger = CreateLogger(logDirectoryPath, minimumLevel);
-            Log.Debug("==================================================");
+            Log.Information("==================================================");
             Log.Information("Logger initialized successfully");
 
             DeleteLegacyLogFile(legacyLogFilePath);
