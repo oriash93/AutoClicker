@@ -18,6 +18,8 @@ jobs:
     steps:
     - name: Checkout
       uses: actions/checkout@v7
+      with:
+        fetch-depth: 0
     - name: Setup .NET
       uses: actions/setup-dotnet@v6
       with:
@@ -31,22 +33,18 @@ jobs:
         SHA: ${{ github.sha }}
       run: |
         if ($env:REF_TYPE -eq 'tag') {
-          if ($env:REF_NAME -notmatch '^v(\d+\.\d+\.\d+)$') {
+          if ($env:REF_NAME -notmatch '^v\d+\.\d+\.\d+$') {
             throw "Tag '$env:REF_NAME' does not match the vX.Y.Z format"
           }
-          "version=$($Matches[1])" >> $env:GITHUB_OUTPUT
           "label=$env:REF_NAME" >> $env:GITHUB_OUTPUT
         } else {
           "label=dev-$($env:SHA.Substring(0, 7))" >> $env:GITHUB_OUTPUT
         }
     - name: Publish
       shell: pwsh
-      env:
-        VERSION: ${{ steps.version.outputs.version }}
       run: |
         $PSNativeCommandUseErrorActionPreference = $true
         $publishArgs = @('AutoClicker/AutoClicker.csproj', '-c', 'Release', '-r', 'win-x64', '-p:PublishSingleFile=true', '-p:DebugType=none')
-        if ($env:VERSION) { $publishArgs += "-p:Version=$env:VERSION" }
         dotnet publish @publishArgs --self-contained -p:IncludeNativeLibrariesForSelfExtract=true -p:EnableCompressionInSingleFile=true -o publish/self-contained
         dotnet publish @publishArgs --no-self-contained -o publish/framework-dependent
     - name: Package
