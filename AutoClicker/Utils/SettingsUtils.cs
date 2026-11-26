@@ -129,6 +129,8 @@ namespace AutoClicker.Utils
 
             CurrentSettings.AutoClickerSettings.PickedXValue = settings.PickedXValue;
             CurrentSettings.AutoClickerSettings.PickedYValue = settings.PickedYValue;
+            CurrentSettings.AutoClickerSettings.IsPositionOffsetEnabled = settings.IsPositionOffsetEnabled;
+            CurrentSettings.AutoClickerSettings.PositionOffsetPixels = settings.PositionOffsetPixels;
 
             CurrentSettings.AutoClickerSettings.SelectedLocationMode = settings.SelectedLocationMode;
             CurrentSettings.AutoClickerSettings.SelectedMouseAction = settings.SelectedMouseAction;

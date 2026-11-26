@@ -23,6 +23,7 @@ using NotifyIcon = System.Windows.Forms.NotifyIcon;
 using Point = System.Drawing.Point;
 using SystemInformation = System.Windows.Forms.SystemInformation;
 using Timer = System.Timers.Timer;
+using Validation = System.Windows.Controls.Validation;
 
 namespace AutoClicker.Views
 {
@@ -41,7 +42,11 @@ namespace AutoClicker.Views
         private int timesRepeated = 0;
         private int clickInterval = 0;
         private int clickIntervalOffset = 0;
+        private int positionOffsetPixels;
+        private Point positionOffsetOrigin;
+        private int heldMouseUpAction;
         private readonly Timer clickTimer;
+        private bool IsOperationRunning => clickTimer.Enabled || heldMouseUpAction != 0;
         private readonly Uri runningIconUri = new Uri(Constants.RUNNING_ICON_RESOURCE_URI);
         // CommandManager only keeps a weak reference to RequerySuggested handlers
         private readonly EventHandler requerySuggestedHandler;
@@ -105,6 +110,10 @@ namespace AutoClicker.Views
 
         protected override void OnClosed(EventArgs e)
         {
+            if (IsOperationRunning)
+                StopOperation();
+            clickTimer.Dispose();
+
             _source.RemoveHook(StartStopHooks);
 
             SettingsUtils.HotkeyChangedEvent -= SettingsUtils_HotkeyChangedEvent;
@@ -130,19 +139,33 @@ namespace AutoClicker.Views
         private void StartCommand_Execute(object sender, ExecutedRoutedEventArgs e)
         {
             clickInterval = (int)IntervalUtils.CalculateInterval(AutoClickerSettings);
-            clickIntervalOffset = AutoClickerSettings.IsRandomOffsetEnabled ? AutoClickerSettings.RandomOffsetMilliseconds : 0;
-            clickTimer.Interval = clickInterval;
+            clickIntervalOffset = clickInterval > 0 && AutoClickerSettings.IsRandomOffsetEnabled
+                ? AutoClickerSettings.RandomOffsetMilliseconds : 0;
+            positionOffsetPixels = AutoClickerSettings.IsPositionOffsetEnabled ? AutoClickerSettings.PositionOffsetPixels : 0;
+            if (positionOffsetPixels > 0)
+                positionOffsetOrigin = GetSelectedPosition();
 
             Log.Information("Starting operation, interval={Interval}ms, offset={Offset}ms", clickInterval, clickIntervalOffset);
             timesRepeated = 0;
-            clickTimer.Start();
 
             Icon = new BitmapImage(runningIconUri);
             Title += Constants.MAIN_WINDOW_TITLE_RUNNING;
             systemTrayIcon.Text += Constants.MAIN_WINDOW_TITLE_RUNNING;
             systemTrayIcon.Icon = runningTrayIcon;
 
-            PerformRepeatedClick();
+            if (clickInterval == 0)
+            {
+                (int mouseDownAction, int mouseUpAction) = GetMouseActions();
+                MoveCursor(GetClickPosition());
+                Win32ApiUtils.ExecuteMouseEvent(mouseDownAction, 0, 0, 0, 0);
+                heldMouseUpAction = mouseUpAction;
+            }
+            else
+            {
+                clickTimer.Interval = clickInterval;
+                clickTimer.Start();
+                PerformRepeatedClick();
+            }
 
             CommandManager.InvalidateRequerySuggested();
         }
@@ -159,12 +182,12 @@ namespace AutoClicker.Views
 
         private void StopCommand_CanExecute(object sender, CanExecuteRoutedEventArgs e)
         {
-            e.CanExecute = clickTimer.Enabled;
+            e.CanExecute = IsOperationRunning;
         }
 
         private void ToggleCommand_Execute(object sender, ExecutedRoutedEventArgs e)
         {
-            if (clickTimer.Enabled)
+            if (IsOperationRunning)
                 StopCommand_Execute(sender, e);
             else
                 StartCommand_Execute(sender, e);
@@ -172,7 +195,7 @@ namespace AutoClicker.Views
 
         private void ToggleCommand_CanExecute(object sender, CanExecuteRoutedEventArgs e)
         {
-            e.CanExecute = CanStartOperation() | clickTimer.Enabled;
+            e.CanExecute = IsOperationRunning || CanStartOperation();
         }
 
         private void SaveSettingsCommand_Execute(object sender, ExecutedRoutedEventArgs e)
@@ -242,7 +265,11 @@ namespace AutoClicker.Views
 
         private bool CanStartOperation()
         {
-            return !clickTimer.Enabled && IsRepeatModeValid() && IntervalUtils.GetIntervalError(AutoClickerSettings) == null;
+            return !IsOperationRunning
+                && IntervalUtils.GetIntervalError(AutoClickerSettings) == null
+                && (!AutoClickerSettings.IsPositionOffsetEnabled
+                    || (PositionOffsetTextBox != null && !Validation.GetHasError(PositionOffsetTextBox)))
+                && (IntervalUtils.CalculateInterval(AutoClickerSettings) == 0 || IsRepeatModeValid());
         }
 
         private void UpdateIntervalError()
@@ -263,14 +290,19 @@ namespace AutoClicker.Views
                 MouseCursor.Position : new Point(AutoClickerSettings.PickedXValue, AutoClickerSettings.PickedYValue);
         }
 
-        private int GetSelectedXPosition()
+        private Point GetClickPosition()
         {
-            return GetSelectedPosition().X;
+            if (positionOffsetPixels == 0)
+                return GetSelectedPosition();
+
+            return new Point(GetRandomizedCoordinate(positionOffsetOrigin.X), GetRandomizedCoordinate(positionOffsetOrigin.Y));
         }
 
-        private int GetSelectedYPosition()
+        private int GetRandomizedCoordinate(int origin)
         {
-            return GetSelectedPosition().Y;
+            long minimum = Math.Max(int.MinValue, (long)origin - positionOffsetPixels);
+            long maximum = Math.Min(int.MaxValue, (long)origin + positionOffsetPixels);
+            return (int)Random.Shared.NextInt64(minimum, maximum + 1);
         }
 
         private int GetNumberOfMouseActions()
@@ -286,7 +318,18 @@ namespace AutoClicker.Views
 
         private void PerformRepeatedClick()
         {
-            InitMouseClick();
+            (int mouseDownAction, int mouseUpAction) = GetMouseActions();
+            if (mouseDownAction != 0)
+            {
+                Point position = GetClickPosition();
+                int numberOfActions = GetNumberOfMouseActions();
+                for (int i = 0; i < numberOfActions; ++i)
+                {
+                    MoveCursor(position);
+                    Win32ApiUtils.ExecuteMouseEvent(mouseDownAction, 0, 0, 0, 0);
+                    Win32ApiUtils.ExecuteMouseEvent(mouseUpAction, 0, 0, 0, 0);
+                }
+            }
             timesRepeated++;
 
             int timesToRepeat = GetTimesToRepeat();
@@ -305,6 +348,11 @@ namespace AutoClicker.Views
         {
             Log.Information("Stopping operation");
             clickTimer.Stop();
+            if (heldMouseUpAction != 0)
+            {
+                Win32ApiUtils.ExecuteMouseEvent(heldMouseUpAction, 0, 0, 0, 0);
+                heldMouseUpAction = 0;
+            }
 
             ResetTitle();
             Icon = _defaultIcon;
@@ -404,35 +452,24 @@ namespace AutoClicker.Views
             });
         }
 
-        private void InitMouseClick()
+        private (int Down, int Up) GetMouseActions()
         {
-            Dispatcher.Invoke(() =>
+            return AutoClickerSettings.SelectedMouseButton switch
             {
-                switch (AutoClickerSettings.SelectedMouseButton)
-                {
-                    case MouseButton.Left:
-                        PerformMouseClick(Constants.MOUSEEVENTF_LEFTDOWN, Constants.MOUSEEVENTF_LEFTUP, GetSelectedXPosition(), GetSelectedYPosition());
-                        break;
-                    case MouseButton.Right:
-                        PerformMouseClick(Constants.MOUSEEVENTF_RIGHTDOWN, Constants.MOUSEEVENTF_RIGHTUP, GetSelectedXPosition(), GetSelectedYPosition());
-                        break;
-                    case MouseButton.Middle:
-                        PerformMouseClick(Constants.MOUSEEVENTF_MIDDLEDOWN, Constants.MOUSEEVENTF_MIDDLEUP, GetSelectedXPosition(), GetSelectedYPosition());
-                        break;
-                }
-            });
+                MouseButton.Left => (Constants.MOUSEEVENTF_LEFTDOWN, Constants.MOUSEEVENTF_LEFTUP),
+                MouseButton.Right => (Constants.MOUSEEVENTF_RIGHTDOWN, Constants.MOUSEEVENTF_RIGHTUP),
+                MouseButton.Middle => (Constants.MOUSEEVENTF_MIDDLEDOWN, Constants.MOUSEEVENTF_MIDDLEUP),
+                MouseButton.LeftAndRight => (Constants.MOUSEEVENTF_LEFTDOWN | Constants.MOUSEEVENTF_RIGHTDOWN,
+                    Constants.MOUSEEVENTF_LEFTUP | Constants.MOUSEEVENTF_RIGHTUP),
+                _ => (0, 0)
+            };
         }
 
-        private void PerformMouseClick(int mouseDownAction, int mouseUpAction, int xPos, int yPos)
+        private void MoveCursor(Point position)
         {
-            for (int i = 0; i < GetNumberOfMouseActions(); ++i)
+            if (!Win32ApiUtils.SetCursorPosition(position.X, position.Y))
             {
-                if (!Win32ApiUtils.SetCursorPosition(xPos, yPos))
-                {
-                    Log.Error("Failed to set the mouse cursor!");
-                }
-
-                Win32ApiUtils.ExecuteMouseEvent(mouseDownAction | mouseUpAction, xPos, yPos, 0, 0);
+                Log.Error("Failed to set the mouse cursor!");
             }
         }
 
@@ -445,11 +482,12 @@ namespace AutoClicker.Views
                 {
                     StartCommand_Execute(null, null);
                 }
-                if (virtualKey == SettingsUtils.CurrentSettings.HotkeySettings.StopHotkey.VirtualKeyCode && clickTimer.Enabled)
+                if (virtualKey == SettingsUtils.CurrentSettings.HotkeySettings.StopHotkey.VirtualKeyCode && IsOperationRunning)
                 {
                     StopCommand_Execute(null, null);
                 }
-                if (virtualKey == SettingsUtils.CurrentSettings.HotkeySettings.ToggleHotkey.VirtualKeyCode && CanStartOperation() | clickTimer.Enabled)
+                if (virtualKey == SettingsUtils.CurrentSettings.HotkeySettings.ToggleHotkey.VirtualKeyCode
+                    && (IsOperationRunning || CanStartOperation()))
                 {
                     ToggleCommand_Execute(null, null);
                 }

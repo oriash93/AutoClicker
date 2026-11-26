@@ -24,7 +24,7 @@ namespace AutoClicker.Utils
 
         public const int MAX_INTERVAL_MILLISECONDS = 24 * 60 * 60 * 1000;
         public const string NEGATIVE_VALUE_ERROR = "Values can't be negative";
-        public const string INTERVAL_OUT_OF_RANGE_ERROR = "Interval must be between 1 ms and 24 hours";
+        public const string INTERVAL_OUT_OF_RANGE_ERROR = "Interval must be between 0 ms and 24 hours";
         public const string OFFSET_TOO_LARGE_ERROR = "Offset must be smaller than the interval";
 
         public const string RUNNING_ICON_RESOURCE_URI = "pack://application:,,,/Resources/Icons/icon_running.ico";

@@ -122,6 +122,8 @@ namespace AutoClicker.Tests.Utils
             Assert.True(settings.HotkeySettings.IncludeModifiers);
             Assert.False(settings.AutoClickerSettings.IsRandomOffsetEnabled);
             Assert.Equal(0, settings.AutoClickerSettings.RandomOffsetMilliseconds);
+            Assert.False(settings.AutoClickerSettings.IsPositionOffsetEnabled);
+            Assert.Equal(0, settings.AutoClickerSettings.PositionOffsetPixels);
         }
 
         [Fact]
@@ -133,6 +135,8 @@ namespace AutoClicker.Tests.Utils
             original.AutoClickerSettings.RandomOffsetMilliseconds = 500;
             original.AutoClickerSettings.SelectedLocationMode = LocationMode.PickedLocation;
             original.AutoClickerSettings.PickedXValue = 343;
+            original.AutoClickerSettings.IsPositionOffsetEnabled = true;
+            original.AutoClickerSettings.PositionOffsetPixels = 15;
             original.HotkeySettings.ToggleHotkey = KeyMappingUtils.GetKeyMappingByCode(Constants.VK_OEM_8);
 
             JsonUtils.WriteJson(filePath, original);
@@ -143,6 +147,8 @@ namespace AutoClicker.Tests.Utils
             Assert.Equal(500, loaded.AutoClickerSettings.RandomOffsetMilliseconds);
             Assert.Equal(LocationMode.PickedLocation, loaded.AutoClickerSettings.SelectedLocationMode);
             Assert.Equal(343, loaded.AutoClickerSettings.PickedXValue);
+            Assert.True(loaded.AutoClickerSettings.IsPositionOffsetEnabled);
+            Assert.Equal(15, loaded.AutoClickerSettings.PositionOffsetPixels);
             Assert.Equal(Constants.VK_OEM_8, loaded.HotkeySettings.ToggleHotkey.VirtualKeyCode);
         }
 
