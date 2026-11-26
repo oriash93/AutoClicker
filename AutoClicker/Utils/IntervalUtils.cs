@@ -19,10 +19,10 @@ namespace AutoClicker.Utils
                 return Constants.NEGATIVE_VALUE_ERROR;
 
             long interval = CalculateInterval(settings);
-            if (interval < 1 || interval > Constants.MAX_INTERVAL_MILLISECONDS)
+            if (interval > Constants.MAX_INTERVAL_MILLISECONDS)
                 return Constants.INTERVAL_OUT_OF_RANGE_ERROR;
 
-            if (settings.IsRandomOffsetEnabled)
+            if (interval > 0 && settings.IsRandomOffsetEnabled)
             {
                 if (settings.RandomOffsetMilliseconds < 0)
                     return Constants.NEGATIVE_VALUE_ERROR;

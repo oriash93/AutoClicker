@@ -35,6 +35,7 @@ namespace AutoClicker.Tests.Utils
         }
 
         [Theory]
+        [InlineData(0, 0, 0, 0)]
         [InlineData(0, 0, 0, 1)]
         [InlineData(0, 0, 1, 0)]
         [InlineData(24, 0, 0, 0)]
@@ -47,7 +48,14 @@ namespace AutoClicker.Tests.Utils
         }
 
         [Theory]
-        [InlineData(0, 0, 0, 0)]
+        [InlineData(0)]
+        [InlineData(500)]
+        public void GetIntervalError_ZeroInterval_IgnoresEnabledOffset(int offset)
+        {
+            Assert.Null(IntervalUtils.GetIntervalError(Settings(0, 0, 0, 0, offset)));
+        }
+
+        [Theory]
         [InlineData(24, 0, 0, 1)]
         [InlineData(597, 0, 0, 0)]
         [InlineData(1194, 0, 0, 0)]

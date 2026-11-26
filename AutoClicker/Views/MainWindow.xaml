@@ -83,19 +83,19 @@
                     </Grid.ColumnDefinitions>
 
                     <TextBox Grid.Column="0" Width="45"
-                             ToolTip="1 ms to 24 hours in total"
+                             ToolTip="0 ms holds the selected mouse button(s) until stopped; maximum 24 hours"
                              Text="{Binding AutoClickerSettings.Hours, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, ValidatesOnDataErrors=True}"/>
                     <TextBlock Grid.Column="1" Margin="5, 0, 5, 5" Text="hours"/>
                     <TextBox Grid.Column="2" Width="45"
-                             ToolTip="1 ms to 24 hours in total"
+                             ToolTip="0 ms holds the selected mouse button(s) until stopped; maximum 24 hours"
                              Text="{Binding AutoClickerSettings.Minutes, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, ValidatesOnDataErrors=True}"/>
                     <TextBlock Grid.Column="3" Margin="5, 0, 5, 5" Text="minutes"/>
                     <TextBox Grid.Column="4" Width="45"
-                             ToolTip="1 ms to 24 hours in total"
+                             ToolTip="0 ms holds the selected mouse button(s) until stopped; maximum 24 hours"
                              Text="{Binding AutoClickerSettings.Seconds, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, ValidatesOnDataErrors=True}"/>
                     <TextBlock Grid.Column="5" Margin="5, 0, 5, 5" Text="seconds"/>
                     <TextBox Grid.Column="6" Width="45"
-                             ToolTip="1 ms to 24 hours in total"
+                             ToolTip="0 ms holds the selected mouse button(s) until stopped; maximum 24 hours"
                              Text="{Binding AutoClickerSettings.Milliseconds, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, ValidatesOnDataErrors=True}"/>
                     <TextBlock Grid.Column="7" Margin="5, 0, 5, 5" Text="milliseconds"/>
 
@@ -106,7 +106,7 @@
                               IsChecked="{Binding AutoClickerSettings.IsRandomOffsetEnabled, Mode=TwoWay}"/>
                     <TextBox Grid.Row="1" Grid.Column="6" Width="45" Margin="0, 5, 0, 0"
                              IsEnabled="{Binding IsChecked, ElementName=RandomOffsetCheckBox}"
-                             ToolTip="Must be smaller than the click interval"
+                             ToolTip="Must be smaller than the click interval; ignored when the interval is 0"
                              Text="{Binding AutoClickerSettings.RandomOffsetMilliseconds, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, ValidatesOnDataErrors=True}"/>
                     <TextBlock Grid.Row="1" Grid.Column="7" Margin="5, 5, 5, 5" Text="milliseconds"/>
 
@@ -156,6 +156,7 @@
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto"/>
@@ -194,6 +195,16 @@
                             </Button>
                         </StackPanel>
                     </RadioButton>
+
+                    <StackPanel Grid.Row="2" Grid.ColumnSpan="2" Orientation="Horizontal" Margin="0, 0, 0, 5"
+                                ToolTip="Random offset on each axis, relative to the selected position at Start">
+                        <CheckBox Name="PositionOffsetCheckBox" Content="Offset ±" VerticalAlignment="Center"
+                                  IsChecked="{Binding AutoClickerSettings.IsPositionOffsetEnabled, Mode=TwoWay}"/>
+                        <TextBox Name="PositionOffsetTextBox" Width="50" Margin="5, 0, 0, 0"
+                                 IsEnabled="{Binding IsChecked, ElementName=PositionOffsetCheckBox}"
+                                 Text="{Binding AutoClickerSettings.PositionOffsetPixels, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"/>
+                        <TextBlock Text="pixels" Margin="5, 0, 0, 0" VerticalAlignment="Center"/>
+                    </StackPanel>
                 </Grid>
             </GroupBox>
 
@@ -205,7 +216,24 @@
                                Margin="5, 5, 5, 5" VerticalAlignment="Center" TextAlignment="Center"/>
                     <ComboBox Grid.Row="0" Grid.Column="1" Margin="5, 5, 5, 5"
                               ItemsSource="{Binding Source={StaticResource mouseButtonValues}}"
-                              SelectedIndex="0" SelectedItem="{Binding AutoClickerSettings.SelectedMouseButton}" HorizontalAlignment="Stretch"/>
+                              SelectedIndex="0" SelectedItem="{Binding AutoClickerSettings.SelectedMouseButton}" HorizontalAlignment="Stretch">
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock>
+                                    <TextBlock.Style>
+                                        <Style TargetType="TextBlock">
+                                            <Setter Property="Text" Value="{Binding}"/>
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding}" Value="{x:Static enums:MouseButton.LeftAndRight}">
+                                                    <Setter Property="Text" Value="Left+Right"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </TextBlock.Style>
+                                </TextBlock>
+                            </DataTemplate>
+                        </ComboBox.ItemTemplate>
+                    </ComboBox>
                     <TextBlock Grid.Row="0" Grid.Column="2" Text="Click Type"
                                Margin="5, 5, 5, 5" VerticalAlignment="Center" TextAlignment="Center"/>
                     <ComboBox Grid.Row="0" Grid.Column="3" Margin="0, 5, 5, 5"

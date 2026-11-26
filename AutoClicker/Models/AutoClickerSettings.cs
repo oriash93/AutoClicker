@@ -31,6 +31,10 @@ namespace AutoClicker.Models
 
         public int PickedYValue { get; set; }
 
+        public bool IsPositionOffsetEnabled { get; set; }
+
+        public int PositionOffsetPixels { get; set; }
+
         public int SelectedTimesToRepeat { get; set; }
 
         [JsonIgnore]
@@ -47,6 +51,7 @@ namespace AutoClicker.Models
                     nameof(Seconds) => Seconds,
                     nameof(Milliseconds) => Milliseconds,
                     nameof(RandomOffsetMilliseconds) => RandomOffsetMilliseconds,
+                    nameof(PositionOffsetPixels) => PositionOffsetPixels,
                     _ => null
                 };
                 return value < 0 ? Constants.NEGATIVE_VALUE_ERROR : null;

@@ -4,7 +4,8 @@
     {
         Left = 0,
         Right = 1,
-        Middle = 2
+        Middle = 2,
+        LeftAndRight = 3
     }
 
     public enum MouseAction
